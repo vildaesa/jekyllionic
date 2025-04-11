@@ -29,7 +29,7 @@ styles:
   - name: Toska
     color: '#298f83'
     image_path: https://cf.shopee.co.id/file/df0a91841d6b71c9f4b96066ccc853f3
-featured_image_path:  'https://cf.shopee.co.id/file/0031e5ba7ee62316a17ecbd36ec7bff6'
+featured_image_path:  'https://cf.shopee.co.id/file/706de3404cf14e97c9e321ee4011ef48'
 facebook_image_path:
 categories:
    - t-shirt
