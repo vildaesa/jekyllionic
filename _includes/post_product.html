@@ -1,3 +1,21 @@
+<div class="product-grid">
+{% for product in site.products %}
+  <ion-card class="entry one-third styles" onclick='openProductModal({{ product | jsonify | escape }})'>
+    <div class="style">
+      <img src="{{ product.featured_image_path }}" itemprop="image">
+    </div>
+    <ion-card-content class="product-details">
+      <div class="product-name">
+        <h4>{{ product.title }}</h4>
+      </div>
+      <div class="product-price">
+        <p>Rp. {{ product.price }}</p>
+      </div>
+    </ion-card-content>
+  </ion-card>
+{% endfor %}
+</div>
+
 <ion-modal id="product-modal" class="auto-height">
   <ng-template>
     <ion-content class="ion-padding">
