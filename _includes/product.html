@@ -31,20 +31,109 @@
     </ion-content>
 </ion-modal>
 
+<style>
+  .color-picker {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin: 0 4px;
+    border: 2px solid #ccc;
+    cursor: pointer;
+  }
+
+  .quantity-picker {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1em;
+  }
+
+  .quantity-picker button {
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .quantity-picker input {
+    width: 48px;
+    text-align: center;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+  }
+</style>
+
 <script>
-  async function openProductModal(title, image, price, description) {
-    const modal = document.querySelector('#product-modal');
+  async function openProductModal(product) {
+    const styles = product.styles.map((style, index) => `
+      <div id="style-image-${index}" class="style-image" style="${index !== 0 ? 'display:none;' : ''}">
+        <img src="${style.image_path}" itemprop="image" style="max-width: 100%;" />
+      </div>
+    `).join('');
+
+    const colorPickers = product.styles.map((style, index) => `
+      <div class="color-picker" style="background-color:${style.color}" onclick="changeStyleImage(${index})"></div>
+    `).join('');
+
+    const sizes = product.sizes.map(size => `
+      <option value="${size}">${size}</option>
+    `).join('');
+
     const content = `
-      <ion-text><h2>${title}</h2></ion-text>
-      <img src="${image}" style="max-width: 100%; height: auto;" />
-      <p><strong>Price:</strong> Rp. ${price}</p>
-      <p>${description}</p>
+      <section class="product-image">
+        <div class="styles">${styles}</div>
+      </section>
+
+      <section class="product-details">
+        <h1 class="entry-title item_name">${product.title}</h1>
+        <p class="item_price">$${product.price}</p>
+        <p>${product.description || ''}</p>
+
+        <div class="style-picker">
+          <p class="margin-bottom-0">Color:</p>
+          ${colorPickers}
+        </div>
+
+        <p class="margin-bottom-0">Size:</p>
+        <select class="item_size">${sizes}</select>
+
+  <p class="margin-bottom-0">Quantity:</p>
+<div class="quantity-picker">
+  <button type="button" onclick="updateQuantity(-1)">–</button>
+  <input type="number" id="item_quantity_input" value="1" min="1" readonly />
+  <button type="button" onclick="updateQuantity(1)">+</button>
+</div>
+
+        <a id="item_add" class="item_add button" href="javascript:;">Add to Cart</a>
+      </section>
     `;
-    document.getElementById('modal-content').innerHTML = content;
-    await modal.present();
+
+function updateQuantity(change) {
+  const input = document.getElementById('item_quantity_input');
+  let current = parseInt(input.value, 10);
+  let newVal = current + change;
+  if (newVal < 1) newVal = 1;
+  input.value = newVal;
+}
+
+    document.getElementById('modal-product-content').innerHTML = content;
+    await document.getElementById('product-modal').present();
+  }
+
+  function changeStyleImage(index) {
+    document.querySelectorAll('.style-image').forEach((el, i) => {
+      el.style.display = i === index ? 'block' : 'none';
+    });
   }
 
   function dismissModal() {
-    document.querySelector('#product-modal').dismiss();
+    document.getElementById('product-modal').dismiss();
   }
 </script>
