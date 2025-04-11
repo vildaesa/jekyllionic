@@ -6,7 +6,7 @@
   <body>
 	<ion-app>
   {% include ion-header.html %}
-		<ion-content {% if page.url == "/product" %}class="ion-no-padding"{% elsif page.url == "/" %}class="ion-padding"{% endif %}>
+		<ion-content class="ion-padding" fullscreen="true">
 			<main class="main" aria-label="Content">
 			  {{ content }}
 			</main>
