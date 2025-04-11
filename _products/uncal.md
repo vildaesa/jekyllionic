@@ -20,7 +20,7 @@ styles:
   - name: Cream
     color: '#dfd3c2'
     image_path: /images/products/deer/cream.jpg
-featured_image_path: https://github.com/daffadev-mia/jekyll-cart/blob/master/images%2Fproducts%2Fdeer%2Fblack.jpg
+featured_image_path:  'https://cf.shopee.co.id/file/0031e5ba7ee62316a17ecbd36ec7bff6'
 facebook_image_path:
 categories:
    - t-shirt
