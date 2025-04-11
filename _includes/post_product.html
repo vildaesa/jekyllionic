@@ -1,0 +1,180 @@
+<ion-modal id="product-modal" class="auto-height">
+  <ng-template>
+    <ion-content class="ion-padding">
+      <ion-button expand="block" fill="clear" onclick="dismissModal()">Close</ion-button>
+      <div id="modal-product-content"></div>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/simpleCart/3.0.6/simplecart.min.js"></script>
+<script>
+  simpleCart({
+    cartColumns: [
+      { attr: "name", label: "Name" },
+      { attr: "price", label: "Price", view: 'currency' },
+      { attr: "size", label: "Size" },
+      { attr: "color", label: "Color" },
+      { attr: "quantity", label: "Qty" },
+      { view: "remove", text: "Remove", label: false }
+    ],
+    cartStyle: "table",
+    currency: "USD"
+  });
+
+  async function openProductModal(product) {
+    const styles = product.styles.map((style, index) => `
+      <div id="style-image-${index}" class="style-image" style="${index !== 0 ? 'display:none;' : ''}">
+        <img src="${style.image_path}" style="max-width: 100%;" />
+      </div>
+    `).join('');
+
+    const colorPickers = product.styles.map((style, index) => `
+      <div 
+        class="color-picker" 
+        style="background-color:${style.color}" 
+        onclick="changeStyleImage(${index}, '${style.name}')"
+        title="${style.name}"
+      ></div>
+    `).join('');
+
+    const sizeButtons = product.sizes.map((size, index) => `
+      <button type="button" class="size-button ${index === 0 ? 'active' : ''}" onclick="selectSize(this, '${size}')">${size}</button>
+    `).join('');
+
+    const content = `
+      <section class="product-image">
+        <div class="styles">${styles}</div>
+      </section>
+
+      <section class="product-details">
+        <h1 class="entry-title item_name">${product.title}</h1>
+        <p class="item_price">$${product.price}</p>
+        <p>${product.description || ''}</p>
+
+        <div class="style-picker">
+          <p>Color:</p>
+          ${colorPickers}
+        </div>
+
+        <p>Size:</p>
+        <div class="size-picker">${sizeButtons}</div>
+        <input type="hidden" id="selected_size" value="${product.sizes[0]}" />
+        <input type="hidden" id="selected_color" value="${product.styles[0].name}" />
+
+        <p>Quantity:</p>
+        <div class="quantity-picker">
+          <button type="button" onclick="updateQuantity(-1)">–</button>
+          <input type="number" id="item_quantity_input" value="1" min="1" readonly />
+          <button type="button" onclick="updateQuantity(1)">+</button>
+        </div>
+
+        <a id="item_add" class="item_add button" href="javascript:;">Add to Cart</a>
+      </section>
+    `;
+
+    document.getElementById('modal-product-content').innerHTML = content;
+
+    document.getElementById('item_add').addEventListener('click', function () {
+      const size = document.getElementById('selected_size').value;
+      const qty = parseInt(document.getElementById('item_quantity_input').value, 10);
+      const color = document.getElementById('selected_color').value;
+
+      simpleCart.add({
+        name: product.title,
+        price: product.price,
+        size: size,
+        color: color,
+        quantity: qty
+      });
+
+      dismissModal();
+    });
+
+    await document.getElementById('product-modal').present();
+  }
+
+  function dismissModal() {
+    document.getElementById('product-modal').dismiss();
+  }
+
+  function changeStyleImage(index, colorName) {
+    document.querySelectorAll('.style-image').forEach((el, i) => {
+      el.style.display = i === index ? 'block' : 'none';
+    });
+    document.getElementById('selected_color').value = colorName;
+  }
+
+  function selectSize(button, size) {
+    document.querySelectorAll('.size-button').forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
+    document.getElementById('selected_size').value = size;
+  }
+
+  function updateQuantity(change) {
+    const input = document.getElementById('item_quantity_input');
+    let current = parseInt(input.value, 10);
+    let newVal = current + change;
+    if (newVal < 1) newVal = 1;
+    input.value = newVal;
+  }
+</script>
+
+<style>
+  .color-picker {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    margin-right: 6px;
+    cursor: pointer;
+  }
+
+  .size-picker {
+    display: flex;
+    gap: 8px;
+    margin: 8px 0;
+  }
+
+  .size-button {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .size-button.active {
+    background-color: #333;
+    color: #fff;
+    border-color: #333;
+  }
+
+  .quantity-picker {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1em;
+  }
+
+  .quantity-picker button {
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .quantity-picker input {
+    width: 48px;
+    text-align: center;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+  }
+</style>
