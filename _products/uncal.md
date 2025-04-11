@@ -1,12 +1,10 @@
 ---
-title: Sacha the Deer
-description: Deer t-shirt
+title: Masker Bordir Ilalang
+description: 
 price: '4.000'
 sizes:
-  - Small
-  - Medium
-  - Large
-  - XL
+  - Ikat
+  - Karet
 styles:
   - name: Hitam
     color: '#000'
