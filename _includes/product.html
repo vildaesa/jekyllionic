@@ -35,7 +35,7 @@
   async function openProductModal(title, image, price, description) {
     const modal = document.querySelector('#product-modal');
     const content = `
-      <h2>${title}</h2>
+      <ion-text><h2>${title}</h2></ion-text>
       <img src="${image}" style="max-width: 100%; height: auto;" />
       <p><strong>Price:</strong> $${price}</p>
       <p>${description}</p>
