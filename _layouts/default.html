@@ -5,11 +5,13 @@
 
   <body>
 	<ion-app>
+  {% include ion-header.html %}
 		<ion-content {% if page.url == "/product" %}class="ion-no-padding"{% elsif page.url == "/" %}class="ion-padding"{% endif %}>
 			<main class="main" aria-label="Content">
 			  {{ content }}
 			</main>
 		</ion-content>
+  {% include ion-footer.html %}
 	</ion-app>
   </body>
 
