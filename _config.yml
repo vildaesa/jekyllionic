@@ -41,3 +41,14 @@ exclude:
 plugins:
   - jekyll-feed
   - jekyll-sitemap
+  - jekyll-archives
+  - jekyll-paginate
+
+# Archives
+jekyll-archives:
+  enabled:
+    - categories
+    - tags
+  permalinks:
+    categories: '/category/:name/'
+    tags: '/tag/:name/'
