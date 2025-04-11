@@ -1,20 +1,45 @@
-        {% for product in site.products %}
-          <ion-card class="entry one-third styles" itemscope itemtype="http://schema.org/Product">
+{% for product in site.products %}
+  <ion-card class="entry one-third styles" 
+            itemscope itemtype="http://schema.org/Product"
+            onclick='openProductModal(`{{ product.title | escape }}`, `{{ product.featured_image_path }}`, `{{ product.price }}`, `{{ product.description | strip_newlines | escape }}`)'>
 
-                        <div class="style">
-                                <a href="{{ product.url }}">
-                                        <img src="{{ product.featured_image_path }}" itemprop="image">
-                                </a>
-                        </div>
+    <div class="style">
+      <img src="{{ product.featured_image_path }}" itemprop="image">
+    </div>
 
-            <div class="product-details">
-              <div class="product-name">
-                                  <h4><a href="{{ product.url }}">{{ product.title }}</a></h4>
-              </div>
-              <div class="product-price">
-                                                          <p>&#x24;{{ product.price }}</p>
-              </div>
-                                                </div>
+    <div class="product-details">
+      <div class="product-name">
+        <h4>{{ product.title }}</h4>
+      </div>
+      <div class="product-price">
+        <p>&#x24;{{ product.price }}</p>
+      </div>
+    </div>
+  </ion-card>
+{% endfor %}
+<ion-modal id="product-modal" trigger="open-product" class="auto-height">
+  <ng-template>
+    <ion-content class="ion-padding">
+      <ion-button expand="block" fill="clear" onclick="dismissModal()">Close</ion-button>
+      <div id="modal-content"></div>
+    </ion-content>
+  </ng-template>
+</ion-modal>
 
-          </ion-card>
-        {% endfor %}
+<script>
+  async function openProductModal(title, image, price, description) {
+    const modal = document.querySelector('#product-modal');
+    const content = `
+      <h2>${title}</h2>
+      <img src="${image}" style="max-width: 100%; height: auto;" />
+      <p><strong>Price:</strong> $${price}</p>
+      <p>${description}</p>
+    `;
+    document.getElementById('modal-content').innerHTML = content;
+    await modal.present();
+  }
+
+  function dismissModal() {
+    document.querySelector('#product-modal').dismiss();
+  }
+</script>
