@@ -7,14 +7,14 @@
       <img src="{{ product.featured_image_path }}" itemprop="image">
     </div>
 
-    <div class="product-details">
+    <ion-card-content class="product-details">
       <div class="product-name">
         <h4>{{ product.title }}</h4>
       </div>
       <div class="product-price">
         <p>&#x24;{{ product.price }}</p>
       </div>
-    </div>
+    </ion-card-content>
   </ion-card>
 {% endfor %}
   <ion-modal id="product-modal" trigger="open-product">
