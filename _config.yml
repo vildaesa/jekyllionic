@@ -25,6 +25,11 @@ sass:
   sass_dir: assets/sass
   style: :compressed
 
+# Custom Collections
+collections:
+  products:
+    output: true
+    
 # Build settings
 exclude:
   - package.json
