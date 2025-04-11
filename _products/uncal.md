@@ -30,7 +30,7 @@ styles:
   - name: Pink
     color: '#d07897'
     image_path: https://cf.shopee.co.id/file/1ada2636aaa18cc18fcfc6415526f48a
-featured_image_path:  'https://cf.shopee.co.id/file/0031e5ba7ee62316a17ecbd36ec7bff6'
+featured_image_path:  'https://cf.shopee.co.id/file/b03ca4dd60056b6a17fb142751a84cd3'
 facebook_image_path:
 categories:
    - t-shirt
