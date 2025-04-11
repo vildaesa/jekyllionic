@@ -8,7 +8,7 @@
         <h4>{{ product.title }}</h4>
       </div>
       <div class="product-price">
-        <p>&#x24;{{ product.price }}</p>
+        <p>Rp. {{ product.price }}</p>
       </div>
     </ion-card-content>
   </ion-card>
@@ -90,7 +90,7 @@
 
       <section class="product-details">
         <h1 class="entry-title item_name">${product.title}</h1>
-        <p class="item_price">$${product.price}</p>
+        <p class="item_price">Rp. ${product.price}</p>
         <p>${product.description || ''}</p>
 
         <div class="style-picker">
@@ -112,14 +112,6 @@
       </section>
     `;
 
-function updateQuantity(change) {
-  const input = document.getElementById('item_quantity_input');
-  let current = parseInt(input.value, 10);
-  let newVal = current + change;
-  if (newVal < 1) newVal = 1;
-  input.value = newVal;
-}
-
     document.getElementById('modal-product-content').innerHTML = content;
     await document.getElementById('product-modal').present();
   }
@@ -129,6 +121,14 @@ function updateQuantity(change) {
       el.style.display = i === index ? 'block' : 'none';
     });
   }
+
+function updateQuantity(change) {
+  const input = document.getElementById('item_quantity_input');
+  let current = parseInt(input.value, 10);
+  let newVal = current + change;
+  if (newVal < 1) newVal = 1;
+  input.value = newVal;
+}
 
   function dismissModal() {
     document.getElementById('product-modal').dismiss();
