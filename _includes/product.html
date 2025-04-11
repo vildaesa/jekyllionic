@@ -65,6 +65,26 @@
     border-radius: 6px;
     background-color: #fff;
   }
+
+  .size-picker {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1em;
+  }
+
+  .size-button {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .size-button.active {
+    background-color: #333;
+    color: #fff;
+    border-color: #333;
+  }
 </style>
 
 <script>
@@ -98,8 +118,13 @@
           ${colorPickers}
         </div>
 
-        <p class="margin-bottom-0">Size:</p>
-        <select class="item_size">${sizes}</select>
+  <p class="margin-bottom-0">Size:</p>
+<div class="size-picker">
+  ${product.sizes.map(size => `
+    <button type="button" class="size-button" onclick="selectSize(this, '${size}')">${size}</button>
+  `).join('')}
+</div>
+<input type="hidden" id="selected_size" value="${product.sizes[0]}" />
 
   <p class="margin-bottom-0">Quantity:</p>
 <div class="quantity-picker">
@@ -121,6 +146,12 @@
       el.style.display = i === index ? 'block' : 'none';
     });
   }
+
+function selectSize(button, size) {
+  document.querySelectorAll('.size-button').forEach(btn => btn.classList.remove('active'));
+  button.classList.add('active');
+  document.getElementById('selected_size').value = size;
+}
 
 function updateQuantity(change) {
   const input = document.getElementById('item_quantity_input');
