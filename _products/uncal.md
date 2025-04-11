@@ -8,7 +8,6 @@ sizes:
   - Large
   - XL
 styles:
-  - name: Black
   - name: Hitam
     color: '#000'
     image_path: https://cf.shopee.co.id/file/b03ca4dd60056b6a17fb142751a84cd3
