@@ -1,3 +1,4 @@
+<div class="product-grid">
 {% for product in site.products %}
   <ion-card class="entry one-third styles" onclick='openProductModal({{ product | jsonify | escape }})'>
     <div class="style">
@@ -13,6 +14,7 @@
     </ion-card-content>
   </ion-card>
 {% endfor %}
+</div>
 
   <ion-modal id="product-modal" trigger="open-product">
     <ion-header>
