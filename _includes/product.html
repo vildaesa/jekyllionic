@@ -1,22 +1,19 @@
 {% for product in site.products %}
-  <ion-card class="entry one-third styles" 
-            itemscope itemtype="http://schema.org/Product"
-            onclick='openProductModal(`{{ product.title | escape }}`, `{{ product.featured_image_path }}`, `{{ product.price }}`, `{{ product.description | strip_newlines | escape }}`)'>
-
+  <ion-card class="entry one-third styles" onclick='openProductModal({{ product | jsonify | escape }})'>
     <div class="style">
       <img src="{{ product.featured_image_path }}" itemprop="image">
     </div>
-
     <ion-card-content class="product-details">
       <div class="product-name">
         <h4>{{ product.title }}</h4>
       </div>
       <div class="product-price">
-        <p>Rp. {{ product.price }}</p>
+        <p>&#x24;{{ product.price }}</p>
       </div>
     </ion-card-content>
   </ion-card>
 {% endfor %}
+
   <ion-modal id="product-modal" trigger="open-product">
     <ion-header>
       <ion-toolbar>
@@ -27,7 +24,7 @@
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
-      <div id="modal-content"></div>
+      <div id="modal-product-content"></div>
     </ion-content>
 </ion-modal>
 
