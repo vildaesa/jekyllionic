@@ -1,5 +1,5 @@
         {% for product in site.products %}
-          <section class="entry one-third styles" itemscope itemtype="http://schema.org/Product">
+          <ion-card class="entry one-third styles" itemscope itemtype="http://schema.org/Product">
 
                         <div class="style">
                                 <a href="{{ product.url }}">
@@ -16,5 +16,5 @@
               </div>
                                                 </div>
 
-          </section>
+          </ion-card>
         {% endfor %}
