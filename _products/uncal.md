@@ -22,6 +22,10 @@ styles:
     image_path: /images/products/deer/cream.jpg
 featured_image_path: /images/products/deer/black.jpg
 facebook_image_path:
+categories:
+   - t-shirt
+tags:
+   - t-shirt
 ---
 
 Sacha’s elegant antlers have never been seen on such a beautiful t-shirt. Wear this majestic beast and feel all your problems float away.
