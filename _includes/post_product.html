@@ -16,13 +16,18 @@
 {% endfor %}
 </div>
 
-<ion-modal id="product-modal" class="auto-height">
-  <ng-template>
+  <ion-modal id="product-modal" trigger="open-product">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>{{ page.title }}</ion-title>
+        <ion-buttons slot="end">
+          <ion-button onclick="dismissModal()"><ion-icon slot="icon-only" name="close-circle-outline"></ion-icon></ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
     <ion-content class="ion-padding">
-      <ion-button expand="block" fill="clear" onclick="dismissModal()">Close</ion-button>
-      <div id="modal-product-content"></div>
+      <div class="post-product simpleCart_shelfItem" id="modal-product-content"></div>
     </ion-content>
-  </ng-template>
 </ion-modal>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/simpleCart/3.0.6/simplecart.min.js"></script>
