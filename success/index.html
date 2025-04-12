@@ -1,0 +1,75 @@
+---
+layout: default
+title: Pembayaran Sukses
+permalink: /success
+---
+<style>header.header, .top-radius{display:none !important;}</style>
+<div class="center-in-parent">
+<div class="box">
+<img class="gifImg" src="{{site.baseurl}}/assets/images/success.gif" />
+<h2>Pembayaran Berhasil!</h2>
+
+<div class="simpleCart_items" style="display:none;"></div>
+<p>Total: <span class="simpleCart_total"></span></p>
+
+<button type="button" id="whatsapp-button">Konfirmasi via WhatsApp</button>
+
+<script>
+  document.getElementById("whatsapp-button").addEventListener("click", function () {
+    const buyer = JSON.parse(localStorage.getItem("buyer")) || {};
+
+    const firstName = buyer.first_name || "";
+    const lastName = buyer.last_name || "";
+    const email = buyer.email || "";
+    const street = buyer.street || "";
+    const city = buyer.city || "";
+    const state = buyer.state || "";
+    const zip = buyer.zip || "";
+
+    let message = `Halo, saya ingin konfirmasi pembayaran:\n\n`;
+    message += `Nama: ${firstName} ${lastName}\n`;
+    message += `Email: ${email}\n`;
+    message += `Alamat: ${street}, ${city}, ${state}, ${zip}\n\n`;
+    message += `Detail Pesanan:\n---`;
+
+    let total = 0;
+    let itemCount = 0;
+
+    simpleCart.each(function (item) {
+      const name = item.get("name");
+      const warna = item.get("warna");
+      const varian = item.get("ukuran");
+      const quantity = item.get("quantity");
+      const price = item.get("price");
+      const subtotal = item.get("total");
+      total += subtotal;
+      itemCount++;
+
+      message += `\n- *Produk ${name}*,\n- *Warna ${warna}*,\n- *Ukuran ${varian}*,\n ${quantity} pcs *x* @Rp. ${price} = *Total harga Rp. ${subtotal}*\n---`;
+    });
+
+    if (itemCount === 0) {
+      showAlert("Keranjang kosong. Tidak ada data untuk dikirim.");
+      return;
+    }
+
+    message += `\nTotal Pembayaran: Rp${total}`;
+
+    const phoneNumber = "{{ site.wa_key }}";
+    const encodedMessage = encodeURIComponent(message);
+    const waLink = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+    window.open(waLink, "_blank");
+
+    // Kosongkan keranjang setelah pesan dikirim
+    simpleCart.empty();
+    localStorage.removeItem("buyer");
+
+// Redirect ke halaman depan setelah 2 detik (biar link WA keburu terbuka)
+setTimeout(function () {
+  window.location.href = "/";
+}, 2000);
+  });
+</script>
+</div>
+</div>
