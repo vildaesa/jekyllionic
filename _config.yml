@@ -52,3 +52,5 @@ jekyll-archives:
   permalinks:
     categories: '/category/:name/'
     tags: '/tag/:name/'
+
+CLIENT_KEY:
