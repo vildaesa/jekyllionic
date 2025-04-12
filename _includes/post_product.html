@@ -106,7 +106,7 @@
             ${product.styles.map((style, i) => `
               <button onclick="selectColor('${style.color}', '${style.image_path}', this)" 
                 class="color-button" 
-                style="background:${style.color}; width:30px; height:30px; border-radius:50%; border:2px solid #ccc;">
+                style="background:${style.name}; width:30px; height:30px; border-radius:50%; border:2px solid #ccc;">
               </button>
             `).join('')}
           </div>
