@@ -9,9 +9,7 @@ title: Home
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding" fullscreen="true">
-          {% if page.categories != empty or page.tags != empty %}
-               {% include categories.html %}
-          {% endif %}
+               {% include blog_post.html %}
       </ion-content>
     </div>
   </ion-tab>
