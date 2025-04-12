@@ -1,240 +1,128 @@
 <div class="product-grid">
 {% for product in site.products %}
-  <ion-card class="entry one-third styles" onclick='openProductModal({{ product | jsonify | escape }})'>
-    <div class="style">
-      <img src="{{ product.featured_image_path }}" itemprop="image">
-    </div>
-    <ion-card-content class="product-details">
-      <div class="product-name">
-        <h4>{{ product.title }}</h4>
-      </div>
-      <div class="product-price">
-        <p>Rp. {{ product.price }}</p>
-      </div>
-    </ion-card-content>
-  </ion-card>
+ <ion-card onclick='openProductModal({
+  title: "{{ product.title }}",
+  price: "{{ product.price }}",
+  url: "{{ product.url }}",
+  model: {{ product.model | jsonify }},
+  styles: {{ product.styles | jsonify }},
+  description: "{{ product.description }}"
+})'>
+  <img src="{{ product.featured_image_path }}">
+  <ion-card-content>{{ product.title }} - Rp {{ product.price }}</ion-card-content>
+</ion-card>
 {% endfor %}
 </div>
 
-  <ion-modal id="product-modal" trigger="open-product">
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>{{ page.title }}</ion-title>
-        <ion-buttons slot="end">
-          <ion-button onclick="dismissModal()"><ion-icon slot="icon-only" name="close-circle-outline"></ion-icon></ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content class="ion-padding">
-      <div class="post-product" id="modal-product-content"></div>
-    </ion-content>
-</ion-modal>
+<ion-modal id="productModal"></ion-modal>
 
 <script>
-  simpleCart({
-    cartColumns: [
-      { attr: "thumb", label: false, view: "thumb" },
-      { attr: "name", label: false, view: "link" },
-      { view: "remove", text: false, label: !1 },
-      { attr: "price", label: false, view: "harga" },
-      { attr: "color", label: 'Warna', view: "warna" },
-      { attr: "model", label: 'Model', view: "tali" },
-      { view: "decrement", label: false },
-      { attr: "quantity", label: 'Jumlah', view: "jumlah" },
-      { view: "increment", label: false },
-      { attr: "total", label: false, view: "currency" },
-      { attr: "link", label: false, view: "link" },
-    ],
-    currency: "IDR"
-  });
-
-  simpleCart.ready(function () {
-    simpleCart.views.warna = function (item) {
-      return item.get('color') || '';
-    };
-    simpleCart.views.tali = function (item) {
-      return item.get('model') || '';
-    };
-    simpleCart.views.jumlah = function (item) {
-      return item.get('quantity');
-    };
-    simpleCart.views.harga = function (item) {
-      return "Rp " + item.get('price').toLocaleString('id-ID');
-    };
-    simpleCart.views.thumb = function (item) {
-      return `<img src="${item.get('thumb')}" style="width:40px;">`;
-    };
-    simpleCart.views.link = function (item) {
-      return `<a href="${item.get('link')}">Detail</a>`;
-    };
-  });
-
   async function openProductModal(product) {
-    const styles = product.styles.map((style, index) => `
-      <div id="style-image-${index}" class="style-image" style="${index !== 0 ? 'display:none;' : ''}">
-        <img src="${style.image_path}" style="max-width: 100%;" />
-      </div>
-    `).join('');
+    const modal = document.getElementById('productModal');
 
-    const colorPickers = product.styles.map((style, index) => `
-      <div 
-        class="color-picker" 
-        style="background-color:${style.color}" 
-        onclick="changeStyleImage(${index}, '${style.name}', '${style.image_path}')"
-        title="${style.name}"
-      ></div>
-    `).join('');
+    modal.innerHTML = `
+      <ion-header translucent>
+        <ion-toolbar>
+          <ion-title>${product.title}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button onclick="dismissModal()">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
 
-function selectModel(button, model) {
-  document.querySelectorAll('.size-button').forEach(btn => btn.classList.remove('active'));
-  button.classList.add('active');
-  document.getElementById('selected_model').value = model;
-}
+      <ion-content class="ion-padding">
+        <div id="product-image-container">
+          <img id="main-product-image" src="${product.styles[0].image_path}" style="width:100%; border-radius: 12px;" />
+        </div>
 
- const modelButtons = product.model.map((modelName, index) => `
-  <button type="button" class="size-button ${index === 0 ? 'active' : ''}" onclick="selectModel(this, '${modelName}')">${modelName}</button>
-`).join('');
+        <h2>${product.title}</h2>
+        <p>Harga: <strong>Rp ${product.price}</strong></p>
+        <p>${product.description || ''}</p>
 
-    const content = `
-      <section class="product-image">
-        <div class="styles">${styles}</div>
-      </section>
-
-      <section class="product-details">
-        <h1 class="entry-title item_name">${product.title}</h1>
-        <p class="item_price">Rp ${product.price.toLocaleString('id-ID')}</p>
-
-        <div class="style-picker">
+        <div>
           <p>Warna:</p>
-          ${colorPickers}
+          <div style="display:flex; gap:10px;">
+            ${product.styles.map((style, i) => `
+              <button onclick="selectColor('${style.color}', '${style.image_path}', this)" 
+                class="color-button" 
+                style="background:${style.color}; width:30px; height:30px; border-radius:50%; border:2px solid #ccc;">
+              </button>
+            `).join('')}
+          </div>
+          <input type="hidden" id="selected_color" value="${product.styles[0].color}" />
+          <input type="hidden" id="selected_thumb" value="${product.styles[0].image_path}" />
         </div>
 
- <p>Jenis Tali:</p>
-<div class="size-picker">${modelButtons}</div>
-<input type="hidden" id="selected_model" value="${product.model[0]}" />
-        <input type="hidden" id="selected_color" value="${product.styles[0].name}" />
-        <input type="hidden" id="selected_thumb" value="${product.styles[0].image_path}" />
-
-        <p>Jumlah:</p>
-        <div class="quantity-picker">
-          <button type="button" onclick="updateQuantity(-1)">–</button>
-          <input type="number" id="item_quantity_input" value="1" min="1" readonly />
-          <button type="button" onclick="updateQuantity(1)">+</button>
+        <div style="margin-top:1em;">
+          <p>Tali:</p>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;" id="model-buttons">
+            ${product.model.map((modelName, i) => `
+              <button class="model-button ${i === 0 ? 'active' : ''}" onclick="selectModel(this, '${modelName}')">${modelName}</button>
+            `).join('')}
+          </div>
+          <input type="hidden" id="selected_model" value="${product.model[0]}" />
         </div>
 
-        <ion-button id="item_add" class="button" href="javascript:;">Tambah ke Keranjang</ion-button>
-      </section>
+        <div style="margin-top:1em;">
+          <p>Jumlah:</p>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <button onclick="changeQuantity(-1)">-</button>
+            <input id="item_quantity_input" type="number" value="1" min="1" style="width:40px; text-align:center;" />
+            <button onclick="changeQuantity(1)">+</button>
+          </div>
+        </div>
+
+        <ion-button id="item_add" expand="block" color="primary" style="margin-top: 2em;">Tambah ke Keranjang</ion-button>
+      </ion-content>
     `;
 
-    document.getElementById('modal-product-content').innerHTML = content;
+    await modal.present();
 
+    // Bersihkan dan pasang ulang event add-to-cart
     document.getElementById('item_add').addEventListener('click', function () {
-      const size = document.getElementById('selected_size').value;
+      const model = document.getElementById('selected_model').value;
       const qty = parseInt(document.getElementById('item_quantity_input').value, 10);
       const color = document.getElementById('selected_color').value;
       const thumb = document.getElementById('selected_thumb').value;
-      const model = product.model || '';
-      const link = product.url;
 
       simpleCart.add({
         name: product.title,
         price: product.price,
-        size: size,
-        color: color,
         model: model,
+        color: color,
         quantity: qty,
         thumb: thumb,
-        link: link
+        link: product.url
       });
 
       dismissModal();
     });
-
-    await document.getElementById('product-modal').present();
   }
 
   function dismissModal() {
-    document.getElementById('product-modal').dismiss();
+    const modal = document.getElementById('productModal');
+    modal.dismiss();
   }
 
-  function changeStyleImage(index, colorName, thumbPath) {
-    document.querySelectorAll('.style-image').forEach((el, i) => {
-      el.style.display = i === index ? 'block' : 'none';
-    });
-    document.getElementById('selected_color').value = colorName;
-    document.getElementById('selected_thumb').value = thumbPath;
+  function selectColor(color, imagePath, button) {
+    document.getElementById('main-product-image').src = imagePath;
+    document.getElementById('selected_color').value = color;
+    document.getElementById('selected_thumb').value = imagePath;
+
+    document.querySelectorAll('.color-button').forEach(btn => btn.style.border = "2px solid #ccc");
+    button.style.border = "3px solid black";
   }
 
-  function selectSize(button, size) {
-    document.querySelectorAll('.size-button').forEach(btn => btn.classList.remove('active'));
+  function selectModel(button, model) {
+    document.querySelectorAll('.model-button').forEach(btn => btn.classList.remove('active'));
     button.classList.add('active');
-    document.getElementById('selected_size').value = size;
+    document.getElementById('selected_model').value = model;
   }
 
-  function updateQuantity(change) {
+  function changeQuantity(delta) {
     const input = document.getElementById('item_quantity_input');
-    let current = parseInt(input.value, 10);
-    let newVal = current + change;
-    if (newVal < 1) newVal = 1;
-    input.value = newVal;
+    let qty = parseInt(input.value, 10);
+    qty = isNaN(qty) ? 1 : qty + delta;
+    input.value = qty < 1 ? 1 : qty;
   }
 </script>
-
-<style>
-  .color-picker {
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    border: 2px solid #ccc;
-    margin-right: 6px;
-    cursor: pointer;
-  }
-
-  .size-picker {
-    display: flex;
-    gap: 8px;
-    margin: 8px 0;
-  }
-
-  .size-button {
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  .size-button.active {
-    background-color: #333;
-    color: #fff;
-    border-color: #333;
-  }
-
-  .quantity-picker {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 1em;
-  }
-
-  .quantity-picker button {
-    width: 32px;
-    height: 32px;
-    font-size: 18px;
-    font-weight: bold;
-    background-color: #f0f0f0;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-
-  .quantity-picker input {
-    width: 48px;
-    text-align: center;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    background-color: #fff;
-  }
-</style>
