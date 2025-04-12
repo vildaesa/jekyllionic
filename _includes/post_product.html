@@ -30,11 +30,51 @@
     </ion-content>
 </ion-modal>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/simpleCart/3.0.6/simplecart.min.js"></script>
+
 <script>
+  simpleCart({
+    cartColumns: [
+      { attr: "thumb", label: false, view: "thumb" },
+      { attr: "name", label: false, view: "link" },
+      { view: "remove", text: false, label: !1 },
+      { attr: "price", label: false, view: "harga" },
+      { attr: "color", label: 'Warna', view: "warna" },
+      { attr: "model", label: 'Model', view: "tali" },
+      { view: "decrement", label: false },
+      { attr: "quantity", label: 'Jumlah', view: "jumlah" },
+      { view: "increment", label: false },
+      { attr: "total", label: false, view: "currency" },
+      { attr: "link", label: false, view: "link" },
+    ],
+    currency: "IDR"
+  });
+
+  simpleCart.ready(function () {
+    simpleCart.views.warna = function (item) {
+      return item.get('color') || '';
+    };
+    simpleCart.views.tali = function (item) {
+      return item.get('model') || '';
+    };
+    simpleCart.views.jumlah = function (item) {
+      return item.get('quantity');
+    };
+    simpleCart.views.harga = function (item) {
+      return "Rp " + item.get('price').toLocaleString('id-ID');
+    };
+    simpleCart.views.thumb = function (item) {
+      return `<img src="${item.get('thumb')}" style="width:40px;">`;
+    };
+    simpleCart.views.link = function (item) {
+      return `<a href="${item.get('link')}">Detail</a>`;
+    };
+  });
+
   async function openProductModal(product) {
     const styles = product.styles.map((style, index) => `
       <div id="style-image-${index}" class="style-image" style="${index !== 0 ? 'display:none;' : ''}">
-        <img class="item_thumb" src="${style.image_path}" style="max-width: 100%;" />
+        <img src="${style.image_path}" style="max-width: 100%;" />
       </div>
     `).join('');
 
@@ -42,7 +82,7 @@
       <div 
         class="color-picker" 
         style="background-color:${style.color}" 
-        onclick="changeStyleImage(${index}, '${style.name}')"
+        onclick="changeStyleImage(${index}, '${style.name}', '${style.image_path}')"
         title="${style.name}"
       ></div>
     `).join('');
@@ -58,53 +98,53 @@
 
       <section class="product-details">
         <h1 class="entry-title item_name">${product.title}</h1>
-        <p class="item_price">Rp. ${product.price}</p>
-        <p>${product.description || ''}</p>
+        <p class="item_price">Rp ${product.price.toLocaleString('id-ID')}</p>
 
         <div class="style-picker">
-          <p>Color:</p>
+          <p>Warna:</p>
           ${colorPickers}
         </div>
 
-        <p>Size:</p>
+        <p>Ukuran:</p>
         <div class="size-picker">${sizeButtons}</div>
         <input type="hidden" id="selected_size" value="${product.sizes[0]}" />
         <input type="hidden" id="selected_color" value="${product.styles[0].name}" />
+        <input type="hidden" id="selected_thumb" value="${product.styles[0].image_path}" />
 
-        <p>Quantity:</p>
+        <p>Jumlah:</p>
         <div class="quantity-picker">
           <button type="button" onclick="updateQuantity(-1)">–</button>
           <input type="number" id="item_quantity_input" value="1" min="1" readonly />
           <button type="button" onclick="updateQuantity(1)">+</button>
         </div>
 
-        <a id="item_add" class="item_add button" href="javascript:;">Add to Cart</a>
+        <a id="item_add" class="item_add button" href="javascript:;">Tambah ke Keranjang</a>
       </section>
     `;
 
     document.getElementById('modal-product-content').innerHTML = content;
 
     document.getElementById('item_add').addEventListener('click', function () {
-  const size = document.getElementById('selected_size').value;
-  const qty = parseInt(document.getElementById('item_quantity_input').value, 10);
-  const color = document.getElementById('selected_color').value;
-  const thumb = product.featured_image_path; // atau bisa juga ambil dari warna
-  const model = product.model || ''; // kalau ada opsi model
-  const link = product.url; // buat view link di cart
+      const size = document.getElementById('selected_size').value;
+      const qty = parseInt(document.getElementById('item_quantity_input').value, 10);
+      const color = document.getElementById('selected_color').value;
+      const thumb = document.getElementById('selected_thumb').value;
+      const model = product.model || '';
+      const link = product.url;
 
-  simpleCart.add({
-    name: product.title,
-    price: product.price,
-    size: size,
-    color: color,
-    model: model,
-    quantity: qty,
-    thumb: thumb,
-    link: link
-  });
+      simpleCart.add({
+        name: product.title,
+        price: product.price,
+        size: size,
+        color: color,
+        model: model,
+        quantity: qty,
+        thumb: thumb,
+        link: link
+      });
 
-  dismissModal();
-});
+      dismissModal();
+    });
 
     await document.getElementById('product-modal').present();
   }
@@ -113,11 +153,12 @@
     document.getElementById('product-modal').dismiss();
   }
 
-  function changeStyleImage(index, colorName) {
+  function changeStyleImage(index, colorName, thumbPath) {
     document.querySelectorAll('.style-image').forEach((el, i) => {
       el.style.display = i === index ? 'block' : 'none';
     });
     document.getElementById('selected_color').value = colorName;
+    document.getElementById('selected_thumb').value = thumbPath;
   }
 
   function selectSize(button, size) {
