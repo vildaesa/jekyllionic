@@ -85,8 +85,8 @@
       ></div>
     `).join('');
 
-    const sizeButtons = product.sizes.map((size, index) => `
-      <button type="button" class="size-button ${index === 0 ? 'active' : ''}" onclick="selectSize(this, '${size}')">${size}</button>
+    const sizeButtons = product.sizes.map((tali, index) => `
+      <button type="button" class="size-button ${index === 0 ? 'active' : ''}" onclick="selectSize(this, '${tali}')">${tali}</button>
     `).join('');
 
     const content = `
@@ -103,7 +103,7 @@
           ${colorPickers}
         </div>
 
-        <p>Ukuran:</p>
+        <p>Model Tali:</p>
         <div class="size-picker">${sizeButtons}</div>
         <input type="hidden" id="selected_size" value="${product.sizes[0]}" />
         <input type="hidden" id="selected_color" value="${product.styles[0].name}" />
