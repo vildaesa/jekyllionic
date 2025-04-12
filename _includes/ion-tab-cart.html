@@ -36,12 +36,12 @@ title: Cart
         <form id="checkout-form">
           <ion-item>
             <ion-label position="stacked">First Name</ion-label>
-            <ion-input name="First Name" required></ion-input>
+            <ion-input name="First_Name" required></ion-input>
           </ion-item>
 
           <ion-item>
             <ion-label position="stacked">Last Name</ion-label>
-            <ion-input name="Last Name" required></ion-input>
+            <ion-input name="Last_Name" required></ion-input>
           </ion-item>
 
           <ion-item>
@@ -88,8 +88,8 @@ title: Cart
       if (formData.get('_gotcha')) return;
 
       const customer = {
-        first_name: formData.get('First Name'),
-        last_name: formData.get('Last Name'),
+        first_name: formData.get('First_Name'),
+        last_name: formData.get('Last_Name'),
         email: formData.get('Email'),
         address: {
           street: formData.get('Street'),
