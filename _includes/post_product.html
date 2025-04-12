@@ -105,13 +105,13 @@
           <p>Warna:</p>
           <div style="display:flex; gap:10px;">
             ${product.styles.map((style, i) => `
-              <button onclick="selectColor('${style.color}', '${style.image_path}', this)" 
+              <button onclick="selectColor('${style.name}', '${style.image_path}', this)" 
                 class="color-button" 
                 style="background:${style.color}; width:30px; height:30px; border-radius:50%; border:2px solid #ccc;">
               </button>
             `).join('')}
           </div>
-          <input type="hidden" id="selected_color" value="${product.styles[0].color}" />
+          <input type="hidden" id="selected_color" value="${product.styles[0].name}" />
           <input type="hidden" id="selected_thumb" value="${product.styles[0].image_path}" />
         </div>
 
@@ -151,7 +151,7 @@
         name: product.title,
         price: product.price,
         model: model,
-        color: color,
+        color: name,
         quantity: qty,
         thumb: thumb,
         link: product.url
@@ -168,7 +168,7 @@
 
   function selectColor(color, imagePath, button) {
     document.getElementById('main-product-image').src = imagePath;
-    document.getElementById('selected_color').value = color;
+    document.getElementById('selected_color').value = name;
     document.getElementById('selected_thumb').value = imagePath;
 
     document.querySelectorAll('.color-button').forEach(btn => btn.style.border = "2px solid #ccc");
