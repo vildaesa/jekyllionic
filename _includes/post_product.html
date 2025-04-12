@@ -9,7 +9,10 @@
   description: "{{ product.description }}"
 })'>
   <img src="{{ product.featured_image_path }}">
-  <ion-card-content>{{ product.title }} - Rp {{ product.price }}</ion-card-content>
+  <ion-card-content>
+<ion-card-title>Rp {{ product.price }}</ion-card-title>
+<ion-card-subtitle>{{ product.title }}</ion-card-subtitle>
+</ion-card-content>
 </ion-card>
 {% endfor %}
 </div>
