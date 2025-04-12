@@ -150,7 +150,7 @@
         name: product.title,
         price: product.price,
         model: model,
-        color: name,
+        color: color,
         quantity: qty,
         thumb: thumb,
         link: product.url
@@ -167,7 +167,7 @@
 
   function selectColor(color, imagePath, button) {
     document.getElementById('main-product-image').src = imagePath;
-    document.getElementById('selected_color').value = name;
+    document.getElementById('selected_color').value = color;
     document.getElementById('selected_thumb').value = imagePath;
 
     document.querySelectorAll('.color-button').forEach(btn => btn.style.border = "2px solid #ccc");
