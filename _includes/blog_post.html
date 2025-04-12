@@ -2,7 +2,6 @@
 {% for post in site.posts %}
 <ion-card>
 <img class="blog_img" src="{{ post.img }}">
-<ion-card-content>
 <ion-card-header>
 <ion-card-title>
 {{ post.title }}
@@ -11,6 +10,7 @@
 Penulis: {{ post.author }}
 </ion-card-subtitle>
 </ion-card-header>
+<ion-card-content>
         {{ post.excerpt }}
 </ion-card-content>
 </ion-card>
