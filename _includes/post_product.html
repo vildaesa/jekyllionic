@@ -85,9 +85,9 @@
       ></div>
     `).join('');
 
-    const sizeButtons = product.sizes.map((tali, index) => `
-      <button type="button" class="size-button ${index === 0 ? 'active' : ''}" onclick="selectSize(this, '${tali}')">${tali}</button>
-    `).join('');
+ const modelButtons = product.model.map((modelName, index) => `
+  <button type="button" class="size-button ${index === 0 ? 'active' : ''}" onclick="selectModel(this, '${modelName}')">${modelName}</button>
+`).join('');
 
     const content = `
       <section class="product-image">
@@ -103,9 +103,9 @@
           ${colorPickers}
         </div>
 
-        <p>Model Tali:</p>
-        <div class="size-picker">${sizeButtons}</div>
-        <input type="hidden" id="selected_size" value="${product.sizes[0]}" />
+ <p>Jenis Tali:</p>
+<div class="size-picker">${modelButtons}</div>
+<input type="hidden" id="selected_model" value="${product.model[0]}" />
         <input type="hidden" id="selected_color" value="${product.styles[0].name}" />
         <input type="hidden" id="selected_thumb" value="${product.styles[0].image_path}" />
 
