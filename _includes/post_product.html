@@ -127,11 +127,11 @@
 
         <div style="margin-top:1em;">
           <p>Jumlah:</p>
-          <div class="quantity-picker" style="display:flex; align-items:center; gap:10px;">
-            <button class="quantity-picker" onclick="changeQuantity(-1)">-</button>
-            <input id="item_quantity_input" type="number" value="1" min="1" style="width:40px; text-align:center;" />
-            <button class="quantity-picker" onclick="changeQuantity(1)">+</button>
-          </div>
+<div class="quantity-picker">
+  <button type="button" onclick="updateQuantity(-1)">–</button>
+  <input type="number" class="item_quantity" id="item_quantity_input" value="1" min="1" readonly />
+  <button type="button" onclick="updateQuantity(1)">+</button>
+</div>
         </div>
 
         <ion-button id="item_add" expand="block" color="primary" style="margin-top: 2em;">Tambah ke Keranjang</ion-button>
