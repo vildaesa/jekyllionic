@@ -1,5 +1,5 @@
 ---
-img: 'http://plus62store.github.io/images/blog/Bordir-Tasik.jpg'
+img: 'https://plus62store.github.io/assets/images/blog/Bordir-Tasik.jpg'
 title: Sejarah Bordir Tasikmalaya
 author: NdanG
 excerpt_separator: <!--more-->
