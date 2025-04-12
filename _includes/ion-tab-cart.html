@@ -13,3 +13,144 @@ title: Cart
       </ion-content>
     </div>
   </ion-tab>
+
+<ion-modal id="checkoutModal"></ion-modal>
+
+<script>
+  async function openCheckoutModal() {
+    const modal = document.getElementById('checkoutModal');
+
+    modal.innerHTML = `
+      <ion-header translucent>
+        <ion-toolbar>
+          <ion-title>Checkout</ion-title>
+          <ion-buttons slot="end">
+            <ion-button onclick="dismissModal()">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding">
+        <form id="checkout-form">
+          <ion-item>
+            <ion-label position="stacked">First Name</ion-label>
+            <ion-input name="First Name" required></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Last Name</ion-label>
+            <ion-input name="Last Name" required></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Email Address</ion-label>
+            <ion-input name="Email" type="email" required></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Street</ion-label>
+            <ion-input name="Street" required></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">City</ion-label>
+            <ion-input name="City" required></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">State</ion-label>
+            <ion-input name="State" required></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Zip Code</ion-label>
+            <ion-input name="Zip Code" required></ion-input>
+          </ion-item>
+
+          <input type="hidden" name="_to" value="{{ page.emails | join: ',' }}">
+          <input type="text" name="_gotcha" style="display:none;">
+
+          <ion-button type="button" expand="block" id="pay-button">Bayar</ion-button>
+        </form>
+      </ion-content>
+    `;
+
+    await modal.present();
+
+    document.getElementById('pay-button').addEventListener('click', function () {
+      const form = document.getElementById('checkout-form');
+      const formData = new FormData(form);
+
+      if (formData.get('_gotcha')) return;
+
+      const customer = {
+        first_name: formData.get('First Name'),
+        last_name: formData.get('Last Name'),
+        email: formData.get('Email'),
+        address: {
+          street: formData.get('Street'),
+          city: formData.get('City'),
+          state: formData.get('State'),
+          postal_code: formData.get('Zip Code')
+        }
+      };
+
+      localStorage.setItem('buyer', JSON.stringify(customer));
+
+      let items = [];
+      let total = 0;
+
+      simpleCart.each(function (item) {
+        items.push({
+          id: item.get('id') || item.get('name'),
+          name: item.get('name'),
+          quantity: item.get('quantity'),
+          price: item.get('price')
+        });
+        total += item.get('total');
+      });
+
+      if (items.length === 0) {
+        alert("Keranjang belanja masih kosong!");
+        return;
+      }
+
+      fetch('/midtrans', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ total: total, items: items, customer: customer })
+      })
+        .then(res => res.json())
+        .then(data => {
+          snap.pay(data.token, {
+            onSuccess: function (result) {
+              localStorage.removeItem('simpleCart_items');
+              showAlert("Pembayaran berhasil!");
+            },
+            onPending: function (result) {
+              showAlert("Pembayaran tertunda. Silakan selesaikan pembayaran.");
+            },
+            onError: function (result) {
+              showAlert("Terjadi kesalahan saat pembayaran.");
+            },
+            onClose: function () {
+              showAlert("Pembayaran dibatalkan.");
+            }
+          });
+        })
+        .catch(err => {
+          showAlert("Gagal memulai pembayaran, isi semua data di atas.");
+          console.error(err);
+        });
+    });
+  }
+
+  function dismissModal() {
+    const modal = document.getElementById('checkoutModal');
+    modal.dismiss();
+  }
+
+  function showAlert(message) {
+    alert(message);
+  }
+</script>
