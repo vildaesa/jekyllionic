@@ -85,20 +85,26 @@
     document.getElementById('modal-product-content').innerHTML = content;
 
     document.getElementById('item_add').addEventListener('click', function () {
-      const size = document.getElementById('selected_size').value;
-      const qty = parseInt(document.getElementById('item_quantity_input').value, 10);
-      const color = document.getElementById('selected_color').value;
+  const size = document.getElementById('selected_size').value;
+  const qty = parseInt(document.getElementById('item_quantity_input').value, 10);
+  const color = document.getElementById('selected_color').value;
+  const thumb = product.featured_image_path; // atau bisa juga ambil dari warna
+  const model = product.model || ''; // kalau ada opsi model
+  const link = product.url; // buat view link di cart
 
-      simpleCart.add({
-        name: product.title,
-        price: product.price,
-        model: size,
-        color: color,
-        quantity: qty
-      });
+  simpleCart.add({
+    name: product.title,
+    price: product.price,
+    size: size,
+    color: color,
+    model: model,
+    quantity: qty,
+    thumb: thumb,
+    link: link
+  });
 
-      dismissModal();
-    });
+  dismissModal();
+});
 
     await document.getElementById('product-modal').present();
   }
