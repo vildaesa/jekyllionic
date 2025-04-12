@@ -1,6 +1,6 @@
 <div class="product-grid">
 {% for product in site.products %}
- <ion-card onclick='openProductModal({
+ <ion-card class="text-center" onclick='openProductModal({
   title: "{{ product.title }}",
   price: "{{ product.price }}",
   url: "{{ product.url }}",
