@@ -181,10 +181,11 @@
     document.getElementById('selected_model').value = model;
   }
 
-  function changeQuantity(delta) {
-    const input = document.getElementById('item_quantity_input');
-    let qty = parseInt(input.value, 10);
-    qty = isNaN(qty) ? 1 : qty + delta;
-    input.value = qty < 1 ? 1 : qty;
-  }
+function updateQuantity(change) {
+  const input = document.getElementById('item_quantity_input');
+  let current = parseInt(input.value, 10);
+  let newVal = current + change;
+  if (newVal < 1) newVal = 1;
+  input.value = newVal;
+}
 </script>
