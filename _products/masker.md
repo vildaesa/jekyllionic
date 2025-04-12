@@ -1,10 +1,11 @@
 ---
 title: Masker Bordir Semaya
 description: 
-price: '4.000'
-sizes:
-  - Ikat
-  - Karet
+price: '40.000'
+tali:
+  - HeadLoop
+  - EarLoop
+  - Tali Ikat
 styles:
   - name: Navi
     color: '#4a5265'
