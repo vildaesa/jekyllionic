@@ -30,21 +30,7 @@
     </ion-content>
 </ion-modal>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/simpleCart/3.0.6/simplecart.min.js"></script>
 <script>
-  simpleCart({
-    cartColumns: [
-      { attr: "name", label: "Name" },
-      { attr: "price", label: "Price", view: 'currency' },
-      { attr: "size", label: "Size" },
-      { attr: "color", label: "Color" },
-      { attr: "quantity", label: "Qty" },
-      { view: "remove", text: "Remove", label: false }
-    ],
-    cartStyle: "table",
-    currency: "IDR"
-  });
-
   async function openProductModal(product) {
     const styles = product.styles.map((style, index) => `
       <div id="style-image-${index}" class="style-image" style="${index !== 0 ? 'display:none;' : ''}">
