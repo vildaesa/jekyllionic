@@ -114,9 +114,9 @@
 
         <div style="margin-top:1em;">
           <p>Tali:</p>
-          <div style="display:flex; gap:10px; flex-wrap:wrap;" id="model-buttons">
+          <div class="quantity-picker" style="display:flex; gap:10px; flex-wrap:wrap;" id="model-buttons">
             ${product.model.map((modelName, i) => `
-              <button class="model-button ${i === 0 ? 'active' : ''}" onclick="selectModel(this, '${modelName}')">${modelName}</button>
+              <button class="quantity-picker" class="model-button ${i === 0 ? 'active' : ''}" onclick="selectModel(this, '${modelName}')">${modelName}</button>
             `).join('')}
           </div>
           <input type="hidden" id="selected_model" value="${product.model[0]}" />
