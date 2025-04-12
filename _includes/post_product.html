@@ -85,6 +85,12 @@
       ></div>
     `).join('');
 
+function selectModel(button, model) {
+  document.querySelectorAll('.size-button').forEach(btn => btn.classList.remove('active'));
+  button.classList.add('active');
+  document.getElementById('selected_model').value = model;
+}
+
  const modelButtons = product.model.map((modelName, index) => `
   <button type="button" class="size-button ${index === 0 ? 'active' : ''}" onclick="selectModel(this, '${modelName}')">${modelName}</button>
 `).join('');
