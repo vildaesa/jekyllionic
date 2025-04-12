@@ -9,12 +9,30 @@ title: Account
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding" fullscreen="true">
+<ion-button expand="block" onclick="openLoginModal()">Login / Register</ion-button>
 {% include login.html %}
       </ion-content>
     </div>
   </ion-tab>
 
 <ion-modal id="loginModal"></ion-modal>
+<script>
+  async function openLoginModal() {
+    const modal = document.querySelector('#loginModal');
+    if (modal) {
+      await modal.present();
+    } else {
+      console.error("Modal tidak ditemukan!");
+    }
+  }
+
+  function dismissModal() {
+    const modal = document.querySelector('#loginModal');
+    if (modal) {
+      modal.dismiss();
+    }
+  }
+</script>
 
 <!-- Tambahkan ke index.html sebelum </body> -->
 <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
