@@ -1,13 +1,13 @@
 {% for post in site.posts %}
 <ion-card>
-<img src="{{post.img}}">
+<img src="{{ post.img }}">
 <ion-card-content>
 <ion-card-header>
 <ion-card-title>
 {{ post.title }}
 </ion-card-title>
 </ion-card-header>
-{{content}}
+        {{ post.excerpt }}
 </ion-card-content>
 </ion-card>
 {% endfor %}
