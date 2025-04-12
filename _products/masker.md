@@ -2,7 +2,7 @@
 title: Masker Bordir Semaya
 description: 
 price: '40.000'
-tali:
+model:
   - HeadLoop
   - EarLoop
   - Tali Ikat
