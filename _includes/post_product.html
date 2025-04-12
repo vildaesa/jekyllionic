@@ -87,7 +87,7 @@
         <ion-toolbar>
           <ion-title>${product.title}</ion-title>
           <ion-buttons slot="end">
-            <ion-button onclick="dismissModal()">Close</ion-button>
+            <ion-button onclick="closeModal()">Close</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -160,7 +160,7 @@
     });
   }
 
-  function dismissModal() {
+  function closeModal() {
     const modal = document.getElementById('productModal');
     modal.dismiss();
   }
