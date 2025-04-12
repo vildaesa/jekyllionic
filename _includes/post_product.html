@@ -114,9 +114,9 @@
 
         <div style="margin-top:1em;">
           <p>Tali:</p>
-          <div class="quantity-picker" style="display:flex; gap:10px; flex-wrap:wrap;" id="model-buttons">
+          <div style="display:flex; gap:10px; flex-wrap:wrap;" id="model-buttons">
             ${product.model.map((modelName, i) => `
-              <button class="quantity-picker" class="model-button ${i === 0 ? 'active' : ''}" onclick="selectModel(this, '${modelName}')">${modelName}</button>
+              <button class="model-button ${i === 0 ? 'active' : ''}" onclick="selectModel(this, '${modelName}')">${modelName}</button>
             `).join('')}
           </div>
           <input type="hidden" id="selected_model" value="${product.model[0]}" />
@@ -125,9 +125,9 @@
         <div style="margin-top:1em;">
           <p>Jumlah:</p>
           <div style="display:flex; align-items:center; gap:10px;">
-            <button onclick="changeQuantity(-1)">-</button>
+            <button class="quantity-picker" onclick="changeQuantity(-1)">-</button>
             <input id="item_quantity_input" type="number" value="1" min="1" style="width:40px; text-align:center;" />
-            <button onclick="changeQuantity(1)">+</button>
+            <button class="quantity-picker" onclick="changeQuantity(1)">+</button>
           </div>
         </div>
 
