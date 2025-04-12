@@ -3,17 +3,52 @@ layout: default
 title: Pembayaran Sukses
 permalink: /success
 ---
-<style>header.header, .top-radius{display:none !important;}</style>
-<div class="center-in-parent">
-<div class="box">
-<img class="gifImg" src="{{site.baseurl}}/assets/images/success.gif" />
-<h2>Pembayaran Berhasil!</h2>
+<div class="center-content">
+  <ion-card class="success-card">
+    <ion-card-content>
+      <div class="box">
+        <img class="gifImg" src="{{site.baseurl}}/assets/images/success.gif" />
+        <h2>Pembayaran Berhasil!</h2>
 
-<div class="simpleCart_items" style="display:none;"></div>
-<p>Total: <span class="simpleCart_total"></span></p>
+        <div class="simpleCart_items" style="display:none;"></div>
+        <p>Total: <span class="simpleCart_total"></span></p>
 
-<button type="button" id="whatsapp-button">Konfirmasi via WhatsApp</button>
+        <ion-button expand="block" id="whatsapp-button" color="success">
+          Konfirmasi via WhatsApp
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</div>
+<style>
+  .center-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* agar full tinggi layar */
+  }
 
+  .success-card {
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .box img.gifImg {
+    width: 120px;
+    margin: 0 auto;
+  }
+
+  .box h2 {
+    margin-top: 16px;
+    font-size: 1.4rem;
+  }
+
+  .box p {
+    margin-top: 8px;
+    font-weight: bold;
+  }
+</style>
 <script>
   document.getElementById("whatsapp-button").addEventListener("click", function () {
     const buyer = JSON.parse(localStorage.getItem("buyer")) || {};
