@@ -2,9 +2,10 @@
 title: Test the Post
 description: Post t-post
 price: '5.000'
-sizes:
-  - Ikat
-  - Karet
+model:
+  - HeadLoop
+  - EarLoop
+  - Tali Ikat
 styles:
   - name: Navi
     color: '#4a5265'
