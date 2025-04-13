@@ -17,7 +17,7 @@ function formatBerat(angka) {
     }
 };
 
-var cart_kosong = '<div class="empty-cart" style="display: flex;flex-wrap: wrap;flex-direction: column;align-items: center;"><ion-icon name="bag-outline" style="font-size: 95px;text-shadow: 0px 3px 10px #00000061;"></ion-icon><p class="center" style="text-shadow:4px 3px 3px #00000061;color:#000">Keranjang Belanja Kosong</p></div>';
+var cart_kosong = '<div class="empty-cart" style="display: flex;flex-wrap: wrap;flex-direction: column;align-items: center;justify-content: center;gap: 25px;margin-top: 75px;"><ion-icon name="bag-outline" style="font-size: 95px;text-shadow: 0px 3px 10px #00000061;"></ion-icon><p class="center" style="text-shadow:4px 3px 3px #00000061;color:#000">Keranjang Belanja Kosong</p></div>';
 var tombolMinus = '<ion-icon name="chevron-down-circle-outline"></ion-icon>';
 var tombolPlus = '<ion-icon name="chevron-up-circle-outline"></ion-icon>';
 var tombolRemove = '<ion-icon name="trash-outline"></ion-icon>';
@@ -627,7 +627,7 @@ var tombolRemove = '<ion-icon name="trash-outline"></ion-icon>';
                         TH = isTable ? "th" : "div",
                         TD = isTable ? "td" : "div",
                         THEAD = isTable ? "thead" : "div",
-                        cart_container = simpleCart.$create("div"),
+                        cart_container = simpleCart.$create("ion-card-content"),
                         thead_container = simpleCart.$create(THEAD),
                         header_container = simpleCart.$create(TR).addClass("headerRow"),
                         container = simpleCart.$(selector),

@@ -1,18 +1,22 @@
 <div class="container">
-{% for post in site.posts %}
-<ion-card>
-<img class="blog_img" src="{{ post.img }}">
-<ion-card-header>
-<ion-card-title>
-{{ post.title }}
-</ion-card-title>
-<ion-card-subtitle>
-Penulis: {{ post.author }}
-</ion-card-subtitle>
-</ion-card-header>
-<ion-card-content>
-        {{ post.excerpt }}
-</ion-card-content>
-</ion-card>
-{% endfor %}
+	<div class="blog_grid">
+	{% for post in site.posts %}
+		<ion-card class="flex_post">
+			<img class="blog_img" src="{{ post.img }}">
+				<div class="post_box">
+				<ion-card-header class="ion-card-header">
+					<ion-card-title>
+						{{ post.title }}
+					</ion-card-title>
+				<ion-card-subtitle>
+				Author: {{ post.author }}
+				</ion-card-subtitle>
+				</ion-card-header>
+				<ion-card-content class="ion-card-content">
+						{{ post.excerpt }}
+				</ion-card-content>
+			</div>
+		</ion-card>
+	{% endfor %}
+	</div>
 </div>

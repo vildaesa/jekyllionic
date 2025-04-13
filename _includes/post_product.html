@@ -7,7 +7,7 @@
   model: {{ product.model | jsonify }},
   styles: {{ product.styles | jsonify }},
   description: "{{ product.description }}"
-})'>
+})' style="cursor:pointer;">
   <img src="{{ product.featured_image_path }}">
   <ion-card-content>
 <ion-card-title>Rp {{ product.price }}</ion-card-title>
@@ -142,7 +142,7 @@
   </ion-buttons>
 </div>
 <ion-buttons slot="end">
-        <ion-button id="item_add" color="primary">Tambah ke Keranjang</ion-button>
+        <ion-button id="item_add" color="primary">Tambahkan</ion-button>
 </ion-buttons>
 			</ion-toolbar>
 		</ion-footer>

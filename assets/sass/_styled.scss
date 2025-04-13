@@ -9,10 +9,62 @@ div.container {
     max-width: 1100px;
     margin: auto;
 }
+div.blog_grid {
+ display: grid;
+ grid-template-columns: repeat(2, 1fr);
+ grid-template-rows: auto;
+@include mobile {
+   grid-template-columns: repeat(1, 1fr);
+ }
+ .flex_post {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+@include mobile {
+}
+	 .blog_img {
+		max-width: 220px;
+		width: 100%;
+		object-fit: cover;
+		background-position: center;
+		background-size: cover;
+		}
+	.post_box {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+@include mobile {
+		.ion-card-header {
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: rgba(255, 255, 255, 0.2);
+			box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+			backdrop-filter: blur(5px);
+			-webkit-backdrop-filter: blur(5px);
+			border: 1px solid rgba(255, 255, 255, 0.3);
+
+		}
+		.ion-card-content {
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			background: rgba(255, 255, 255, 0.2);
+			box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+			backdrop-filter: blur(5px);
+			-webkit-backdrop-filter: blur(5px);
+			border: 1px solid rgba(255, 255, 255, 0.3);
+		}
+	  }
+	}
+  }
+}
 div.product-grid {
  display: grid;
  grid-template-columns: repeat(3, 1fr);
  grid-template-rows: auto;
+ text-align: center;
 @include mobile {
    grid-template-columns: repeat(2, 1fr);
  }
