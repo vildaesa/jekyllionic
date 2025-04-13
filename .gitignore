@@ -2,3 +2,4 @@ node_modules
 .jekyll-cache
 package.json
 package-lock.json
+Gemfile.lock
