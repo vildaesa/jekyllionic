@@ -1,7 +1,7 @@
 <div class="container">
 	<div class="blog_grid">
 	{% for post in site.posts %}
-		<ion-card class="flex_post" onclick="openPostModal({{ post | jsonify | escape }})">>
+		<ion-card class="flex_post" onclick="openPostModal({{ post | jsonify | escape }})">
 			<img class="blog_img" src="{{ post.img }}">
 				<div class="post_box">
 				<ion-card-header class="ion-card-header">
