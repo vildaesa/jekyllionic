@@ -236,7 +236,7 @@ title: Store
         </div>
 
         <div style="margin-top:1em;">
-          <p>Jumlah:</p>
+          <p></p>
         </div>
 			</ion-card-content>
 		<ion-footer>
@@ -325,7 +325,8 @@ title: Cart
           <ion-title>Toko Welcome</ion-title>
         </ion-toolbar>
       </ion-header>
-      <ion-content class="ion-no-padding container" fullscreen="true">
+      <ion-content class="ion-no-padding" fullscreen="true">
+		<div class="container">
                <style type="text/css">
 .keranjang.dekstop{position:relative;width:60px;text-align:left;padding:5px 0;-webkit-box-ordinal-group:3;-ms-flex-order:3;order:3;-webkit-box-align:center;-ms-flex-align:center;align-items:center;}
 .notif-tambah-product{width:255px;position:absolute;z-index:99;font-size:14px;right:-10px;background:#00b35e;padding:10px 20px;opacity:1;display:none;color:#fff;top:65px;border-radius:15px;-webkit-box-shadow:0 2px 5px 0 rgba(56,56,56,.49);box-shadow:0 2px 5px 0 rgba(56,56,56,.49);}
@@ -381,6 +382,7 @@ span.simpleCart_shipping, span.simpleCart_grandTotal {font-weight: 600;color:#ff
           <ion-button class="co-btn" style="float: right;" onclick="openCheckoutModal()">CheckOut</ion-button><br />
  <span style="font-size:10px;">( *Belum Termasuk Ongkir )</span></div>
 </div>
+		</div>
       </ion-content>
     </div>
   </ion-tab>
@@ -404,50 +406,52 @@ async function openCheckoutModal() {
     </ion-header>
 
     <ion-content class="ion-no-padding">
-<ion-card>
-    <ion-card-content>
-      <form id="checkout-form">
-        <ion-item>
-          <ion-label position="stacked">First Name</ion-label>
-          <ion-input name="first_name" required></ion-input>
-        </ion-item>
+	<div class="container">
+		<ion-card>
+			<ion-card-content>
+			  <form id="checkout-form">
+				<ion-item>
+				  <ion-label position="stacked">First Name</ion-label>
+				  <ion-input name="first_name" required></ion-input>
+				</ion-item>
 
-        <ion-item>
-          <ion-label position="stacked">Last Name</ion-label>
-          <ion-input name="last_name" required></ion-input>
-        </ion-item>
+				<ion-item>
+				  <ion-label position="stacked">Last Name</ion-label>
+				  <ion-input name="last_name" required></ion-input>
+				</ion-item>
 
-        <ion-item>
-          <ion-label position="stacked">Email</ion-label>
-          <ion-input name="email" type="email" required></ion-input>
-        </ion-item>
+				<ion-item>
+				  <ion-label position="stacked">Email</ion-label>
+				  <ion-input name="email" type="email" required></ion-input>
+				</ion-item>
 
-        <ion-item>
-          <ion-label position="stacked">Street</ion-label>
-          <ion-input name="street" required></ion-input>
-        </ion-item>
+				<ion-item>
+				  <ion-label position="stacked">Street</ion-label>
+				  <ion-input name="street" required></ion-input>
+				</ion-item>
 
-        <ion-item>
-          <ion-label position="stacked">City</ion-label>
-          <ion-input name="city" required></ion-input>
-        </ion-item>
+				<ion-item>
+				  <ion-label position="stacked">City</ion-label>
+				  <ion-input name="city" required></ion-input>
+				</ion-item>
 
-        <ion-item>
-          <ion-label position="stacked">State</ion-label>
-          <ion-input name="state" required></ion-input>
-        </ion-item>
+				<ion-item>
+				  <ion-label position="stacked">State</ion-label>
+				  <ion-input name="state" required></ion-input>
+				</ion-item>
 
-        <ion-item>
-          <ion-label position="stacked">Zip Code</ion-label>
-          <ion-input name="zip_code" required></ion-input>
-        </ion-item>
+				<ion-item>
+				  <ion-label position="stacked">Zip Code</ion-label>
+				  <ion-input name="zip_code" required></ion-input>
+				</ion-item>
 
-        <input type="text" name="_gotcha" style="display:none;">
+				<input type="text" name="_gotcha" style="display:none;">
 
-        <ion-button expand="block" id="pay-button" type="button">Bayar</ion-button>
-      </form>
-    </ion-card-content>
-</ion-card>
+				<ion-button expand="block" id="pay-button" type="button">Bayar</ion-button>
+			  </form>
+			</ion-card-content>
+		</ion-card>
+		</div>
     </ion-content>
   `;
 
@@ -692,11 +696,16 @@ title: Account
 }
 </style>
 		</ion-tabs>
+
+  <ion-chip slot="fixed" [disabled]="true" style="width:fit-content;bottom:60px;left:5px;position:absolute;">
+    <ion-icon name="person-circle-outline"></ion-icon>
+  <ion-label><span id="text_dev">nDang</span></ion-label>
+  </ion-chip>
 	</ion-app>
-<script src="https://cdn.statically.io/gh/plus62store/plus62store/main/assets/js/simpleCart.js?version=1.2"></script>
-<script async src="https://cdn.statically.io/gh/plus62store/plus62store/main/assets/js/main.js"></script>
-<script async src="https://cdn.statically.io/gh/plus62store/plus62store/main/assets/js/style-picker.js"></script>
-<script async src="https://cdn.statically.io/gh/plus62store/plus62store/main/assets/js/add-to-cart.js"></script>
+<script src="/assets/js/simpleCart.js?version=2.1"></script>
+<script async src="/assets/js/main.js"></script>
+<script async src="/assets/js/style-picker.js"></script>
+<script async src="/assets/js/add-to-cart.js"></script>
 <script src="/assets/js/app.js"></script>
     
   </body>

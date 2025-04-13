@@ -8,8 +8,10 @@ title: Cart
           <ion-title>{{ page.title }}</ion-title>
         </ion-toolbar>
       </ion-header>
-      <ion-content class="ion-no-padding container" fullscreen="true">
+      <ion-content class="ion-no-padding" fullscreen="true">
+		<div class="container">
                {% include keranjang.html %}
+		</div>
       </ion-content>
     </div>
   </ion-tab>
@@ -33,50 +35,52 @@ async function openCheckoutModal() {
     </ion-header>
 
     <ion-content class="ion-no-padding">
-<ion-card>
-    <ion-card-content>
-      <form id="checkout-form">
-        <ion-item>
-          <ion-label position="stacked">First Name</ion-label>
-          <ion-input name="first_name" required></ion-input>
-        </ion-item>
+	<div class="container">
+		<ion-card>
+			<ion-card-content>
+			  <form id="checkout-form">
+				<ion-item>
+				  <ion-label position="stacked">First Name</ion-label>
+				  <ion-input name="first_name" required></ion-input>
+				</ion-item>
 
-        <ion-item>
-          <ion-label position="stacked">Last Name</ion-label>
-          <ion-input name="last_name" required></ion-input>
-        </ion-item>
+				<ion-item>
+				  <ion-label position="stacked">Last Name</ion-label>
+				  <ion-input name="last_name" required></ion-input>
+				</ion-item>
 
-        <ion-item>
-          <ion-label position="stacked">Email</ion-label>
-          <ion-input name="email" type="email" required></ion-input>
-        </ion-item>
+				<ion-item>
+				  <ion-label position="stacked">Email</ion-label>
+				  <ion-input name="email" type="email" required></ion-input>
+				</ion-item>
 
-        <ion-item>
-          <ion-label position="stacked">Street</ion-label>
-          <ion-input name="street" required></ion-input>
-        </ion-item>
+				<ion-item>
+				  <ion-label position="stacked">Street</ion-label>
+				  <ion-input name="street" required></ion-input>
+				</ion-item>
 
-        <ion-item>
-          <ion-label position="stacked">City</ion-label>
-          <ion-input name="city" required></ion-input>
-        </ion-item>
+				<ion-item>
+				  <ion-label position="stacked">City</ion-label>
+				  <ion-input name="city" required></ion-input>
+				</ion-item>
 
-        <ion-item>
-          <ion-label position="stacked">State</ion-label>
-          <ion-input name="state" required></ion-input>
-        </ion-item>
+				<ion-item>
+				  <ion-label position="stacked">State</ion-label>
+				  <ion-input name="state" required></ion-input>
+				</ion-item>
 
-        <ion-item>
-          <ion-label position="stacked">Zip Code</ion-label>
-          <ion-input name="zip_code" required></ion-input>
-        </ion-item>
+				<ion-item>
+				  <ion-label position="stacked">Zip Code</ion-label>
+				  <ion-input name="zip_code" required></ion-input>
+				</ion-item>
 
-        <input type="text" name="_gotcha" style="display:none;">
+				<input type="text" name="_gotcha" style="display:none;">
 
-        <ion-button expand="block" id="pay-button" type="button">Bayar</ion-button>
-      </form>
-    </ion-card-content>
-</ion-card>
+				<ion-button expand="block" id="pay-button" type="button">Bayar</ion-button>
+			  </form>
+			</ion-card-content>
+		</ion-card>
+		</div>
     </ion-content>
   `;
 

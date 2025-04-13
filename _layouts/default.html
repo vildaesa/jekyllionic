@@ -8,6 +8,11 @@
 		<ion-tabs>
 			  {{ content }}
 		</ion-tabs>
+
+  <ion-chip slot="fixed" [disabled]="true" style="width:fit-content;bottom:60px;left:5px;position:absolute;">
+    <ion-icon name="person-circle-outline"></ion-icon>
+  <ion-label><span id="text_dev">{{ site.dev}}</span></ion-label>
+  </ion-chip>
 	</ion-app>
 {% include scriptjs.html %}
   </body>
