@@ -14,4 +14,4 @@ Jekyllionic Boilerplate is a lightweight and cleaned up version of the initial [
 * [Jekyll](https://jekyllrb.com/)
 * [ionic](https://ionicframework.com/docs/components)
 * [Daffa Aditya](https://twitter.com/)
-* [DEMO](https://jekyllionic.pages.dev/)
+* [DEMO](https://jekyllonlineshop.pages.dev)
