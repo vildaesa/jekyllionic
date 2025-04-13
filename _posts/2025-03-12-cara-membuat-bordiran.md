@@ -1,5 +1,5 @@
 ---
-img: https://plus62store.github.io/images/blog/Logo-Bordir.jpg
+img: https://plus62store.github.io/assets/images/blog/Logo-Bordir.jpg
 title: 2 Macam Cara Membuat Bordiran
 author: NdanG
 excerpt_separator: <!--more-->
