@@ -1,4 +1,4 @@
-<div class="product-grid">
+<div class="container product-grid">
 {% for product in site.products %}
  <ion-card class="text-center" onclick='openProductModal({
   title: "{{ product.title }}",
@@ -17,7 +17,7 @@
 {% endfor %}
 </div>
 
-<ion-modal id="productModal"></ion-modal>
+<ion-modal class="custom-fullscreen" id="productModal"></ion-modal>
 
 <style>
   .color-picker {
@@ -34,7 +34,6 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 1em;
   }
 
   .quantity-picker button {
@@ -44,7 +43,6 @@
     font-weight: bold;
     background-color: #f0f0f0;
     border: none;
-    border-radius: 6px;
     cursor: pointer;
   }
 
@@ -95,10 +93,12 @@
       </ion-header>
 
       <ion-content class="ion-padding">
+		<div class="flex-content">
         <div id="product-image-container">
           <img id="main-product-image" src="${product.styles[0].image_path}" style="width:100%; border-radius: 12px;" />
         </div>
-
+		<ion-card class="product-detail-container">
+			<ion-card-content>
         <p>Harga: <strong>Rp ${product.price}</strong></p>
         <p>${product.description || ''}</p>
 
@@ -128,14 +128,26 @@
 
         <div style="margin-top:1em;">
           <p>Jumlah:</p>
-<div class="quantity-picker">
-  <button type="button" onclick="updateQuantity(-1)">–</button>
-  <input type="number" class="item_quantity" id="item_quantity_input" value="1" min="1" readonly />
-  <button type="button" onclick="updateQuantity(1)">+</button>
-</div>
         </div>
-
-        <ion-button id="item_add" expand="block" color="primary" style="margin-top: 2em;">Tambah ke Keranjang</ion-button>
+			</ion-card-content>
+		<ion-footer>
+			<ion-toolbar>
+<div class="quantity-picker">
+  <ion-buttons>
+  <ion-button type="button" onclick="updateQuantity(-1)"><ion-icon slot="icon-only" name="remove-circle"></ion-icon></ion-button>
+  </ion-buttons>
+  <input type="number" class="item_quantity" id="item_quantity_input" value="1" min="1" readonly />
+  <ion-buttons>
+  <ion-button type="button" onclick="updateQuantity(1)"><ion-icon slot="icon-only" name="add-circle"></ion-icon></ion-button>
+  </ion-buttons>
+</div>
+<ion-buttons slot="end">
+        <ion-button id="item_add" color="primary">Tambah ke Keranjang</ion-button>
+</ion-buttons>
+			</ion-toolbar>
+		</ion-footer>
+		</div>
+		</ion-card>
       </ion-content>
     `;
 

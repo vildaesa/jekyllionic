@@ -5,6 +5,10 @@ main.main {
     width: 100%;
     margin: auto;
 }
+div.container {
+    max-width: 1100px;
+    margin: auto;
+}
 div.product-grid {
  display: grid;
  grid-template-columns: repeat(3, 1fr);
@@ -12,4 +16,31 @@ div.product-grid {
 @include mobile {
    grid-template-columns: repeat(2, 1fr);
  }
+}
+.flex-content {
+    max-width: 1100px;
+    margin: auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    gap: 20px;
+	@include mobile {
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 0;
+		}
+	#product-image-container {
+		max-width: 550px;
+		width: 100%;
+		#main-product-image {
+			object-fit: cover;
+			background-size: cover;
+			background-position: center;
+		}
+	}
+	ion-card.product-detail-container {
+		max-width: 550px;
+		width: 100%;
+		}
 }
