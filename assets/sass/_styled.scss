@@ -26,6 +26,11 @@ div.blog_grid {
     flex-direction: row-reverse;
 }
 @include mobile {
+    flex-direction: column !important;
+
+    &:nth-child(even) {
+      flex-direction: column !important;
+    }
 }
 	 .blog_img {
 		max-width: 220px;
