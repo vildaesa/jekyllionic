@@ -1,7 +1,7 @@
 <div class="container">
 	<div class="blog_grid">
 	{% for post in site.posts %}
-		<ion-card class="flex_post">
+		<ion-card class="flex_post" onclick="openPostModal({{ post | jsonify | escape }})">>
 			<img class="blog_img" src="{{ post.img }}">
 				<div class="post_box">
 				<ion-card-header class="ion-card-header">
@@ -20,3 +20,36 @@
 	{% endfor %}
 	</div>
 </div>
+
+ <ion-modal id="postModal"></ion-modal>
+
+<script>
+  async function openPostModal(post) {
+    const modal = document.querySelector('#postModal');
+
+    modal.innerHTML = `
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>${post.title}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button onclick="document.querySelector('#postModal').dismiss()">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-card>
+          <img class="blog_img" src="${post.img}" />
+          <ion-card-header>
+            <ion-card-title>${post.title}</ion-card-title>
+            <ion-card-subtitle>Author: ${post.author}</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <p>${post.content || 'Konten lengkap belum dimasukkan.'}</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-content>
+    `;
+
+    await modal.present();
+  }
+</script>
