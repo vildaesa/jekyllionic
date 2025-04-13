@@ -20,6 +20,11 @@ div.blog_grid {
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
+    flex-direction: row;
+
+  &:nth-child(even) {
+    flex-direction: row-reverse;
+}
 @include mobile {
 }
 	 .blog_img {
@@ -31,6 +36,7 @@ div.blog_grid {
 		background-size: cover;
 		}
 	.post_box {
+    flex: 1;
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
