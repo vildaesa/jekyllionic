@@ -15,8 +15,16 @@ title: Account
   <p>Selamat datang, <span id="user-email"></span>!</p>
 <ion-button type="button" expand="block" fill="clear" color="medium" onclick="logout()">Keluar</ion-button>
 </div>
-
-<ion-button id="loginBtn" expand="block" onclick="openLoginModal()">Login / Register</ion-button>
+			<ion-card id="loginBtn">
+				<img src="{{ site.baseurl }}/assets/images/login.jpg" alt="login" >
+				<ion-footer>
+					<ion-toolbar>
+						<ion-buttons expand="block">
+							<ion-button fill="outline" onclick="openLoginModal()">Login / Register</ion-button>
+						</ion-buttons>
+					</ion-toolbar>
+				</ion-footer>
+			</ion-card>
 		</div>
       </ion-content>
     </div>
@@ -55,8 +63,12 @@ title: Account
       </ion-card-content>
 <ion-footer>
 	<ion-toolbar>
-        <ion-button slot="start" type="button" color="primary" onclick="register()">Daftar</ion-button>
-        <ion-button slot="end" type="button" color="success" onclick="login()">Masuk</ion-button>
+	<ion-buttons slot="start">
+        <ion-button type="button" fill="outline" color="primary" onclick="register()">Daftar</ion-button>
+	</ion-buttons>
+	<ion-buttons slot="end">
+        <ion-button type="button" fill="solid" color="success" onclick="login()">Masuk</ion-button>
+	</ion-buttons>
 	</ion-toolbar>
 </ion-footer>
     </ion-card>
@@ -140,7 +152,7 @@ function register() {
 } else {
   info.innerHTML = "🔓 Belum login.";
   document.getElementById("dashboard").style.display = "none";
-  document.getElementById("loginBtn").style.display = "block";
+  document.getElementById("loginBtn").style.display = "flex";
 }
 
   });
