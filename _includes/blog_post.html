@@ -1,7 +1,7 @@
 <div class="container">
 	<div class="blog_grid">
 	{% for post in site.posts %}
-		<ion-card class="flex_post" onclick="openPostModal({{ post | jsonify | escape }})">
+		<ion-card class="flex_post" onclick="openPostModal({{ post | jsonify | escape }})" style="cursor:pointer;">
 			<img class="blog_img" src="{{ post.img }}">
 				<div class="post_box">
 				<ion-card-header class="ion-card-header">
@@ -37,6 +37,7 @@
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding">
+		<div class="container">
         <ion-card class="ion-no-margin">
           <img class="blog_img" src="${post.img}" />
           <ion-card-header>
@@ -47,6 +48,7 @@
             <p>${post.content || 'Konten lengkap belum dimasukkan.'}</p>
           </ion-card-content>
         </ion-card>
+		</div>
       </ion-content>
     `;
 

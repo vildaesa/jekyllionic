@@ -192,3 +192,7 @@ template {
 [hidden] {
   display: none;
 }
+.card-content-md p {
+    max-height: 105px;
+    overflow: hidden;
+}

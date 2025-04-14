@@ -98,6 +98,9 @@ div.product-grid {
 		max-width: 550px;
 		width: 100%;
 		#main-product-image {
+			width: 100%;
+			height: 500px;
+			border-radius: 12px;
 			object-fit: cover;
 			background-size: cover;
 			background-position: center;
@@ -108,9 +111,22 @@ div.product-grid {
 		width: 100%;
 		}
 }
+img.img_product {
+    width: 100%;
+    height: 346px;
+    object-fit: cover;
+    background-size: cover;
+    background-position: center;
+  @include mobile {
+    height: 180px;
+  }
+}
 img.blog_img {
-  width: 100%;
-  height: 480px;
+	width: 100%;
+	height: 480px;
+    object-fit: cover;
+    background-position: center;
+    background-size: cover;
   @include mobile {
     height: 320px;
   }

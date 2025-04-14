@@ -9,11 +9,59 @@ title: Account
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-no-padding container" fullscreen="true">
-<ion-button expand="block" onclick="openLoginModal()">Login / Register</ion-button>
-{% include login.html %}
+		<div class="container">
+<div id="dashboard" style="display:none; padding:1rem;">
+  <h2>Dashboard</h2>
+  <p>Selamat datang, <span id="user-email"></span>!</p>
+<ion-button type="button" expand="block" fill="clear" color="medium" onclick="logout()">Keluar</ion-button>
+</div>
+
+<ion-button id="loginBtn" expand="block" onclick="openLoginModal()">Login / Register</ion-button>
+		</div>
       </ion-content>
     </div>
   </ion-tab>
+  
+  <ion-modal id="loginModal">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Login / Register</ion-title>
+      <ion-buttons slot="end">
+        <ion-button onclick="tutupModal()">
+<ion-icon slot="icon-only" name="close-circle-outline" color="danger"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="ion-padding">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Masuk / Daftar</ion-card-title>
+        <ion-card-subtitle>Gunakan email & password</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-item>
+          <ion-label position="stacked">Email</ion-label>
+          <ion-input id="email" type="email" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Password</ion-label>
+          <ion-input id="password" type="password" required></ion-input>
+        </ion-item>
+        <div id="user-info" style="margin-top: 1em;"></div>
+      </ion-card-content>
+<ion-footer>
+	<ion-toolbar>
+        <ion-button slot="start" type="button" color="primary" onclick="register()">Daftar</ion-button>
+        <ion-button slot="end" type="button" color="success" onclick="login()">Masuk</ion-button>
+	</ion-toolbar>
+</ion-footer>
+    </ion-card>
+  </ion-content>
+</ion-modal>
 
 <script>
   async function openLoginModal() {
@@ -33,34 +81,34 @@ title: Account
   }
 </script>
 
-<!-- Tambahkan ke index.html sebelum </body> -->
-<script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <script type="module">
-  const firebaseConfig = {
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  apiKey: "AIzaSyBDJ3S6xtKv98ol6MyvyU98DfbSOmdm6uE",
-  authDomain: "tokoonlen-jekyll.firebaseapp.com",
-  projectId: "tokoonlen-jekyll",
-  storageBucket: "tokoonlen-jekyll.firebasestorage.app",
-  messagingSenderId: "365981993501",
-  appId: "1:365981993501:web:06f40c1f1a209888c754f4",
-  measurementId: "G-Y6K0E3JK3W"
-  };
-  firebase.initializeApp(firebaseConfig);
+
+window.register = register;
+window.login = login;
+window.logout = logout;
+window.tutupModal = tutupModal;
+window.openLoginModal = openLoginModal;
+
   const auth = firebase.auth();
 
-  function register() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    auth.createUserWithEmailAndPassword(email, password)
-      .then(userCredential => {
-        userCredential.user.sendEmailVerification()
-          .then(() => alert("Verifikasi email dikirim!"));
-      }).catch(error => alert("Error: " + error.message));
-  }
+function register() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  auth.createUserWithEmailAndPassword(email, password)
+    .then(userCredential => {
+      userCredential.user.sendEmailVerification()
+        .then(() => showAlert("Verifikasi email dikirim! periksa inbox dan folder spam kamu.", "Info"));
+
+      // 🔥 Simpan ke Firestore
+      firebase.firestore().collection("users").doc(userCredential.user.uid).set({
+        email: email,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    })
+    .catch(error => showAlert("Register Error: " + error.message , "Error"));
+}
+
 
   function login() {
     const email = document.getElementById("email").value;
@@ -68,24 +116,32 @@ title: Account
     auth.signInWithEmailAndPassword(email, password)
       .then(userCredential => {
         if (userCredential.user.emailVerified) {
-          alert("Login sukses!");
+          showAlert("Login sukses!", "Sukses");
         } else {
-          alert("Email belum diverifikasi.");
+          showAlert("Email belum diverifikasi.", "Gagal Masuk");
           auth.signOut();
         }
-      }).catch(error => alert("Error: " + error.message));
+      }).catch(error => showAlert("Error: " + error.message));
+	  
+	  tutupModal();
   }
 
   function logout() {
-    auth.signOut().then(() => alert("Logout sukses."));
+    auth.signOut().then(() => showAlert("Logout sukses.", "Sukses"));
   }
 
   auth.onAuthStateChanged(user => {
     const info = document.getElementById("user-info");
     if (user && user.emailVerified) {
-      info.innerHTML = `Logged in as: <strong>${user.email}</strong>`;
-    } else {
-      info.innerHTML = "Belum login.";
-    }
+  info.innerHTML = `🔐 Logged in as: <strong>${user.email}</strong>`;
+  document.getElementById("dashboard").style.display = "block";
+  document.getElementById("loginBtn").style.display = "none";
+  document.getElementById("user-email").innerText = user.email;
+} else {
+  info.innerHTML = "🔓 Belum login.";
+  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("loginBtn").style.display = "block";
+}
+
   });
 </script>

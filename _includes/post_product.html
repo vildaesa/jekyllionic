@@ -20,13 +20,6 @@
 <ion-modal class="custom-fullscreen" id="productModal"></ion-modal>
 
 <style>
-img.img_product {
-    width: 100%";
-    height: 180px;
-    object-fit: cover;
-    background-size: cover;
-    background-position: center;
-}
   .color-picker {
     display: inline-block;
     width: 24px;
@@ -70,7 +63,7 @@ img.img_product {
 
   .model-button {
     padding: 6px 12px;
-    border: 1px solid #ccc;
+    border: 1px solid #333;
     background-color: #fff;
     border-radius: 4px;
     cursor: pointer;
@@ -80,6 +73,15 @@ img.img_product {
     background-color: #333;
     color: #fff;
     border-color: #333;
+  }
+  .color-button {
+	width:30px;
+	height:30px; 
+	border-radius:50%; 
+	border:2px solid #fff;
+  }
+  .color-button.active {
+    border: 2px solid  #333;
   }
 </style>
 
@@ -102,7 +104,7 @@ img.img_product {
       <ion-content class="ion-padding">
 		<div class="flex-content">
         <div id="product-image-container">
-          <img id="main-product-image" src="${product.styles[0].image_path}" style="width:100%; border-radius: 12px;" />
+          <img id="main-product-image" src="${product.styles[0].image_path}" />
         </div>
 		<ion-card class="product-detail-container ion-no-margin">
 			<ion-card-content>
@@ -114,8 +116,8 @@ img.img_product {
           <div style="display:flex; gap:10px;">
             ${product.styles.map((style, i) => `
               <button onclick="selectColor('${style.color}', '${style.image_path}', this)" 
-                class="color-button" 
-                style="background:${style.name}; width:30px; height:30px; border-radius:50%; border:2px solid #ccc;">
+                class="color-button ${i === 0 ? 'active' : ''}" 
+                style="background:${style.name};">
               </button>
             `).join('')}
           </div>
@@ -141,20 +143,22 @@ img.img_product {
 		</ion-card>
       </ion-content>
 		<ion-footer>
+	<div class="container">
 			<ion-toolbar>
-<div class="quantity-picker">
-  <ion-buttons>
-  <ion-button type="button" onclick="updateQuantity(-1)"><ion-icon slot="icon-only" name="remove-circle"></ion-icon></ion-button>
-  </ion-buttons>
-  <input type="number" class="item_quantity" id="item_quantity_input" value="1" min="1" readonly />
-  <ion-buttons>
-  <ion-button type="button" onclick="updateQuantity(1)"><ion-icon slot="icon-only" name="add-circle"></ion-icon></ion-button>
-  </ion-buttons>
-</div>
-<ion-buttons slot="end">
-        <ion-button id="item_add" color="primary">Tambahkan</ion-button>
-</ion-buttons>
+		<div class="quantity-picker">
+		  <ion-buttons>
+		  <ion-button type="button" onclick="updateQuantity(-1)"><ion-icon slot="icon-only" name="remove-circle"></ion-icon></ion-button>
+		  </ion-buttons>
+		  <input type="number" class="item_quantity" id="item_quantity_input" value="1" min="1" readonly />
+		  <ion-buttons>
+		  <ion-button type="button" onclick="updateQuantity(1)"><ion-icon slot="icon-only" name="add-circle"></ion-icon></ion-button>
+		  </ion-buttons>
+		</div>
+		<ion-buttons slot="end">
+				<ion-button id="item_add" color="primary">Tambahkan</ion-button>
+		</ion-buttons>
 			</ion-toolbar>
+	</div>
 		</ion-footer>
     `;
 
@@ -191,8 +195,8 @@ img.img_product {
     document.getElementById('selected_color').value = color;
     document.getElementById('selected_thumb').value = imagePath;
 
-    document.querySelectorAll('.color-button').forEach(btn => btn.style.border = "2px solid #ccc");
-    button.style.border = "3px solid black";
+    document.querySelectorAll('.color-button').forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
   }
 
   function selectModel(button, model) {

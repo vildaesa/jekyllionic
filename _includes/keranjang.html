@@ -16,7 +16,7 @@
 .keranjang-box:hover .simpleCart_items::-webkit-scrollbar-thumb{background-color:#ddd;border-radius:5px}
 .keranjang-box .headerRow,.keranjang-box .item-price{display:none}
 .keranjang-box .simpleCart_items{height: auto;overflow-y:auto;margin-bottom:20px;}
-.keranjang-box .itemRow{overflow:hidden;font-size:12px;line-height:1.5;width:100%;font-weight:700;display:inline-block;margin-bottom: 10px;}
+.keranjang-box .itemRow{overflow:hidden;font-size:12px;line-height:1.5;width:100%;font-weight:700;display:inline-block;}
 .keranjang-box .simpleCart_items::after {content: "";text-align: center;z-index: 0;position: absolute;top: 50px;left: 50%;padding: 10px;transform: translate(-50%,-45%);max-width: 500px;width: 90%;overflow: hidden;margin: auto;}
 .keranjang-box .item-thumb{float:left;}
 .keranjang-box .item-thumb img{width:95px;height:auto;border-radius:.3rem;float:left;margin:0 10px 0 0}
@@ -45,11 +45,13 @@
 #jam-digital,#hasil,.wrapper-footer,.fab{display:none;}
 .produk-page {margin:0px!important;}
 span.simpleCart_shipping, span.simpleCart_grandTotal {font-weight: 600;color:#ff460c;}
+.keranjang-box .simpleCart_items .empty-cart {box-shadow: none !important;}
 </style>
   <div class="keranjang-box simplecart-cart">
     <ion-card class="simpleCart_items"></ion-card>
     <div class="harga-total">
       <span>Grand Total: </span><span class="simpleCart_quantity"></span> items = <span class="simpleCart_total"></span>
           <ion-button class="co-btn" style="float: right;" onclick="openCheckoutModal()">CheckOut</ion-button><br />
- <span style="font-size:10px;">( *Belum Termasuk Ongkir )</span></div>
+ <ion-text><sub>( *Belum Termasuk Ongkir )</sub></ion-text>
+ </div>
 </div>

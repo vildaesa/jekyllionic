@@ -20,6 +20,13 @@ title: Cart
 
 <script>
 async function openCheckoutModal() {
+  const user = firebase.auth().currentUser;
+
+  if (!user || !user.emailVerified) {
+    showAlert("Harap login dan verifikasi email sebelum checkout.");
+    return;
+  }
+
   const modal = document.getElementById('checkoutModal');
 
   modal.innerHTML = `
@@ -28,59 +35,59 @@ async function openCheckoutModal() {
         <ion-title>Checkout</ion-title>
         <ion-buttons slot="end">
           <ion-button onclick="dismissModal()">
-<ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
-        </ion-button>
+            <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
+          </ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
     <ion-content class="ion-no-padding">
-	<div class="container">
-		<ion-card>
-			<ion-card-content>
-			  <form id="checkout-form">
-				<ion-item>
-				  <ion-label position="stacked">First Name</ion-label>
-				  <ion-input name="first_name" required></ion-input>
-				</ion-item>
+      <div class="container">
+        <ion-card>
+          <ion-card-content>
+            <form id="checkout-form">
+              <ion-item>
+                <ion-label position="stacked">First Name</ion-label>
+                <ion-input name="first_name" required></ion-input>
+              </ion-item>
 
-				<ion-item>
-				  <ion-label position="stacked">Last Name</ion-label>
-				  <ion-input name="last_name" required></ion-input>
-				</ion-item>
+              <ion-item>
+                <ion-label position="stacked">Last Name</ion-label>
+                <ion-input name="last_name" required></ion-input>
+              </ion-item>
 
-				<ion-item>
-				  <ion-label position="stacked">Email</ion-label>
-				  <ion-input name="email" type="email" required></ion-input>
-				</ion-item>
+              <ion-item>
+                <ion-label position="stacked">Email</ion-label>
+                <ion-input name="email" type="email" value="${user.email}" required readonly></ion-input>
+              </ion-item>
 
-				<ion-item>
-				  <ion-label position="stacked">Street</ion-label>
-				  <ion-input name="street" required></ion-input>
-				</ion-item>
+              <ion-item>
+                <ion-label position="stacked">Street</ion-label>
+                <ion-input name="street" required></ion-input>
+              </ion-item>
 
-				<ion-item>
-				  <ion-label position="stacked">City</ion-label>
-				  <ion-input name="city" required></ion-input>
-				</ion-item>
+              <ion-item>
+                <ion-label position="stacked">City</ion-label>
+                <ion-input name="city" required></ion-input>
+              </ion-item>
 
-				<ion-item>
-				  <ion-label position="stacked">State</ion-label>
-				  <ion-input name="state" required></ion-input>
-				</ion-item>
+              <ion-item>
+                <ion-label position="stacked">State</ion-label>
+                <ion-input name="state" required></ion-input>
+              </ion-item>
 
-				<ion-item>
-				  <ion-label position="stacked">Zip Code</ion-label>
-				  <ion-input name="zip_code" required></ion-input>
-				</ion-item>
+              <ion-item>
+                <ion-label position="stacked">Zip Code</ion-label>
+                <ion-input name="zip_code" required></ion-input>
+              </ion-item>
 
-				<input type="text" name="_gotcha" style="display:none;">
+              <input type="text" name="_gotcha" style="display:none;">
 
-				<ion-button expand="block" id="pay-button" type="button">Bayar</ion-button>
-			  </form>
-			</ion-card-content>
-		</ion-card>
-		</div>
+              <ion-button expand="block" id="pay-button" type="button">Bayar</ion-button>
+            </form>
+          </ion-card-content>
+        </ion-card>
+      </div>
     </ion-content>
   `;
 
@@ -127,7 +134,7 @@ async function openCheckoutModal() {
       });
 
       if (items.length === 0) {
-        showAlert("Keranjang masih kosong!");
+        showAlert("Keranjang masih kosong!", "Gagal");
         return;
       }
 
@@ -141,15 +148,15 @@ async function openCheckoutModal() {
         snap.pay(data.token, {
           onSuccess: () => {
             localStorage.removeItem('simpleCart_items');
-            showAlert("Pembayaran berhasil!");
+            showAlert("Pembayaran berhasil!", "Sukses");
           },
-          onPending: () => showAlert("Pembayaran tertunda."),
-          onError: () => showAlert("Terjadi kesalahan."),
-          onClose: () => showAlert("Pembayaran dibatalkan.")
+          onPending: () => showAlert("Pembayaran tertunda.", "Perhatian"),
+          onError: () => showAlert("Terjadi kesalahan.", "Error"),
+          onClose: () => showAlert("Pembayaran dibatalkan.", "Ooops...")
         });
       })
       .catch(err => {
-        showAlert("Gagal memulai pembayaran.");
+        showAlert("Gagal memulai pembayaran.", "Error");
         console.error(err);
       });
     });
