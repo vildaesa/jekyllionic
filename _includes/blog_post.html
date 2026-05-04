@@ -2,7 +2,7 @@
 	<div class="blog_grid">
 	{% for post in site.posts %}
 		<ion-card class="flex_post" onclick="openPostModal({{ post | jsonify | escape }})" style="cursor:pointer;">
-			<img class="blog_img" src="{{ site.baseurl }}{{ post.img }}">
+			<img class="blog_img" src="{{ site.baseurl }}/{{ post.img }}">
 				<div class="post_box">
 				<ion-card-header class="ion-card-header">
 					<ion-card-title>
