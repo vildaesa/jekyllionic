@@ -138,7 +138,7 @@ async function openCheckoutModal() {
         return;
       }
 
-      fetch('/midtrans', {
+      fetch('https://jekyllonlineshop.pages.dev//midtrans', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ total, items, customer: buyer })
