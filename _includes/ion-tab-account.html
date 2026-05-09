@@ -1,81 +1,163 @@
 ---
 title: Account
 ---
-  <ion-tab tab="account">
-    <div id="account-page">
-      <ion-header>
-        <ion-toolbar>
-          <ion-title>{{ page.title }}</ion-title>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content class="ion-padding container" fullscreen="true">
-		<div class="container">
-<div id="dashboard" style="display:none; padding:1rem;">
-  <h2>Dashboard</h2>
-  <p>Selamat datang, <span id="user-email"></span>!</p>
-<ion-button type="button" expand="block" fill="clear" color="medium" onclick="logout()">Keluar</ion-button>
-</div>
-			<ion-card id="loginBtn">
-				<img src="{{ site.baseurl }}/assets/images/login.jpg" alt="login" >
-				<ion-footer>
-					<ion-toolbar>
-						<ion-buttons expand="block">
-							<ion-button fill="outline" onclick="openLoginModal()">Login / Register</ion-button>
-						</ion-buttons>
-					</ion-toolbar>
-				</ion-footer>
-			</ion-card>
-		</div>
-      </ion-content>
-    </div>
-  </ion-tab>
-  
+<ion-tab tab="account">
+  <div id="account-page">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>{{ page.title }}</ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="ion-padding" fullscreen="true">
+      <!-- Dashboard (tampil setelah login) -->
+      <div id="dashboard" style="display: none;">
+        <ion-card class="dashboard-card">
+          <ion-card-header>
+            <ion-card-title>
+              <ion-icon name="person-circle-outline" size="large"></ion-icon>
+              Dashboard
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-item lines="none">
+              <ion-icon name="mail-outline" slot="start"></ion-icon>
+              <ion-label>Selamat datang, <strong id="user-email"></strong>!</ion-label>
+            </ion-item>
+            <ion-button expand="block" fill="clear" color="medium" onclick="logout()">
+              <ion-icon slot="start" name="log-out-outline"></ion-icon>
+              Keluar
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </div>
+
+      <!-- Tombol login (tampil sebelum login) -->
+      <ion-card id="loginBtn" class="login-prompt-card">
+        <div class="image-wrapper">
+          <img src="{{ site.baseurl }}/assets/images/login.jpg" alt="login illustration">
+        </div>
+        <ion-card-content>
+          <ion-button expand="block" fill="solid" color="primary" onclick="openLoginModal()">
+            <ion-icon slot="start" name="log-in-outline"></ion-icon>
+            Login / Register
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ion-content>
+  </div>
+
+  <!-- Modal Login/Register -->
   <ion-modal id="loginModal">
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>Login / Register</ion-title>
-      <ion-buttons slot="end">
-        <ion-button onclick="tutupModal()">
-<ion-icon slot="icon-only" name="close-circle-outline" color="danger"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Login / Register</ion-title>
+        <ion-buttons slot="end">
+          <ion-button onclick="tutupModal()">
+            <ion-icon slot="icon-only" name="close-circle-outline" color="danger"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
 
-  <ion-content class="ion-padding">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Masuk / Daftar</ion-card-title>
-        <ion-card-subtitle>Gunakan email & password</ion-card-subtitle>
-      </ion-card-header>
+    <ion-content class="ion-padding">
+      <ion-card class="modal-form-card">
+        <ion-card-header>
+          <ion-card-title>
+            <ion-icon name="key-outline"></ion-icon>
+            Masuk / Daftar
+          </ion-card-title>
+          <ion-card-subtitle>Gunakan email & password untuk mengakses akun Anda</ion-card-subtitle>
+        </ion-card-header>
 
-      <ion-card-content>
-        <ion-item>
-          <ion-label position="stacked">Email</ion-label>
-          <ion-input id="email" type="email" required></ion-input>
-        </ion-item>
+        <ion-card-content>
+          <ion-list lines="full">
+            <ion-item>
+              <ion-icon name="mail-outline" slot="start" color="medium"></ion-icon>
+              <ion-label position="stacked">Email</ion-label>
+              <ion-input id="email" type="email" placeholder="contoh@email.com" required></ion-input>
+            </ion-item>
 
-        <ion-item>
-          <ion-label position="stacked">Password</ion-label>
-          <ion-input id="password" type="password" required></ion-input>
-        </ion-item>
-        <div id="user-info" style="margin-top: 1em;"></div>
-      </ion-card-content>
-<ion-footer>
-	<ion-toolbar>
-	<ion-buttons slot="start">
-        <ion-button type="button" fill="outline" color="primary" onclick="register()">Daftar</ion-button>
-	</ion-buttons>
-	<ion-buttons slot="end">
-        <ion-button type="button" fill="solid" color="success" onclick="login()">Masuk</ion-button>
-	</ion-buttons>
-	</ion-toolbar>
-</ion-footer>
-    </ion-card>
-  </ion-content>
-</ion-modal>
+            <ion-item>
+              <ion-icon name="lock-closed-outline" slot="start" color="medium"></ion-icon>
+              <ion-label position="stacked">Password</ion-label>
+              <ion-input id="password" type="password" placeholder="Minimal 6 karakter" required></ion-input>
+            </ion-item>
+          </ion-list>
+
+          <div id="user-info" class="user-status"></div>
+        </ion-card-content>
+
+        <ion-footer>
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-button type="button" fill="outline" color="primary" onclick="register()">
+                <ion-icon slot="start" name="person-add-outline"></ion-icon>
+                Daftar
+              </ion-button>
+            </ion-buttons>
+            <ion-buttons slot="end">
+              <ion-button type="button" fill="solid" color="success" onclick="login()">
+                <ion-icon slot="start" name="log-in-outline"></ion-icon>
+                Masuk
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-footer>
+      </ion-card>
+    </ion-content>
+  </ion-modal>
+</ion-tab>
+
+<style>
+  /* Perbaikan tampilan tambahan */
+  #account-page ion-content {
+    --background: var(--ion-background-color, #f4f5f8);
+  }
+
+  .login-prompt-card {
+    margin-top: 20%;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    text-align: center;
+  }
+
+  .login-prompt-card .image-wrapper img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+  }
+
+  .dashboard-card {
+    margin-top: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .modal-form-card {
+    margin: 0;
+    border-radius: 16px;
+    box-shadow: none;
+  }
+
+  .user-status {
+    margin-top: 16px;
+    font-size: 0.9em;
+    text-align: center;
+    padding: 8px;
+    background: var(--ion-color-light, #f0f0f0);
+    border-radius: 8px;
+  }
+
+  ion-item ion-icon[slot="start"] {
+    margin-inline-end: 12px;
+  }
+</style>
 
 <script>
+  // --- fungsi modal (tetap sama) ---
   async function openLoginModal() {
     const modal = document.querySelector('#loginModal');
     if (modal) {
@@ -94,33 +176,32 @@ title: Account
 </script>
 
 <script type="module">
-
-window.register = register;
-window.login = login;
-window.logout = logout;
-window.tutupModal = tutupModal;
-window.openLoginModal = openLoginModal;
+  // Ekspos fungsi ke global window agar bisa dipanggil dari onclick
+  window.register = register;
+  window.login = login;
+  window.logout = logout;
+  window.tutupModal = tutupModal;
+  window.openLoginModal = openLoginModal;
 
   const auth = firebase.auth();
 
-function register() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  function register() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-  auth.createUserWithEmailAndPassword(email, password)
-    .then(userCredential => {
-      userCredential.user.sendEmailVerification()
-        .then(() => showAlert("Verifikasi email dikirim! periksa inbox dan folder spam kamu.", "Info"));
+    auth.createUserWithEmailAndPassword(email, password)
+      .then(userCredential => {
+        userCredential.user.sendEmailVerification()
+          .then(() => showAlert("Verifikasi email dikirim! periksa inbox dan folder spam kamu.", "Info"));
 
-      // 🔥 Simpan ke Firestore
-      firebase.firestore().collection("users").doc(userCredential.user.uid).set({
-        email: email,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-    })
-    .catch(error => showAlert("Register Error: " + error.message , "Error"));
-}
-
+        // Simpan ke Firestore
+        firebase.firestore().collection("users").doc(userCredential.user.uid).set({
+          email: email,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      })
+      .catch(error => showAlert("Register Error: " + error.message, "Error"));
+  }
 
   function login() {
     const email = document.getElementById("email").value;
@@ -134,8 +215,7 @@ function register() {
           auth.signOut();
         }
       }).catch(error => showAlert("Error: " + error.message));
-	  
-	  tutupModal();
+    tutupModal();  // seperti kode asli, ditutup langsung (tanpa menunggu)
   }
 
   function logout() {
@@ -144,16 +224,19 @@ function register() {
 
   auth.onAuthStateChanged(user => {
     const info = document.getElementById("user-info");
-    if (user && user.emailVerified) {
-  info.innerHTML = `🔐 Logged in as: <strong>${user.email}</strong>`;
-  document.getElementById("dashboard").style.display = "block";
-  document.getElementById("loginBtn").style.display = "none";
-  document.getElementById("user-email").innerText = user.email;
-} else {
-  info.innerHTML = "🔓 Belum login.";
-  document.getElementById("dashboard").style.display = "none";
-  document.getElementById("loginBtn").style.display = "flex";
-}
+    const dashboard = document.getElementById("dashboard");
+    const loginBtn = document.getElementById("loginBtn");
+    const userEmailSpan = document.getElementById("user-email");
 
+    if (user && user.emailVerified) {
+      info.innerHTML = `🔐 Logged in as: <strong>${user.email}</strong>`;
+      if (dashboard) dashboard.style.display = "block";
+      if (loginBtn) loginBtn.style.display = "none";
+      if (userEmailSpan) userEmailSpan.innerText = user.email;
+    } else {
+      info.innerHTML = "🔓 Belum login.";
+      if (dashboard) dashboard.style.display = "none";
+      if (loginBtn) loginBtn.style.display = "flex";
+    }
   });
 </script>
