@@ -1,170 +1,320 @@
-<div class="container product-grid">
-{% for product in site.products %}
- <ion-card class="text-center" onclick='openProductModal({
-  title: "{{ product.title }}",
-  price: "{{ product.price }}",
-  url: "{{ product.url }}",
-  model: {{ product.model | jsonify }},
-  styles: {{ product.styles | jsonify }},
-  description: "{{ product.description }}"
-})' style="cursor:pointer;">
-  <img class="img_product" src="{{ product.featured_image_path }}">
-  <ion-card-content>
-<ion-card-title>Rp {{ product.price }}</ion-card-title>
-<ion-card-subtitle>{{ product.title }}</ion-card-subtitle>
-</ion-card-content>
-</ion-card>
-{% endfor %}
-</div>
-
-<ion-modal class="custom-fullscreen" id="productModal"></ion-modal>
-
+<!-- PERBAIKAN TAMPILAN PRODUCT GRID & MODAL -->
 <style>
-  .color-picker {
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    margin: 0 4px;
-    border: 2px solid #ccc;
-    cursor: pointer;
+  /* === Perbaikan Grid Produk === */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.2rem;
+    padding: 0.5rem;
   }
 
+  .product-grid ion-card {
+    margin: 0;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .product-grid ion-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  .img_product {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    background: var(--ion-color-light);
+    display: block;
+  }
+
+  .product-grid ion-card-content {
+    padding: 12px 8px 16px;
+  }
+
+  .product-grid ion-card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--ion-color-primary);
+  }
+
+  .product-grid ion-card-subtitle {
+    font-size: 0.9rem;
+    color: var(--ion-color-medium);
+    margin-top: 4px;
+  }
+
+  /* === Perbaikan Modal Produk (fullscreen) === */
+  ion-modal.custom-fullscreen {
+    --border-radius: 0;
+    --box-shadow: none;
+  }
+
+  ion-modal.custom-fullscreen::part(content) {
+    --border-radius: 0;
+  }
+
+  /* Tata letak konten modal */
+  .modal-product-content {
+    --background: var(--ion-background-color, #f8f9fc);
+  }
+
+  .product-detail-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* Container gambar utama */
+  #product-image-container {
+    width: 100%;
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  #main-product-image {
+    width: 100%;
+    height: auto;
+    max-height: 320px;
+    object-fit: contain;
+    background: #fafafa;
+  }
+
+  /* Panel detail produk */
+  .product-detail-panel {
+    padding: 0;
+    border-radius: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .product-detail-panel ion-card-content {
+    padding: 1.2rem;
+  }
+
+  .price-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ion-color-primary);
+    margin: 0.5rem 0;
+  }
+
+  .description-text {
+    color: var(--ion-color-medium);
+    line-height: 1.4;
+    margin-bottom: 1.2rem;
+  }
+
+  /* Warna (color picker) */
+  .color-picker-group {
+    margin-bottom: 1rem;
+  }
+  .color-picker-group p {
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .color-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .color-button {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid #e0e0e0;
+    transition: all 0.1s ease;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  .color-button.active {
+    border: 3px solid var(--ion-color-primary);
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+
+  /* Model picker (tali) */
+  .model-picker-group {
+    margin-bottom: 1rem;
+  }
+  .model-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .model-button {
+    padding: 8px 16px;
+    border-radius: 40px;
+    border: 1px solid #ccc;
+    background: white;
+    font-weight: 500;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .model-button.active {
+    background: var(--ion-color-primary);
+    border-color: var(--ion-color-primary);
+    color: white;
+  }
+
+  /* Quantity picker + tombol add */
+  .footer-actions {
+    background: white;
+    border-top: 1px solid var(--ion-border-color, #e9ecef);
+  }
   .quantity-picker {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
+    background: #f1f3f5;
+    border-radius: 40px;
+    padding: 4px 12px;
   }
-
-  .quantity-picker button {
-    width: 32px;
-    height: 32px;
-    font-size: 18px;
-    font-weight: bold;
-    background-color: #f0f0f0;
-    border: none;
-    cursor: pointer;
+  .quantity-picker ion-button {
+    margin: 0;
+    --padding-start: 8px;
+    --padding-end: 8px;
   }
-
-  .quantity-picker input {
+  .item_quantity {
     width: 48px;
     text-align: center;
-    font-size: 16px;
+    font-size: 1.2rem;
+    font-weight: 600;
     border: none;
-    border-radius: 6px;
-    background-color: transparent;
+    background: transparent;
+  }
+  #item_add {
+    --border-radius: 40px;
+    font-weight: 600;
+    padding: 0 20px;
   }
 
-  .model-picker {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 1em;
-  }
-
-  .model-button {
-    padding: 6px 12px;
-    border: 1px solid #333;
-    background-color: #fff;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  .model-button.active {
-    background-color: #333;
-    color: #fff;
-    border-color: #333;
-  }
-  .color-button {
-	width:30px;
-	height:30px; 
-	border-radius:50%; 
-	border:2px solid #fff;
-  }
-  .color-button.active {
-    border: 2px solid  #333;
+  /* Responsif kecil */
+  @media (max-width: 480px) {
+    .product-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .img_product {
+      height: 180px;
+    }
+    #main-product-image {
+      max-height: 250px;
+    }
   }
 </style>
 
+<!-- GRID PRODUK (tetap dengan loop, hanya perbaikan kelas CSS) -->
+<div class="container product-grid">
+  {% for product in site.products %}
+    <ion-card class="text-center" onclick='openProductModal({
+      title: "{{ product.title }}",
+      price: "{{ product.price }}",
+      url: "{{ product.url }}",
+      model: {{ product.model | jsonify }},
+      styles: {{ product.styles | jsonify }},
+      description: "{{ product.description }}"
+    })' style="cursor:pointer;">
+      <img class="img_product" src="{{ product.featured_image_path }}" loading="lazy" alt="{{ product.title }}">
+      <ion-card-content>
+        <ion-card-title>Rp {{ product.price }}</ion-card-title>
+        <ion-card-subtitle>{{ product.title }}</ion-card-subtitle>
+      </ion-card-content>
+    </ion-card>
+  {% endfor %}
+</div>
+
+<!-- MODAL PRODUK (fullscreen) -->
+<ion-modal class="custom-fullscreen" id="productModal"></ion-modal>
+
 <script>
+  // ========== FUNGSI TETAP SAMA (tidak ada perubahan logika) ==========
   async function openProductModal(product) {
     const modal = document.getElementById('productModal');
 
+    // Membangun konten modal dengan tampilan baru
     modal.innerHTML = `
       <ion-header translucent>
         <ion-toolbar>
           <ion-title>${product.title}</ion-title>
           <ion-buttons slot="end">
             <ion-button onclick="closeModal()">
-<ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
-</ion-button>
+              <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
+            </ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
 
-      <ion-content class="ion-padding">
-		<div class="flex-content">
-        <div id="product-image-container">
-          <img id="main-product-image" src="${product.styles[0].image_path}" />
-        </div>
-		<ion-card class="product-detail-container ion-no-margin">
-			<ion-card-content>
-        <p>Harga: <strong>Rp ${product.price}</strong></p>
-        <p>${product.description || ''}</p>
-
-        <div>
-          <p>Warna:</p>
-          <div style="display:flex; gap:10px;">
-            ${product.styles.map((style, i) => `
-              <button onclick="selectColor('${style.color}', '${style.image_path}', this)" 
-                class="color-button ${i === 0 ? 'active' : ''}" 
-                style="background:${style.name};">
-              </button>
-            `).join('')}
+      <ion-content class="ion-padding modal-product-content">
+        <div class="product-detail-layout">
+          <!-- Gambar utama -->
+          <div id="product-image-container">
+            <img id="main-product-image" src="${product.styles[0].image_path}" alt="${product.title}">
           </div>
-          <input type="hidden" id="selected_color" value="${product.styles[0].color}" />
-          <input type="hidden" id="selected_thumb" value="${product.styles[0].image_path}" />
-        </div>
 
-        <div style="margin-top:1em;">
-          <p>Tali:</p>
-          <div style="display:flex; gap:10px; flex-wrap:wrap;" id="model-buttons">
-            ${product.model.map((modelName, i) => `
-              <button class="model-button ${i === 0 ? 'active' : ''}" onclick="selectModel(this, '${modelName}')">${modelName}</button>
-            `).join('')}
-          </div>
-          <input type="hidden" id="selected_model" value="${product.model[0]}" />
-        </div>
+          <!-- Detail produk -->
+          <ion-card class="product-detail-panel ion-no-margin">
+            <ion-card-content>
+              <div class="price-text">Rp ${product.price}</div>
+              <div class="description-text">${product.description || ''}</div>
 
-        <div style="margin-top:1em;">
-          <p></p>
+              <!-- Pilihan warna -->
+              <div class="color-picker-group">
+                <p>Warna :</p>
+                <div class="color-buttons" id="color-buttons-container">
+                  ${product.styles.map((style, i) => `
+                    <button onclick="selectColor('${style.color}', '${style.image_path}', this)" 
+                      class="color-button ${i === 0 ? 'active' : ''}" 
+                      style="background:${style.name};">
+                    </button>
+                  `).join('')}
+                </div>
+                <input type="hidden" id="selected_color" value="${product.styles[0].color}" />
+                <input type="hidden" id="selected_thumb" value="${product.styles[0].image_path}" />
+              </div>
+
+              <!-- Pilihan model (tali) -->
+              <div class="model-picker-group">
+                <p>Tali :</p>
+                <div class="model-buttons" id="model-buttons-container">
+                  ${product.model.map((modelName, i) => `
+                    <button class="model-button ${i === 0 ? 'active' : ''}" onclick="selectModel(this, '${modelName}')">${modelName}</button>
+                  `).join('')}
+                </div>
+                <input type="hidden" id="selected_model" value="${product.model[0]}" />
+              </div>
+            </ion-card-content>
+          </ion-card>
         </div>
-			</ion-card-content>
-		</div>
-		</ion-card>
       </ion-content>
-		<ion-footer>
-	<div class="container">
-			<ion-toolbar>
-		<div class="quantity-picker">
-		  <ion-buttons>
-		  <ion-button type="button" onclick="updateQuantity(-1)"><ion-icon slot="icon-only" name="remove-circle"></ion-icon></ion-button>
-		  </ion-buttons>
-		  <input type="number" class="item_quantity" id="item_quantity_input" value="1" min="1" readonly />
-		  <ion-buttons>
-		  <ion-button type="button" onclick="updateQuantity(1)"><ion-icon slot="icon-only" name="add-circle"></ion-icon></ion-button>
-		  </ion-buttons>
-		</div>
-		<ion-buttons slot="end">
-				<ion-button id="item_add" fill="outline" color="primary">Tambahkan</ion-button>
-		</ion-buttons>
-			</ion-toolbar>
-	</div>
-		</ion-footer>
+
+      <ion-footer class="footer-actions">
+        <ion-toolbar>
+          <div class="container" style="display: flex; justify-content: space-between; align-items: center; padding: 4px 12px;">
+            <div class="quantity-picker">
+              <ion-button type="button" onclick="updateQuantity(-1)">
+                <ion-icon slot="icon-only" name="remove-circle"></ion-icon>
+              </ion-button>
+              <input type="number" class="item_quantity" id="item_quantity_input" value="1" min="1" readonly />
+              <ion-button type="button" onclick="updateQuantity(1)">
+                <ion-icon slot="icon-only" name="add-circle"></ion-icon>
+              </ion-button>
+            </div>
+            <ion-buttons slot="end">
+              <ion-button id="item_add" fill="solid" color="primary">Tambahkan</ion-button>
+            </ion-buttons>
+          </div>
+        </ion-toolbar>
+      </ion-footer>
     `;
 
     await modal.present();
 
-    // Bersihkan dan pasang ulang event add-to-cart
+    // Pasang event listener add to cart (tetap sama)
     document.getElementById('item_add').addEventListener('click', function () {
       const model = document.getElementById('selected_model').value;
       const qty = parseInt(document.getElementById('item_quantity_input').value, 10);
@@ -187,7 +337,7 @@
 
   function closeModal() {
     const modal = document.getElementById('productModal');
-    modal.dismiss();
+    if (modal) modal.dismiss();
   }
 
   function selectColor(color, imagePath, button) {
@@ -205,11 +355,11 @@
     document.getElementById('selected_model').value = model;
   }
 
-function updateQuantity(change) {
-  const input = document.getElementById('item_quantity_input');
-  let current = parseInt(input.value, 10);
-  let newVal = current + change;
-  if (newVal < 1) newVal = 1;
-  input.value = newVal;
-}
+  function updateQuantity(change) {
+    const input = document.getElementById('item_quantity_input');
+    let current = parseInt(input.value, 10);
+    let newVal = current + change;
+    if (newVal < 1) newVal = 1;
+    input.value = newVal;
+  }
 </script>
