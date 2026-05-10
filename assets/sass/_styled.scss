@@ -143,10 +143,9 @@ ion-card#loginBtn {
     left: 50%;
     transform: translate(-50%, -50%);
   @include mobile {
-	  max-width: 90%;
-    margin: auto;
-    top: 40%;
-    left: 0%;
+    position: relative;
+    max-width: 90%;
+    margin: 20px, auto;
     transform: translate(0%);
 	}
 }
