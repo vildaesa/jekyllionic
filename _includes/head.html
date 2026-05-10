@@ -1,31 +1,34 @@
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<title>{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</title>
-	<meta name="description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
+  <!-- SEO Engine -->
+  {% include seo.html %}
 
-	<link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+  <!-- CSS & Frameworks -->
+  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
-	<link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
 
-	{% feed_meta %}
-  
-    <script type="module" src="{{ '/assets/frameworks/@ionic/core/dist/ionic/ionic.esm.js?v=8.0' | relative_url }}"></script>
-    <script nomodule src="{{ '/assets/frameworks/@ionic/core/dist/ionic/ionic.js?v=8.0' | relative_url }}"></script>
-    <link rel="stylesheet" href="{{ '/assets/frameworks/@ionic/core/css/ionic.bundle.css?v=8.0' | relative_url }}" />
-    <script type="module" src="{{ '/assets/frameworks/ionicons/dist/ionicons/ionicons.esm.js' | relative_url }}"></script>
-    <script nomodule src="{{ '/assets/frameworks/ionicons/dist/ionicons/ionicons.js' | relative_url }}"></script>
-	
-	<script src="{{ '/assets/js/jquery/jquery.min.js?v=3.6.0' | relative_url }}"></script>
-	
-	<script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-	<script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-	<script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-	<script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <!-- Ionic -->
+  <script type="module" src="{{ '/assets/frameworks/@ionic/core/dist/ionic/ionic.esm.js?v=8.0' | relative_url }}"></script>
+  <script nomodule src="{{ '/assets/frameworks/@ionic/core/dist/ionic/ionic.js?v=8.0' | relative_url }}"></script>
+  <link rel="stylesheet" href="{{ '/assets/frameworks/@ionic/core/css/ionic.bundle.css?v=8.0' | relative_url }}" />
+  <script type="module" src="{{ '/assets/frameworks/ionicons/dist/ionicons/ionicons.esm.js' | relative_url }}"></script>
+  <script nomodule src="{{ '/assets/frameworks/ionicons/dist/ionicons/ionicons.js' | relative_url }}"></script>
+
+  <!-- jQuery -->
+  <script src="{{ '/assets/js/jquery/jquery.min.js?v=3.6.0' | relative_url }}"></script>
+
+  <!-- Firebase -->
+  <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
   <!-- Midtrans Snap.js -->
   <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{site.CLIENT_KEY}}"></script>
 
+  <!-- Jekyll Feed (RSS) -->
+  {% feed_meta %}
 </head>
