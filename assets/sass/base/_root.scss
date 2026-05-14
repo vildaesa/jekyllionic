@@ -1,4 +1,4 @@
-@use 'mixins' as *;
+@import 'mixins';
 
 html {
   box-sizing: border-box;
@@ -22,6 +22,6 @@ ion-content.ion-no-padding {
     --offset-top: 0px !important;
     --offset-bottom: auto !important;
 	@include mobile {
-     --offset-top: 0px !important;
+    --offset-top: 0px !important;
 	}
 }
