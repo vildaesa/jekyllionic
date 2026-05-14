@@ -92,7 +92,7 @@
   }
 </style>
 
-<div class="container">
+<div class="blog-container">
   <div class="blog_grid">
     {% for post in site.posts %}
       <ion-card class="flex_post" onclick="openPostModal({{ post | jsonify | escape }})">
