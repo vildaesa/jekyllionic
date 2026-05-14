@@ -295,13 +295,17 @@
         <ion-toolbar>
           <div class="container" style="display: flex; justify-content: space-between; align-items: center; padding: 4px 12px;">
             <div class="quantity-picker">
+            <ion-buttons slot="start">
               <ion-button type="button" onclick="updateQuantity(-1)">
-                <ion-icon slot="icon-only" name="remove-circle"></ion-icon>
+                <ion-icon slot="icon-only" name="remove-circle" color="primary"></ion-icon>
               </ion-button>
+            </ion-buttons>
               <input type="number" class="item_quantity" id="item_quantity_input" value="1" min="1" readonly />
+            <ion-buttons slot="end">
               <ion-button type="button" onclick="updateQuantity(1)">
-                <ion-icon slot="icon-only" name="add-circle"></ion-icon>
+                <ion-icon slot="icon-only" name="add-circle" color="primary"></ion-icon>
               </ion-button>
+            </ion-buttons>
             </div>
             <ion-buttons slot="end">
               <ion-button id="item_add" fill="solid" color="primary">Tambahkan</ion-button>
