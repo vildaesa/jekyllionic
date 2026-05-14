@@ -2,6 +2,6 @@
 ---
 @charset "utf-8";
 
-@import 'vendor/normalize';
-@import 'base/root';
-@import 'styled';
+@use 'vendor/normalize';
+@use 'base/root';
+@use 'styled';

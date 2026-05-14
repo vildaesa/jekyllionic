@@ -1,4 +1,4 @@
-@import 'base/mixins';
+@use 'base/mixins';
 
 main.main {
     max-width: 1200px;
@@ -13,7 +13,7 @@ div.blog_grid {
  display: grid;
  grid-template-columns: repeat(2, 1fr);
  grid-template-rows: auto;
-@include mobile {
+@include mixins.mobile {
    grid-template-columns: repeat(1, 1fr);
  }
  .flex_post {
@@ -25,7 +25,7 @@ div.blog_grid {
   &:nth-child(even) {
     flex-direction: row-reverse;
 }
-@include mobile {
+@include mixins.mobile {
     flex-direction: column !important;
 
     &:nth-child(even) {
@@ -45,7 +45,7 @@ div.blog_grid {
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
-@include mobile {
+@include mixins.mobile {
 		.ion-card-header {
 			position: absolute;
 			left: 0;
@@ -77,7 +77,7 @@ div.product-grid {
  grid-template-columns: repeat(3, 1fr);
  grid-template-rows: auto;
  text-align: center;
-@include mobile {
+@include mixins.mobile {
    grid-template-columns: repeat(2, 1fr);
  }
 }
@@ -89,7 +89,7 @@ div.product-grid {
     align-items: flex-start;
     flex-wrap: nowrap;
     gap: 20px;
-	@include mobile {
+	@include mixins.mobile {
 		justify-content: space-between;
 		flex-wrap: wrap;
 		gap: 0;
@@ -117,7 +117,7 @@ img.img_product {
     object-fit: cover;
     background-size: cover;
     background-position: center;
-  @include mobile {
+  @include mixins.mobile {
     height: 180px;
   }
 }
@@ -127,7 +127,7 @@ img.blog_img {
     object-fit: cover;
     background-position: center;
     background-size: cover;
-  @include mobile {
+  @include mixins.mobile {
     height: 320px;
   }
 }
@@ -143,7 +143,7 @@ ion-card#loginBtn {
   left: 50%;
   transform: translate(-50%, -50%);
 
-  @include mobile {
+  @include mixins.mobile {
     position: relative;
     top: auto;
     left: auto;
