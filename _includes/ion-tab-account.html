@@ -48,6 +48,61 @@ title: Account
   </div>
 </ion-tab>
 
+<style>
+  /* Perbaikan tampilan tambahan */
+  #account-page ion-content {
+    --background: var(--ion-background-color, #f4f5f8);
+  }
+
+  .login-prompt-card {
+    overflow: hidden;
+    margin: 20px auto;
+    width: 100%;
+    max-width: 100%;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    text-align: center;
+  }
+
+.login-prompt-card .image-wrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
+  .login-prompt-card .image-wrapper img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+  }
+
+  .dashboard-card {
+    margin-top: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .modal-form-card {
+    margin: 0;
+    border-radius: 16px;
+    box-shadow: none;
+  }
+
+  .user-status {
+    margin-top: 16px;
+    font-size: 0.9em;
+    text-align: center;
+    padding: 8px;
+    background: var(--ion-color-light, #f0f0f0);
+    border-radius: 8px;
+  }
+
+  ion-item ion-icon[slot="start"] {
+    margin-inline-end: 12px;
+  }
+</style>
+
 <script>
   // --- fungsi modal (tetap sama) ---
   async function openLoginModal() {

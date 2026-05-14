@@ -1,4 +1,213 @@
-<!-- GRID PRODUK (tetap dengan loop, hanya perbaikan kelas CSS) -->
+<style>
+  /* === Grid Produk === */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.2rem;
+    padding: 0.5rem;
+  }
+
+  .product-grid ion-card {
+    margin: 0;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .product-grid ion-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  .img_product {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    background: var(--ion-color-light);
+    display: block;
+  }
+
+  .product-grid ion-card-content {
+    padding: 12px 8px 16px;
+  }
+
+  .product-grid ion-card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--ion-color-primary);
+  }
+
+  .product-grid ion-card-subtitle {
+    font-size: 0.9rem;
+    color: var(--ion-color-medium);
+    margin-top: 4px;
+  }
+
+  /* === Perbaikan Modal Produk (fullscreen) === */
+  ion-modal.custom-fullscreen {
+    --border-radius: 0;
+    --box-shadow: none;
+  }
+
+  ion-modal.custom-fullscreen::part(content) {
+    --border-radius: 0;
+  }
+
+  /* Tata letak konten modal */
+  .modal-product-content {
+    --background: var(--ion-background-color, #f8f9fc);
+  }
+
+  .product-detail-layout {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* Container gambar utama */
+  #product-image-container {
+    width: 100%;
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  #main-product-image {
+    width: 100%;
+    height: auto;
+    max-height: 320px;
+    object-fit: cover;
+    background: #fafafa;
+  }
+
+  /* Panel detail produk */
+  .product-detail-panel {
+    padding: 0;
+    border-radius: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .product-detail-panel ion-card-content {
+    padding: 1.2rem;
+  }
+
+  .price-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ion-color-primary);
+    margin: 0.5rem 0;
+  }
+
+  .description-text {
+    color: var(--ion-color-medium);
+    line-height: 1.4;
+    margin-bottom: 1.2rem;
+  }
+
+  /* Warna (color picker) */
+  .color-picker-group {
+    margin-bottom: 1rem;
+  }
+  .color-picker-group p {
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .color-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .color-button {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid #e0e0e0;
+    transition: all 0.1s ease;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  .color-button.active {
+    border: 3px solid var(--ion-color-primary);
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+
+  /* Model picker (tali) */
+  .model-picker-group {
+    margin-bottom: 1rem;
+  }
+  .model-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .model-button {
+    padding: 8px 16px;
+    border-radius: 40px;
+    border: 1px solid #ccc;
+    background: white;
+    font-weight: 500;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .model-button.active {
+    background: var(--ion-color-primary);
+    border-color: var(--ion-color-primary);
+    color: white;
+  }
+
+  /* Quantity picker + tombol add */
+  .footer-actions {
+    background: white;
+    border-top: 1px solid var(--ion-border-color, #e9ecef);
+  }
+  .quantity-picker {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f1f3f5;
+    border-radius: 40px;
+    padding: 4px 12px;
+  }
+  .quantity-picker ion-button {
+    margin: 0;
+    --padding-start: 8px;
+    --padding-end: 8px;
+  }
+  .item_quantity {
+    width: 48px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border: none;
+    background: transparent;
+  }
+  #item_add {
+    --border-radius: 40px;
+    font-weight: 600;
+    padding: 0 20px;
+  }
+
+  /* Responsif kecil */
+  @media (max-width: 480px) {
+    .product-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .img_product {
+      height: 180px;
+    }
+    #main-product-image {
+      max-height: 250px;
+    }
+  }
+</style>
 <div class="container product-grid">
   {% for product in site.products %}
     <ion-card class="text-center" onclick='openProductModal({
