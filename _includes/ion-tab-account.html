@@ -46,67 +46,6 @@ title: Account
       </ion-card>
     </ion-content>
   </div>
-
-  <!-- Modal Login/Register -->
-  <ion-modal id="loginModal">
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Login / Register</ion-title>
-        <ion-buttons slot="end">
-          <ion-button onclick="tutupModal()">
-            <ion-icon slot="icon-only" name="close-circle-outline" color="danger"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-
-    <ion-content class="ion-padding">
-      <ion-card class="modal-form-card">
-        <ion-card-header>
-          <ion-card-title>
-            <ion-icon name="key-outline"></ion-icon>
-            Masuk / Daftar
-          </ion-card-title>
-          <ion-card-subtitle>Gunakan email & password untuk mengakses akun Anda</ion-card-subtitle>
-        </ion-card-header>
-
-        <ion-card-content>
-          <ion-list lines="full">
-            <ion-item>
-              <ion-icon name="mail-outline" slot="start" color="medium"></ion-icon>
-              <ion-label position="stacked">Email</ion-label>
-              <ion-input id="email" type="email" placeholder="contoh@email.com" required></ion-input>
-            </ion-item>
-
-            <ion-item>
-              <ion-icon name="lock-closed-outline" slot="start" color="medium"></ion-icon>
-              <ion-label position="stacked">Password</ion-label>
-              <ion-input id="password" type="password" placeholder="Minimal 6 karakter" required></ion-input>
-            </ion-item>
-          </ion-list>
-
-          <div id="user-info" class="user-status"></div>
-        </ion-card-content>
-
-        <ion-footer>
-          <ion-toolbar>
-            <ion-buttons slot="start">
-              <ion-button type="button" fill="outline" color="primary" onclick="register()">
-                <ion-icon slot="start" name="person-add-outline"></ion-icon>
-                Daftar
-              </ion-button>
-            </ion-buttons>
-            <ion-buttons slot="end">
-              <ion-button type="button" fill="solid" color="success" onclick="login()">
-                <ion-icon slot="start" name="log-in-outline"></ion-icon>
-                Masuk
-              </ion-button>
-            </ion-buttons>
-          </ion-toolbar>
-        </ion-footer>
-      </ion-card>
-    </ion-content>
-  </ion-modal>
 </ion-tab>
 
 <style>

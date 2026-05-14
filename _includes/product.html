@@ -16,20 +16,6 @@
 {% endfor %}
 </div>
 
-  <ion-modal id="product-modal" trigger="open-product">
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>{{ page.title }}</ion-title>
-        <ion-buttons slot="end">
-          <ion-button onclick="dismissModal()"><ion-icon slot="icon-only" name="close-circle-outline"></ion-icon></ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content class="ion-padding">
-      <div class="post-product simpleCart_shelfItem" id="modal-product-content"></div>
-    </ion-content>
-</ion-modal>
-
 <style>
   .color-picker {
     display: inline-block;
