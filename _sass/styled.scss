@@ -364,6 +364,11 @@ img.img_product {
   border-top: 1px solid var(--ion-border-color, #e9ecef);
 }
 
+ion-footer.fixed-bottom {
+    position: fixed;
+    bottom: 0;
+}
+
 #item_add {
   --border-radius: 40px;
   font-weight: 600;
@@ -729,6 +734,7 @@ ion-tab[tab="account"] {
   
   @include mobile {
     max-width: 320px;
+    margin: 50px auto;
   }
 
   .profile-header-bg {
