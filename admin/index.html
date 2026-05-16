@@ -1,0 +1,130 @@
+---
+layout: none
+title: Admin Dashboard
+permalink: /admin
+---
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-gray-100">
+  <nav class="bg-white shadow-md p-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold">Dashboard Produk</h1>
+    <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">Logout</button>
+  </nav>
+
+  <div class="container mx-auto p-6">
+    <!-- Tombol Tambah Produk -->
+    <div class="mb-6">
+      <button id="openCreateModal" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+        <i class="fas fa-plus mr-2"></i> Tambah Produk
+      </button>
+    </div>
+
+    <!-- Tabel Produk -->
+    <div class="bg-white rounded-lg shadow overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Gambar</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Judul</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Harga</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kategori</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="productTableBody" class="divide-y divide-gray-200"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal Create/Edit Produk -->
+  <div id="productModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative top-10 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-lg bg-white">
+      <div class="flex justify-between items-center mb-4">
+        <h3 id="modalTitle" class="text-lg font-bold">Tambah Produk Baru</h3>
+        <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700">&times;</button>
+      </div>
+      <form id="productForm">
+        <input type="hidden" id="productId">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium">Judul*</label>
+            <input type="text" id="title" required class="w-full border rounded p-2">
+          </div>
+          <div>
+            <label class="block text-sm font-medium">Harga* (contoh: "5.000")</label>
+            <input type="text" id="price" required class="w-full border rounded p-2">
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium">Deskripsi*</label>
+            <textarea id="description" rows="3" required class="w-full border rounded p-2"></textarea>
+          </div>
+          <div>
+            <label class="block text-sm font-medium">Model (pisah dengan koma) : HeadLoop, EarLoop, Tali Ikat</label>
+            <input type="text" id="model" placeholder="HeadLoop,EarLoop" class="w-full border rounded p-2">
+          </div>
+          <div>
+            <label class="block text-sm font-medium">Kategori (pisah koma)</label>
+            <input type="text" id="categories" placeholder="t-shirt,aksesoris" class="w-full border rounded p-2">
+          </div>
+          <div>
+            <label class="block text-sm font-medium">Tags (pisah koma)</label>
+            <input type="text" id="tags" placeholder="tshirt,premium" class="w-full border rounded p-2">
+          </div>
+          <div>
+            <label class="block text-sm font-medium">Gambar Unggulan (URL)</label>
+            <input type="url" id="featured_image_path" class="w-full border rounded p-2">
+          </div>
+          <div>
+            <label class="block text-sm font-medium">Gambar Facebook (URL optional)</label>
+            <input type="url" id="facebook_image_path" class="w-full border rounded p-2">
+          </div>
+        </div>
+
+        <!-- Upload gambar multiple -->
+        <div class="mt-4">
+          <label class="block text-sm font-medium">Upload Gambar (max 5, max 1MB each)</label>
+          <input type="file" id="imageUpload" accept="image/*" multiple class="w-full border rounded p-2">
+          <div id="uploadPreview" class="flex flex-wrap gap-2 mt-2"></div>
+          <button type="button" id="uploadImagesBtn" class="bg-blue-500 text-white px-3 py-1 rounded mt-2">Upload ke Repo</button>
+          <p class="text-xs text-gray-500 mt-1">URL gambar hasil upload akan muncul di bawah, copy ke field "Gambar Unggulan" atau "Style".</p>
+          <div id="uploadedUrls" class="text-sm text-green-600 mt-2"></div>
+        </div>
+
+        <!-- Dinamis list styles -->
+        <div class="mt-4">
+          <label class="block text-sm font-medium mb-2">Styles (warna, name, image_path)</label>
+          <div id="stylesContainer"></div>
+          <button type="button" id="addStyleBtn" class="bg-gray-500 text-white px-3 py-1 rounded mt-2">+ Tambah Style</button>
+        </div>
+
+        <div class="flex justify-end gap-2 mt-6">
+          <button type="button" id="cancelModalBtn" class="bg-gray-300 px-4 py-2 rounded">Batal</button>
+          <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Simpan Produk</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Hapus Konfirmasi -->
+  <div id="deleteModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+      <h3 class="text-lg font-bold mb-4">Konfirmasi Hapus</h3>
+      <p>Yakin ingin menghapus produk ini?</p>
+      <div class="flex justify-end gap-2 mt-6">
+        <button id="cancelDeleteBtn" class="bg-gray-300 px-4 py-2 rounded">Batal</button>
+        <button id="confirmDeleteBtn" class="bg-red-600 text-white px-4 py-2 rounded">Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ '/assets/js/admin.js' | relative_url }}"></script>
+</body>
+</html>
