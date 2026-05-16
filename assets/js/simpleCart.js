@@ -17,10 +17,10 @@ function formatBerat(angka) {
     }
 };
 
-var cart_kosong = '<div class="empty-cart" style="display: flex;flex-wrap: wrap;flex-direction: column;align-items: center;justify-content: center;gap: 25px;margin-top: 75px;"><ion-icon name="bag-outline" style="font-size: 95px;text-shadow: 0px 3px 10px #00000061;"></ion-icon><p class="center" style="text-shadow:4px 3px 3px #00000061;color:#000">Keranjang Belanja Kosong</p></div>';
-var tombolMinus = '<ion-icon name="chevron-down-circle-outline"></ion-icon>';
-var tombolPlus = '<ion-icon name="chevron-up-circle-outline"></ion-icon>';
-var tombolRemove = '<ion-icon name="trash-outline"></ion-icon>';
+var cart_kosong = '<div class="empty-cart" style="display: flex;flex-wrap: wrap;flex-direction: column;align-items: center;justify-content: center;gap: 25px;margin-top: 75px;"><ion-icon slot="icon-only" name="bag-outline" style="font-size: 95px;text-shadow: 0px 3px 10px #00000061;"></ion-icon><p class="center" style="text-shadow:4px 3px 3px #00000061;color:#000">Keranjang Belanja Kosong</p></div>';
+var tombolMinus = '<ion-icon slot="icon-only" name="chevron-down-circle-outline"></ion-icon>';
+var tombolPlus = '<ion-icon slot="icon-only" name="chevron-up-circle-outline"></ion-icon>';
+var tombolRemove = '<ion-icon slot="icon-only" name="trash-outline" color="danger"></ion-icon>';
 
 (function (window, document) {
     /*global HTMLElement */

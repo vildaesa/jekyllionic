@@ -2,14 +2,12 @@
 title: Store
 ---
   <ion-tab tab="store">
-    <div id="store-page">
-      <ion-header>
-        <ion-toolbar>
-          <ion-title>{{ page.title }}</ion-title>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content class="ion-no-padding container" fullscreen="true">
-        {% include post_product.html %}
-      </ion-content>
-    </div>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>{{ page.title }}</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding" fullscreen="true">
+      {% include post_product.html %}
+    </ion-content>
   </ion-tab>

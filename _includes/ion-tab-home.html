@@ -2,14 +2,12 @@
 title: Home
 ---
   <ion-tab tab="home">
-    <div id="home-page">
-      <ion-header>
-        <ion-toolbar>
-          <ion-title>{{ page.title }}</ion-title>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content class="ion-no-padding container" fullscreen="true">
-               {% include blog_post.html %}
-      </ion-content>
-    </div>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>{{ page.title }}</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding" fullscreen="true">
+      {% include blog_post.html %}
+    </ion-content>
   </ion-tab>

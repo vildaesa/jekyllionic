@@ -28,6 +28,7 @@
 
 <!-- Modal Login/Register -->
 <ion-modal id="loginModal">
+    <form onsubmit="event.preventDefault(); login();">
   <ion-header>
     <ion-toolbar>
       <ion-title>Akses Akun</ion-title>
@@ -39,8 +40,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-content class="ion-padding">
-    <form onsubmit="event.preventDefault(); login();">
+  <ion-content class="content-form-modal ion-no-padding">
       <ion-card class="modal-form-card" style="margin: 0; border-radius: 16px; box-shadow: none;">
         <ion-card-header>
           <ion-card-title>
@@ -52,6 +52,12 @@
 
         <ion-card-content>
           <ion-list lines="full">
+            <!--<ion-item>
+              <ion-icon name="person-outline" slot="start" color="medium"></ion-icon>
+              <ion-label position="stacked">Nama Lengkap</ion-label>
+              <ion-input id="full_name" type="text" placeholder="Masukkan nama lengkap Anda"></ion-input>
+            </ion-item>-->
+
             <ion-item>
               <ion-icon name="mail-outline" slot="start" color="medium"></ion-icon>
               <ion-label position="stacked">Email</ion-label>
@@ -67,6 +73,8 @@
 
           <div id="user-info" class="user-status"></div>
         </ion-card-content>
+      </ion-card>
+  </ion-content>
 
         <ion-footer>
           <ion-toolbar>
@@ -84,14 +92,10 @@
             </ion-buttons>
           </ion-toolbar>
         </ion-footer>
-      </ion-card>
     </form>
-  </ion-content>
 </ion-modal>
 
 <script>
-  // Accessibility Fix: Ensure aria-hidden is removed when modal is presented
-  // This avoids the "Blocked aria-hidden on an element because its descendant retained focus" error
   document.addEventListener('ionModalWillPresent', (ev) => {
     ev.target.removeAttribute('aria-hidden');
   });

@@ -5,18 +5,12 @@
 # For technical reasons, this file is *NOT* reloaded automatically when you use
 # 'jekyll serve'. If you change this file, please restart the server process.
 dev: nDang
-# Site settings
-title: Jekyll ionic@8
-description: > # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
-baseurl: "/jekyllionic" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site
 
-# SEO
+# Site settings
 title: jekyllionic
 description: Deskripsi singkat tentang website Anda
+baseurl: "/jekyllionic" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site
 author: vildaesa
 image: /assets/images/logo-og.jpg   # default OG image
 logo: /assets/images/logo-square.jpg # untuk JSON-LD
@@ -31,7 +25,7 @@ permalink: /:title
 # Sass settings
 sass:
   add_charset: true
-  sass_dir: assets/sass
+  sass_dir: _sass
   style: :compressed
 
 # Custom Collections

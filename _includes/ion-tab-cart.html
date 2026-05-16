@@ -1,139 +1,19 @@
 ---
 title: Cart
 ---
-<style>
-  /* Perbaikan tampilan cart & modal checkout */
-  #cart-page ion-content {
-    --background: var(--ion-background-color, #f5f7fa);
-  }
-  
-  /* Container utama */
-  #cart-page .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 1rem;
-  }
-  
-  /* Stylish card untuk daftar belanja (keranjang.html) */
-  #cart-page .cart-list {
-    background: white;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  }
-  
-  /* Jika keranjang.html menggunakan tabel, kita perbaiki responsifnya */
-  #cart-page table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  #cart-page th, #cart-page td {
-    padding: 12px 8px;
-    text-align: left;
-    border-bottom: 1px solid #e9ecef;
-  }
-  
-  #cart-page th {
-    background-color: #f8f9fa;
-    font-weight: 600;
-    color: #2c3e50;
-  }
-  
-  /* Total harga dan tombol checkout */
-  #cart-page .cart-total {
-    background: white;
-    border-radius: 20px;
-    padding: 1rem;
-    margin-top: 1rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  
-  #cart-page .total-text {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #2c3e50;
-  }
-  
-  #cart-page .total-price {
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: var(--ion-color-primary, #3880ff);
-  }
-  
-  /* Modal checkout fullscreen yang lebih rapi */
-  ion-modal.custom-fullscreen {
-    --border-radius: 0;
-    --box-shadow: none;
-  }
-  
-  ion-modal.custom-fullscreen::part(content) {
-    --border-radius: 0;
-  }
-  
-  #checkoutModal ion-card {
-    margin: 0;
-    border-radius: 24px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
-  }
-  
-  #checkoutModal form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  #checkoutModal ion-item {
-    --padding-start: 0;
-    --inner-padding-end: 0;
-    margin-bottom: 0.8rem;
-  }
-  
-  #checkoutModal ion-label {
-    font-weight: 600;
-    color: #2c3e50;
-  }
-  
-  #pay-button {
-    margin-top: 1rem;
-    --border-radius: 40px;
-    font-weight: 600;
-    text-transform: none;
-    letter-spacing: 0.5px;
-  }
-  
-  /* Responsive kecil */
-  @media (max-width: 480px) {
-    #cart-page th, #cart-page td {
-      padding: 8px 6px;
-      font-size: 0.85rem;
-    }
-    #cart-page .total-price {
-      font-size: 1.2rem;
-    }
-  }
-</style>
+
 
 <ion-tab tab="cart">
-  <div id="cart-page">
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>{{ page.title }}</ion-title>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content class="ion-no-padding" fullscreen="true">
-      <div class="container">
-        <!-- Konten keranjang (include) -->
-        {% include keranjang.html %}
-      </div>
-    </ion-content>
-  </div>
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>{{ page.title }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding" fullscreen="true">
+    <div class="container">
+      {% include keranjang.html %}
+    </div>
+  </ion-content>
 </ion-tab>
 
 <script>

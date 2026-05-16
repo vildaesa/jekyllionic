@@ -16,64 +16,7 @@
 {% endfor %}
 </div>
 
-<style>
-  .color-picker {
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    margin: 0 4px;
-    border: 2px solid #ccc;
-    cursor: pointer;
-  }
 
-  .quantity-picker {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 1em;
-  }
-
-  .quantity-picker button {
-    width: 32px;
-    height: 32px;
-    font-size: 18px;
-    font-weight: bold;
-    background-color: #f0f0f0;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-
-  .quantity-picker input {
-    width: 48px;
-    text-align: center;
-    font-size: 16px;
-    border: none;
-    border-radius: 6px;
-    background-color: transparent;
-  }
-
-  .size-picker {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 1em;
-  }
-
-  .size-button {
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  .size-button.active {
-    background-color: #333;
-    color: #fff;
-    border-color: #333;
-  }
-</style>
 
 <script>
   async function openProductModal(product) {
