@@ -4,10 +4,8 @@ categories:
   - Test
 tags:
   - blog
-facebook_image_path: null
 author: Putri Dinar
-img: >-
-  https://raw.githubusercontent.com/vildaesa/jekyllionic/online/assets/images/1779003733463-nzsnqbey.jpg
+img: https://raw.githubusercontent.com/vildaesa/jekyllionic/online/assets/images/1779003733463-nzsnqbey.jpg
 excerpt_separator: <!--more-->
 ---
 
