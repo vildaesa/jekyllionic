@@ -18,6 +18,7 @@
 <title>{{ seo_title | escape }}</title>
 <meta name="description" content="{{ seo_desc | strip_html | normalize_whitespace | truncate: 160 | escape }}">
 <meta name="author" content="{{ author | escape }}">
+<meta name="license" content="{{ site.license | escape }}">
 <link rel="canonical" href="{{ seo_url }}">
 
 <!-- Robots (index, follow) -->
