@@ -22,4 +22,4 @@ Jekyllionic Boilerplate is a lightweight and cleaned up version of the initial [
 * [Cloudflare Workers](https://workers.cloudflare.com/)
 * [Midtrans](https://midtrans.com/)
 ---
-**ADMIN PAGE:** [Access Dashboard](https://vildaesa.github.io/jekyllionic/admin/)
+**ADMIN PAGE:** [Access Dashboard](https://vems-olshop.pages.dev/admin/)
