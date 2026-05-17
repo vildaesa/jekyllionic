@@ -19,6 +19,33 @@
 </div>
 
 <script>
+  function selectColor(color, imagePath, button) {
+    document.querySelectorAll('.color-button').forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
+    document.getElementById('selected_color').value = color;
+    document.getElementById('selected_thumb').value = imagePath;
+    document.getElementById('main-product-image').src = imagePath;
+  }
+
+  function selectModel(button, model) {
+    document.querySelectorAll('.model-button').forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
+    document.getElementById('selected_model').value = model;
+  }
+
+  function updateQuantity(change) {
+    const input = document.getElementById('item_quantity_input');
+    let current = parseInt(input.value, 10);
+    let newVal = current + change;
+    if (newVal < 1) newVal = 1;
+    input.value = newVal;
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('productModal');
+    if (modal) modal.dismiss();
+  }
+
   async function openProductModal(product) {
     const modal = document.getElementById('productModal');
 
@@ -58,41 +85,39 @@
                   </button>
                 `).join('')}
               </div>
+              <input type="hidden" id="selected_color" value="${(product.styles && product.styles.length > 0) ? product.styles[0].color : ''}" />
+              <input type="hidden" id="selected_thumb" value="${(product.styles && product.styles.length > 0) ? product.styles[0].image_path : (product.featured_image_path || '')}" />
             </div>
-                <input type="hidden" id="selected_color" value="${(product.styles && product.styles.length > 0) ? product.styles[0].color : ''}" />
-                <input type="hidden" id="selected_thumb" value="${(product.styles && product.styles.length > 0) ? product.styles[0].image_path : (product.featured_image_path || '')}" />
-              </div>
 
-              <!-- Pilihan model (tali) -->
-              <div class="model-picker-group">
-                <p>Tali :</p>
-                <div class="model-buttons" id="model-buttons-container">
-                  ${(product.model || []).map((modelName, i) => `
-                    <button class="model-button ${i === 0 ? 'active' : ''}" onclick="selectModel(this, '${modelName}')">${modelName}</button>
-                  `).join('')}
-                </div>
-                <input type="hidden" id="selected_model" value="${(product.model && product.model.length > 0) ? product.model[0] : ''}" />
+            <!-- Pilihan model (tali) -->
+            <div class="model-picker-group">
+              <p>Tali :</p>
+              <div class="model-buttons" id="model-buttons-container">
+                ${(product.model || []).map((modelName, i) => `
+                  <button class="model-button ${i === 0 ? 'active' : ''}" onclick="selectModel(this, '${modelName}')">${modelName}</button>
+                `).join('')}
               </div>
-            </ion-card-content>
-          </ion-card>
-        </div>
+              <input type="hidden" id="selected_model" value="${(product.model && product.model.length > 0) ? product.model[0] : ''}" />
+            </div>
+          </ion-card-content>
+        </ion-card>
       </ion-content>
 
       <ion-footer class="footer-actions">
         <ion-toolbar>
           <div class="container" style="display: flex; justify-content: space-between; align-items: center; padding: 4px 12px;">
             <div class="quantity-picker">
-            <ion-buttons slot="start">
-              <ion-button type="button" onclick="updateQuantity(-1)">
-                <ion-icon slot="icon-only" name="remove-circle" color="primary"></ion-icon>
-              </ion-button>
-            </ion-buttons>
+              <ion-buttons slot="start">
+                <ion-button type="button" onclick="updateQuantity(-1)">
+                  <ion-icon slot="icon-only" name="remove-circle" color="primary"></ion-icon>
+                </ion-button>
+              </ion-buttons>
               <input type="number" class="item_quantity" id="item_quantity_input" value="1" min="1" readonly />
-            <ion-buttons slot="end">
-              <ion-button type="button" onclick="updateQuantity(1)">
-                <ion-icon slot="icon-only" name="add-circle" color="primary"></ion-icon>
-              </ion-button>
-            </ion-buttons>
+              <ion-buttons slot="end">
+                <ion-button type="button" onclick="updateQuantity(1)">
+                  <ion-icon slot="icon-only" name="add-circle" color="primary"></ion-icon>
+                </ion-button>
+              </ion-buttons>
             </div>
             <ion-buttons slot="end">
               <ion-button id="item_add" fill="solid" color="primary">Tambahkan</ion-button>
@@ -104,8 +129,8 @@
 
     await modal.present();
 
-    // Pasang event listener add to cart (tetap sama)
-    document.getElementById('item_add').addEventListener('click', function () {
+    // Pasang event listener add to cart
+    document.getElementById('item_add').addEventListener('click', async function () {
       const model = document.getElementById('selected_model').value;
       const qty = parseInt(document.getElementById('item_quantity_input').value, 10);
       const color = document.getElementById('selected_color').value;
@@ -121,35 +146,12 @@
         link: product.url
       });
 
+      // Tampilkan toast konfirmasi
+      if (typeof showToast === 'function') {
+        showToast(`${product.title} (${color}) sudah masuk ke keranjang`);
+      }
+
       closeModal();
     });
-  }
-
-  function closeModal() {
-    const modal = document.getElementById('productModal');
-    if (modal) modal.dismiss();
-  }
-
-  function selectColor(color, imagePath, button) {
-    document.getElementById('main-product-image').src = imagePath;
-    document.getElementById('selected_color').value = color;
-    document.getElementById('selected_thumb').value = imagePath;
-
-    document.querySelectorAll('.color-button').forEach(btn => btn.classList.remove('active'));
-    button.classList.add('active');
-  }
-
-  function selectModel(button, model) {
-    document.querySelectorAll('.model-button').forEach(btn => btn.classList.remove('active'));
-    button.classList.add('active');
-    document.getElementById('selected_model').value = model;
-  }
-
-  function updateQuantity(change) {
-    const input = document.getElementById('item_quantity_input');
-    let current = parseInt(input.value, 10);
-    let newVal = current + change;
-    if (newVal < 1) newVal = 1;
-    input.value = newVal;
   }
 </script>
