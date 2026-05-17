@@ -107,4 +107,9 @@
 </script>
 
 <!-- Opsional: favicon -->
-<link rel="icon" href="{{ site.favicon | default: '/favicon.ico' | relative_url }}" type="image/x-icon">
+<link rel="icon" href="{{ site.favicon | default: '/favicon.ico' | relative_url }}" type="image/x-icon"><link rel="icon" type="image/png" href="{{ '/assets/images/fav/favicon-96x96.png' | relative_url }}" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="{{ '/assets/images/fav/favicon.svg' | relative_url }}" />
+<link rel="shortcut icon" href="{{ '/assets/images/fav/favicon.ico' | relative_url }}" />
+<link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/images/fav/apple-touch-icon.png' | relative_url }}" />
+<meta name="apple-mobile-web-app-title" content="jekyllionic" />
+<link rel="manifest" href="{{ '/assets/images/fav/site.webmanifest' | relative_url }}" />
