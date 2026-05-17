@@ -860,14 +860,16 @@ ion-card#loginBtn {
 }
 
 .content-form-modal {
-    display: block;
-    position: relative;
-    height: 100vh;
-    max-height: 52%;
-    @include mobile {
-      max-height: 74%;
-    }
+  display: block;
+  position: relative;
+  height: 400px;
+  min-height: 100%;
+  
+  @include mobile {
+    height: 500px;
+    max-height: 100%;
   }
+}
 
 .modal-form-card {
   margin: 0;
@@ -890,6 +892,7 @@ ion-card#loginBtn {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  height: 100dvh;
 }
 
 .success-card {
@@ -915,16 +918,33 @@ ion-card#loginBtn {
 
 /* --- Modals --- */
 ion-modal.custom-fullscreen {
-  --height: 100vh;
-  --width: 100vw;
+  --height: 100%;
+  --width: 100%;
   --border-radius: 0;
   --margin: 0;
-  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  
+  @supports (height: 100dvh) {
+    --height: 100dvh;
+  }
 
   &::part(content) {
     --border-radius: 0;
-    --height: 100vh;
-    --width: 100vw;
+    --height: 100%;
+    --width: 100%;
     --margin: 0;
+  }
+
+  @include mobile {
+    --height: 100% !important;
+    --width: 100% !important;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
   }
 }
