@@ -375,6 +375,6 @@ document.getElementById('addStyleBtn')?.addEventListener('click', () => {
 productForm?.addEventListener('submit', saveItem);
 
 // Init
-if (window.location.pathname.includes('/admin')) {
+if (window.location.pathname.includes('./admin')) {
   loadItems().catch(console.error);
 }
