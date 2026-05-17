@@ -2,10 +2,9 @@
 img: https://plus62store.github.io/assets/images/blog/Logo-Bordir.jpg
 title: 2 Cara Membuat Bordiran
 author: NdanG
-excerpt_separator: <!--more-->
 ---
 
-Ada 2 macam cara membordir yaitu bordir manual dan bordir komputer. Tehnik membordir secara manual maupun dengan komputer itu tetap memerlukan keterampilan khusus,<!--more--> terutama dalam proses persiapan sampai dengan proses produksi. Pada awalnya bordir manual sangat pupoler dikalangan masyarakat pengusaha atau pelaku industri konveksi dan semi garment sebelum bordir komputer populer dan dikenal di pasaran.
+Ada 2 macam cara membordir yaitu bordir manual dan bordir komputer. Tehnik membordir secara manual maupun dengan komputer itu tetap memerlukan keterampilan khusus, terutama dalam proses persiapan sampai dengan proses produksi. Pada awalnya bordir manual sangat pupoler dikalangan masyarakat pengusaha atau pelaku industri konveksi dan semi garment sebelum bordir komputer populer dan dikenal di pasaran.
 
 ### Proses bordir manual
 

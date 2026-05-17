@@ -1,0 +1,16 @@
+---
+layout: default
+---
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button default-href="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ page.title }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" fullscreen="true">
+  {% include blog_post.html posts=page.posts %}
+</ion-content>

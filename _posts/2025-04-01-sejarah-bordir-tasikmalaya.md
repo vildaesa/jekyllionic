@@ -2,10 +2,9 @@
 img: 'https://plus62store.github.io/assets/images/blog/Bordir-Tasik.jpg'
 title: Sejarah Bordir Tasikmalaya
 author: NdanG
-excerpt_separator: <!--more-->
 ---
 
- Kawalu adalah sebuah kecamatan di Kota Tasikmalaya, Provinsi Jawa Barat. Ibu kota kecamatan ini berada di Kelurahan Karsamenak. Saat ini kecamatan Kawalu dikenal<!--more--> sebagai daerah penghasil ”home industry” Bordir di Kota Tasikmalaya. Dengan 33 Sentra Bordir yang tersebar di 10 Kelurahan, Kawalu mengalami percepatan ekonomi paling pesat dibanding kecamatan lain. Produksi bordir Kawalu selain merambah pangsa pasar kecil di Priangan Timur, juga merambah pasar di kawasan Ibu Kota Jakarta khususnya Pasar Tanah Abang dan Manca Negara seperti Malaysia, Brunei Darussalam, Saudi Arabia, Singapura, dan Afrika.
+ Kawalu adalah sebuah kecamatan di Kota Tasikmalaya, Provinsi Jawa Barat. Ibu kota kecamatan ini berada di Kelurahan Karsamenak. Saat ini kecamatan Kawalu dikenal sebagai daerah penghasil ”home industry” Bordir di Kota Tasikmalaya. Dengan 33 Sentra Bordir yang tersebar di 10 Kelurahan, Kawalu mengalami percepatan ekonomi paling pesat dibanding kecamatan lain. Produksi bordir Kawalu selain merambah pangsa pasar kecil di Priangan Timur, juga merambah pasar di kawasan Ibu Kota Jakarta khususnya Pasar Tanah Abang dan Manca Negara seperti Malaysia, Brunei Darussalam, Saudi Arabia, Singapura, dan Afrika.
 
 ### PENGHASIL BORDIR TERBESAR
 

@@ -1,5 +1,6 @@
+{% assign posts = include.posts | default: site.posts %}
 <div class="container blog_grid">
-    {% for post in site.posts %}
+    {% for post in posts %}
       <ion-card class="flex_post" onclick="openPostModal({{ post | jsonify | escape }})">
         <img class="blog_img" src="{{ post.img }}" loading="lazy" alt="{{ post.title }}">
         <div class="post_box">
@@ -8,7 +9,7 @@
             <ion-card-subtitle>Author: {{ post.author }}</ion-card-subtitle>
           </ion-card-header>
           <ion-card-content class="ion-card-content">
-            <ion-text color="secondary">{{ post.excerpt }}</ion-text>
+            <ion-text color="secondary">{{ post.excerpt | strip_html | truncate: 130 }}</ion-text>
           </ion-card-content>
         </div>
       </ion-card>
