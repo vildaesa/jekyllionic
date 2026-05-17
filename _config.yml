@@ -9,7 +9,7 @@ dev: nDang
 # Site settings
 title: jekyllionic
 description: Deskripsi singkat tentang website Anda
-baseurl: "/jekyllionic" # the subpath of your site, e.g. /blog
+baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site
 author: vildaesa
 image: /assets/images/logo-og.jpg   # default OG image
