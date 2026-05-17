@@ -162,8 +162,10 @@ title: Cart
           if (data.token) {
             snap.pay(data.token, {
               onSuccess: () => {
-                localStorage.removeItem('simpleCart_items');
-                showAlert("Pembayaran berhasil!", "Sukses");
+                showAlert("Pembayaran berhasil! Anda akan dialihkan.", "Sukses");
+                setTimeout(() => {
+                  window.location.href = "{{ '/success' | relative_url }}";
+                }, 2000);
               },
               onPending: () => showAlert("Pembayaran tertunda.", "Perhatian"),
               onError: () => showAlert("Terjadi kesalahan pembayaran.", "Error"),

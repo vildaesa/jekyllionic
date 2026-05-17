@@ -1,6 +1,7 @@
 export async function onRequestPost(context) {
   try {
     const { request } = context;
+    const origin = new URL(request.url).origin;
     const body = await request.json();
 
     const response = await fetch("https://app.sandbox.midtrans.com/snap/v1/transactions", {
@@ -22,6 +23,9 @@ export async function onRequestPost(context) {
           billing_address: {
             ...body.customer.address
           }
+        },
+        callbacks: {
+          finish: `${origin}/success/`
         }
       })
     });
