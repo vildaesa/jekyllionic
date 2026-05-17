@@ -20,17 +20,21 @@
 
 <script>
   async function openProductModal(product) {
-    const styles = product.styles.map((style, index) => `
+    const styles = (product.styles && product.styles.length > 0) ? product.styles.map((style, index) => `
       <div id="style-image-${index}" class="style-image" style="${index !== 0 ? 'display:none;' : ''}">
         <img class="item_thumb" src="${style.image_path}" itemprop="image" style="max-width: 100%;" />
       </div>
-    `).join('');
+    `).join('') : `
+      <div class="style-image">
+        <img class="item_thumb" src="${product.featured_image_path || ''}" itemprop="image" style="max-width: 100%;" />
+      </div>
+    `;
 
-    const colorPickers = product.styles.map((style, index) => `
+    const colorPickers = (product.styles || []).map((style, index) => `
       <div class="color-picker" style="background-color:${style.color}" onclick="changeStyleImage(${index})"></div>
     `).join('');
 
-    const sizes = product.sizes.map(size => `
+    const sizes = (product.sizes || []).map(size => `
       <option value="${size}">${size}</option>
     `).join('');
 
@@ -43,18 +47,22 @@
         <h1 class="entry-title item_name">${product.title}</h1>
         <p class="item_price">Rp. ${product.price}</p>
 
+        ${colorPickers ? `
         <div class="style-picker">
           <p class="margin-bottom-0">Color:</p>
           ${colorPickers}
         </div>
+        ` : ''}
 
+  ${(product.sizes && product.sizes.length > 0) ? `
   <p class="margin-bottom-0">Size:</p>
 <div class="size-picker">
-  ${product.sizes.map(size => `
-    <button type="button" class="size-button" onclick="selectSize(this, '${size}')">${size}</button>
+  ${product.sizes.map((size, i) => `
+    <button type="button" class="size-button ${i === 0 ? 'active' : ''}" onclick="selectSize(this, '${size}')">${size}</button>
   `).join('')}
 </div>
 <input type="hidden" id="selected_size" class="item_model" value="${product.sizes[0]}" />
+  ` : ''}
 
   <p class="margin-bottom-0">Quantity:</p>
 <div class="quantity-picker">

@@ -223,10 +223,10 @@ function openEditModal(item) {
   titleInput.value = item.title || '';
   priceInput.value = item.price || '';
   descriptionInput.value = item.body || item.description || '';
-  modelInput.value = (item.model || []).join(',');
+  modelInput.value = Array.isArray(item.model) ? item.model.join(',') : (item.model || '');
   authorInput.value = item.author || '';
-  categoriesInput.value = (item.categories || []).join(',');
-  tagsInput.value = (item.tags || []).join(',');
+  categoriesInput.value = Array.isArray(item.categories) ? item.categories.join(',') : (item.categories || '');
+  tagsInput.value = Array.isArray(item.tags) ? item.tags.join(',') : (item.tags || '');
   featuredImageInput.value = item.featured_image_path || item.img || '';
   facebookImageInput.value = item.facebook_image_path || '';
   stylesArray = [...(item.styles || [])];
@@ -309,7 +309,7 @@ uploadImagesBtn?.addEventListener('click', async () => {
   for (let i = 0; i < files.length; i++) formData.append('images', files[i]);
   
   try {
-    const res = await fetch(`${API_BASE_URL}/api/upload`, {
+    const res = await fetch(`${API_BASE_URL}/api/upload?type=${currentCollection}`, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` },
       body: formData
@@ -375,6 +375,6 @@ document.getElementById('addStyleBtn')?.addEventListener('click', () => {
 productForm?.addEventListener('submit', saveItem);
 
 // Init
-if (window.location.pathname.includes('/admin')) {
+if (document.getElementById('productTableBody')) {
   loadItems().catch(console.error);
 }

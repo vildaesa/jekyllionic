@@ -36,42 +36,42 @@
       </ion-header>
 
       <ion-content class="ion-padding modal-product-content">
-        <div class="product-detail-layout">
-          <!-- Gambar utama -->
-          <div id="product-image-container">
-            <img id="main-product-image" src="${product.styles[0].image_path}" alt="${product.title}">
-          </div>
+        <!-- Gambar utama -->
+        <div id="product-image-container">
+          <img id="main-product-image" src="${(product.styles && product.styles.length > 0) ? product.styles[0].image_path : (product.featured_image_path || '')}" alt="${product.title}">
+        </div>
 
-          <!-- Detail produk -->
-          <ion-card class="product-detail-panel ion-no-margin">
-            <ion-card-content>
-              <div class="price-text">Rp ${product.price}</div>
-              <div class="description-text">${product.description || ''}</div>
+        <!-- Detail produk -->
+        <ion-card class="product-detail-panel ion-no-margin">
+          <ion-card-content>
+            <div class="price-text">Rp ${product.price}</div>
+            <div class="description-text">${product.description || ''}</div>
 
-              <!-- Pilihan warna -->
-              <div class="color-picker-group">
-                <p>Warna :</p>
-                <div class="color-buttons" id="color-buttons-container">
-                  ${product.styles.map((style, i) => `
-                    <button onclick="selectColor('${style.color}', '${style.image_path}', this)" 
-                      class="color-button ${i === 0 ? 'active' : ''}" 
-                      style="background:${style.name};">
-                    </button>
-                  `).join('')}
-                </div>
-                <input type="hidden" id="selected_color" value="${product.styles[0].color}" />
-                <input type="hidden" id="selected_thumb" value="${product.styles[0].image_path}" />
+            <!-- Pilihan warna -->
+            <div class="color-picker-group">
+              <p>Warna :</p>
+              <div class="color-buttons" id="color-buttons-container">
+                ${(product.styles || []).map((style, i) => `
+                  <button onclick="selectColor('${style.color}', '${style.image_path}', this)" 
+                    class="color-button ${i === 0 ? 'active' : ''}" 
+                    style="background:${style.name};">
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+                <input type="hidden" id="selected_color" value="${(product.styles && product.styles.length > 0) ? product.styles[0].color : ''}" />
+                <input type="hidden" id="selected_thumb" value="${(product.styles && product.styles.length > 0) ? product.styles[0].image_path : (product.featured_image_path || '')}" />
               </div>
 
               <!-- Pilihan model (tali) -->
               <div class="model-picker-group">
                 <p>Tali :</p>
                 <div class="model-buttons" id="model-buttons-container">
-                  ${product.model.map((modelName, i) => `
+                  ${(product.model || []).map((modelName, i) => `
                     <button class="model-button ${i === 0 ? 'active' : ''}" onclick="selectModel(this, '${modelName}')">${modelName}</button>
                   `).join('')}
                 </div>
-                <input type="hidden" id="selected_model" value="${product.model[0]}" />
+                <input type="hidden" id="selected_model" value="${(product.model && product.model.length > 0) ? product.model[0] : ''}" />
               </div>
             </ion-card-content>
           </ion-card>
