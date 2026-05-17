@@ -8,7 +8,7 @@ let currentDeleteId = null;
 function getAuthHeaders() {
   const token = localStorage.getItem('adminToken');
   if (!token) {
-    window.location.href = './login';
+    window.location.href = '/admin/login';
     throw new Error('No token');
   }
   return {
@@ -361,7 +361,7 @@ confirmDeleteBtn?.addEventListener('click', confirmDelete);
 // Global actions
 function logout() {
   localStorage.removeItem('adminToken');
-  window.location.href = './login';
+  window.location.href = '/admin/login';
 }
 
 document.getElementById('logoutBtn')?.addEventListener('click', logout);
@@ -375,6 +375,6 @@ document.getElementById('addStyleBtn')?.addEventListener('click', () => {
 productForm?.addEventListener('submit', saveItem);
 
 // Init
-if (window.location.pathname.includes('./admin')) {
+if (window.location.pathname.includes('/admin')) {
   loadItems().catch(console.error);
 }

@@ -62,7 +62,7 @@ permalink: /admin/login
         // Simpan token ke localStorage
         localStorage.setItem('adminToken', data.token);
         // Redirect ke dashboard
-        window.location.href = './';
+        window.location.href = '{{ "/admin" | relative_url }}';
       } catch (err) {
         errorMsgDiv.textContent = err.message;
         errorMsgDiv.classList.remove('hidden');
