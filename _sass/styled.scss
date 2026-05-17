@@ -118,6 +118,15 @@ img.blog_img {
   }
 }
 
+.modal-product-content {
+  ion-card {
+    max-width: 800px;
+    margin: auto;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
 /* --- Product Grid & Details --- */
 div.product-grid {
   display: grid;
@@ -202,7 +211,9 @@ img.img_product {
 }
 
 #product-image-container {
-  width: 100%;
+  max-width: 800px;
+  margin: auto;
+  margin-bottom: 20px;
   background: white;
   border-radius: 24px;
   overflow: hidden;
