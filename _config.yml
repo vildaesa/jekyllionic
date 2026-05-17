@@ -38,6 +38,7 @@ exclude:
   - package.json
   - README.md
   - CNAME
+  - functions
 
 # Plugin settings
 plugins:
