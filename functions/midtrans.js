@@ -25,7 +25,7 @@ export async function onRequestPost(context) {
           }
         },
         callbacks: {
-          finish: `${origin}/success/`
+          finish: `${origin}/success`
         }
       })
     });
