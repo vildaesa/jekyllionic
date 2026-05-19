@@ -1,4 +1,4 @@
-import crypto from 'crypto';
+import crypto from 'node:crypto';
 
 const SERVER_KEY = "SB-Mid-server-CyKGMYV99Y-uQX8Cdhnewuxy";
 
