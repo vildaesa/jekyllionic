@@ -10,7 +10,7 @@ Jekyll::Hooks.register :site, :after_init do |site|
     'AUTH_DOMAIN',
     'PROJECT_ID',
     'APP_ID',
-    'MIDTRANS_CLIENT_KEY',
+    'CLIENT_KEY',
     'MIDTRANS_URL',
     'WA_KEY',
     'DATABASE_URL',
