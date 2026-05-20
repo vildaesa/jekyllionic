@@ -89,7 +89,7 @@ permalink: /admin
     setTimeout(() => { localStorage.removeItem('adminToken'); window.location.href = '/login'; }, 1500);
   }
 
-  function logout() { localStorage.removeItem('adminToken'); redirectToLogin(); }
+  function logout() { localStorage.removeItem('adminToken'); window.location.href = '/login'; }, 1500); }
 
   function getAuthHeaders() {
     const token = localStorage.getItem('adminToken');
