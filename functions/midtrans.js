@@ -4,16 +4,15 @@ export async function onRequestPost(context) {
     const origin = new URL(request.url).origin;
     const body = await request.json();
 
-    // Ambil store identifier dari request body (dikirim dari frontend)
-    const storeId = body.storeId || '';        // misal: 'tokoA', 'premium', dll
-    const waNumber = body.waNumber || '';      // opsional: langsung nomor WA
+    const storeId = body.storeId || 'default';
+    const waNumber = body.waNumber || '';
 
-    // Bangun finish URL dengan parameter
-    let finishUrl = `${origin}/success`;
+    // Bangun finish URL menuju halaman sukses universal
+    const successBaseUrl = 'https://payment-accept.pages.dev';
     const params = new URLSearchParams();
     if (storeId) params.append('store', storeId);
     if (waNumber) params.append('wa', waNumber);
-    if (params.toString()) finishUrl += `?${params.toString()}`;
+    const finishUrl = params.toString() ? `${successBaseUrl}?${params.toString()}` : successBaseUrl;
 
     const response = await fetch("https://app.sandbox.midtrans.com/snap/v1/transactions", {
       method: "POST",
