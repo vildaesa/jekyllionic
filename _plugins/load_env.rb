@@ -11,6 +11,7 @@ Jekyll::Hooks.register :site, :after_init do |site|
     'PROJECT_ID',
     'APP_ID',
     'CLIENT_KEY',
+    'SERVER_KEY',
     'MIDTRANS_URL',
     'WA_KEY',
     'DATABASE_URL',
