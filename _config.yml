@@ -48,6 +48,7 @@ plugins:
   - jekyll-sitemap
   - jekyll-archives
   - jekyll-paginate
+  - jekyll-dotenv
 
 # Archives
 jekyll-archives:
