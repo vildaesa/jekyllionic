@@ -12,8 +12,7 @@ Jekyll::Hooks.register :site, :after_init do |site|
     'APP_ID',
     'CLIENT_KEY',
     'SERVER_KEY',
-    'MIDTRANS_URL',
-    'WA_KEY',
+    'STORAGE_BUCKET',
     'DATABASE_URL',
     'SENDER_ID'
   ].each do |var|
