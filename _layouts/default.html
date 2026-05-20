@@ -7,12 +7,12 @@
 <script type="module">
   const firebaseConfig = {
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  apiKey: "{{ site.env.API_KEY }}",
-  authDomain: "{{ site.env.AUTH_DOMAIN }}",
-  projectId: "{{ site.env.PROJECT_ID }}",
-  storageBucket: "{{ site.env.STORAGE_BUCKET }}",
-  messagingSenderId: "{{ site.env.SENDER_ID }}",
-  appId: "{{ site.env.APP_ID }}","
+  apiKey: "{{ site.API_KEY }}",
+  authDomain: "{{ site.AUTH_DOMAIN }}",
+  projectId: "{{ site.PROJECT_ID }}",
+  storageBucket: "{{ site.STORAGE_BUCKET }}",
+  messagingSenderId: "{{ site.SENDER_ID }}",
+  appId: "{{ site.APP_ID }}","
   };
   firebase.initializeApp(firebaseConfig);
 </script>
