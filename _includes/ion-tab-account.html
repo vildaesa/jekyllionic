@@ -86,13 +86,14 @@ title: Account
 </script>
 
 <script type="module">
+  const auth = firebase.auth();
+
   window.register = register;
   window.login = login;
   window.logout = logout;
   window.tutupModal = tutupModal;
   window.openLoginModal = openLoginModal;
 
-  const auth = firebase.auth();
 
   function register() {
     const email = document.getElementById("email").value;
