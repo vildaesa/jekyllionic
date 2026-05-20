@@ -62,7 +62,7 @@ permalink: /success
 
     message += `\nTotal Pembayaran: Rp${total}`;
 
-    const phoneNumber = "{{ site.WA_KEY }}";
+    const phoneNumber = "{{ site.wa_admin }}";
     const encodedMessage = encodeURIComponent(message);
     const waLink = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
 
