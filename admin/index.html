@@ -258,6 +258,12 @@ permalink: /admin
     finally{ currentDeleteId=null; }
   }
 
+function logout() {
+    localStorage.removeItem("userToken"); 
+    
+    window.location.href = "/login"; 
+}
+
   async function init() {
     const token = localStorage.getItem('adminToken');
     if(!token) { redirectToLogin(); return; }
