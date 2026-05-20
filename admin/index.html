@@ -10,18 +10,16 @@ permalink: /admin
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard</title>
 
-  <!-- Ionic Framework -->
   <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core@8/dist/ionic/ionic.esm.js"></script>
   <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core@8/dist/ionic/ionic.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core@8/css/ionic.bundle.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 
   <style>
-    /* Styling untuk tabel dan tata letak agar rapi tanpa Tailwind */
     .table-container { overflow-x: auto; padding: 10px; }
     table { width: 100%; border-collapse: collapse; margin-top: 10px; }
     th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
-    .modal-content { --max-width: 800px; }
+    .ion-hide { display: none; }
   </style>
 </head>
 <body>
@@ -29,7 +27,7 @@ permalink: /admin
 <ion-app>
   <ion-header>
     <ion-toolbar color="primary">
-      <ion-title>Dashboard Produk</ion-title>
+      <ion-title>Dashboard Admin</ion-title>
       <ion-buttons slot="end">
         <ion-button id="logoutBtn" color="light">Logout</ion-button>
       </ion-buttons>
@@ -37,23 +35,15 @@ permalink: /admin
   </ion-header>
 
   <ion-content class="ion-padding">
-    <!-- Tab Switcher -->
     <ion-segment value="products" id="tabSwitcher">
-      <ion-segment-button value="products" id="showProductsBtn">
-        <ion-label>Produk</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="posts" id="showPostsBtn">
-        <ion-label>Blog Posts</ion-label>
-      </ion-segment-button>
+      <ion-segment-button value="products" id="showProductsBtn">Produk</ion-segment-button>
+      <ion-segment-button value="posts" id="showPostsBtn">Blog Posts</ion-segment-button>
     </ion-segment>
 
     <div class="ion-margin-vertical">
-      <ion-button id="openCreateModal" color="success">
-        <ion-icon slot="start" name="add-outline"></ion-icon> Tambah Baru
-      </ion-button>
+      <ion-button id="openCreateModal" color="success"><ion-icon slot="start" name="add-outline"></ion-icon> Tambah Baru</ion-button>
     </div>
 
-    <!-- Tabel -->
     <ion-card>
       <div class="table-container">
         <table>
@@ -61,7 +51,7 @@ permalink: /admin
             <tr>
               <th>Gambar</th>
               <th>Judul</th>
-              <th>Harga</th>
+              <th id="priceHeader">Harga</th>
               <th>Kategori</th>
               <th>Aksi</th>
             </tr>
@@ -73,47 +63,53 @@ permalink: /admin
   </ion-content>
 </ion-app>
 
-<!-- Modal Create/Edit -->
-<ion-modal id="productModal" trigger="openCreateModal" class="modal-content">
-  <ion-header>
-    <ion-toolbar>
-      <ion-title id="modalTitle">Tambah Item Baru</ion-title>
-      <ion-buttons slot="end">
-        <ion-button id="closeModalBtn">Tutup</ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
+<ion-modal id="productModal" class="modal-content">
+  <ion-header><ion-toolbar><ion-title id="modalTitle">Tambah Item</ion-title></ion-toolbar></ion-header>
   <ion-content class="ion-padding">
     <form id="productForm">
-      <ion-item>
-        <ion-label position="stacked">Judul*</ion-label>
-        <ion-input id="title" required></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="stacked">Harga*</ion-label>
-        <ion-input id="price"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="stacked">Deskripsi*</ion-label>
-        <ion-textarea id="description" rows="5"></ion-textarea>
-      </ion-item>
-      <!-- Tambahkan item input lainnya sesuai kebutuhan -->
-      <ion-button expand="block" type="submit" class="ion-margin-top">Simpan Produk</ion-button>
+      <input type="hidden" id="productId">
+      <input type="hidden" id="productSha">
+      
+      <ion-item><ion-label position="stacked">Judul*</ion-label><ion-input id="title" required></ion-input></ion-item>
+      <ion-item id="priceGroup"><ion-label position="stacked">Harga</ion-label><ion-input id="price"></ion-input></ion-item>
+      <ion-item><ion-label position="stacked">Deskripsi</ion-label><ion-textarea id="description"></ion-textarea></ion-item>
+      <ion-item id="modelGroup"><ion-label position="stacked">Model (pisahkan koma)</ion-label><ion-input id="model"></ion-input></ion-item>
+      <ion-item id="authorGroup" class="ion-hide"><ion-label position="stacked">Penulis</ion-label><ion-input id="author"></ion-input></ion-item>
+      <ion-item><ion-label position="stacked">Kategori</ion-label><ion-input id="categories"></ion-input></ion-item>
+      <ion-item><ion-label position="stacked">Tags</ion-label><ion-input id="tags"></ion-input></ion-item>
+      <ion-item><ion-label position="stacked">Gambar Utama (URL)</ion-label><ion-input id="featured_image_path"></ion-input></ion-item>
+      
+      <div class="ion-padding">
+        <input type="file" id="imageUpload" multiple accept="image/*">
+        <div id="uploadPreview" class="ion-margin-top"></div>
+        <ion-button id="uploadImagesBtn" size="small">Upload ke Repo</ion-button>
+        <div id="uploadedUrls"></div>
+      </div>
+
+      <div class="ion-padding" id="stylesWrapper">
+        <label>Styles</label>
+        <div id="stylesContainer"></div>
+        <ion-button id="addStyleBtn" fill="clear" size="small">+ Tambah Style</ion-button>
+      </div>
+
+      <div class="ion-padding">
+        <ion-button expand="block" type="submit">Simpan</ion-button>
+        <ion-button expand="block" color="medium" id="cancelModalBtn">Batal</ion-button>
+      </div>
     </form>
+  </ion-content>
+</ion-modal>
+
+<ion-modal id="deleteModal">
+  <ion-content class="ion-padding">
+    <p>Yakin ingin menghapus ini?</p>
+    <ion-button color="danger" id="confirmDeleteBtn">Hapus</ion-button>
+    <ion-button color="medium" id="cancelDeleteBtn">Batal</ion-button>
   </ion-content>
 </ion-modal>
 
 <ion-alert id="globalAlert"></ion-alert>
 
 <script src="{{ '/assets/js/admin.js' | relative_url }}"></script>
-<script>
-  function showAlert(message, header = "Info") {
-    const alert = document.getElementById('globalAlert');
-    alert.header = header;
-    alert.message = message;
-    alert.buttons = ['OK'];
-    alert.present();
-  }
-</script>
 </body>
 </html>
