@@ -8,7 +8,7 @@ let currentDeleteId = null;
 function getAuthHeaders() {
   const token = localStorage.getItem('adminToken');
   if (!token) {
-    window.location.href = '/admin/login';
+    window.location.href = '/login';
     throw new Error('No token');
   }
   return {
@@ -65,7 +65,7 @@ async function loadItems() {
     items = await res.json();
     renderTable();
   } catch (err) {
-    alert(err.message);
+    showAlert(err.message);
     if (err.message.includes('login ulang')) logout();
   }
 }
@@ -281,7 +281,7 @@ async function saveItem(e) {
     modal.classList.add('hidden');
     loadItems();
   } catch (err) {
-    alert(err.message);
+    showAlert(err.message);
   }
 }
 
@@ -303,7 +303,7 @@ imageUploadInput?.addEventListener('change', () => {
 
 uploadImagesBtn?.addEventListener('click', async () => {
   const files = imageUploadInput.files;
-  if (!files.length) return alert('Pilih file dulu');
+  if (!files.length) return showAlert('Pilih file dulu');
   
   const formData = new FormData();
   for (let i = 0; i < files.length; i++) formData.append('images', files[i]);
@@ -319,12 +319,12 @@ uploadImagesBtn?.addEventListener('click', async () => {
     uploadedUrlsDiv.innerHTML = data.urls.map(url => `
       <div class="flex items-center gap-2 mt-1">
         <input type="text" readonly value="${url}" class="flex-1 text-xs border rounded p-1 bg-gray-50">
-        <button type="button" onclick="navigator.clipboard.writeText('${url}'); alert('Copied!')" class="text-blue-500 text-xs">Copy</button>
+        <button type="button" onclick="navigator.clipboard.writeText('${url}'); showAlert('Copied!')" class="text-blue-500 text-xs">Copy</button>
       </div>
     `).join('');
-    alert('Upload berhasil!');
+    showAlert('Upload berhasil!');
   } catch (err) {
-    alert(err.message);
+    showAlert(err.message);
   }
 });
 
@@ -346,11 +346,11 @@ async function confirmDelete() {
       headers: getAuthHeaders()
     });
     if (!res.ok) throw new Error('Gagal hapus');
-    alert('Terhapus');
+    showAlert('Terhapus');
     deleteModal.classList.add('hidden');
     loadItems();
   } catch (err) {
-    alert(err.message);
+    showAlert(err.message);
   } finally {
     currentDeleteId = null;
   }
@@ -361,7 +361,7 @@ confirmDeleteBtn?.addEventListener('click', confirmDelete);
 // Global actions
 function logout() {
   localStorage.removeItem('adminToken');
-  window.location.href = '/admin/login';
+  window.location.href = '/login';
 }
 
 document.getElementById('logoutBtn')?.addEventListener('click', logout);
