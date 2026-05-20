@@ -89,14 +89,14 @@ permalink: /admin
     setTimeout(() => { localStorage.removeItem('adminToken'); window.location.href = '/login'; }, 1500);
   }
 
-  function logout() {
+window.logout = function() {
     localStorage.removeItem('userToken'); 
     sessionStorage.clear();
     
-    showAlert('Anda bukan admin!');
-    
+    console.warn('Anda bukan admin!'); 
+
     window.location.href = '/login'; 
-}
+};
 
   function getAuthHeaders() {
     const token = localStorage.getItem('adminToken');
