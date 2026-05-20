@@ -259,14 +259,14 @@ permalink: /admin
   }
 
 function logout() {
-    // 1. Hapus data sesi / token di localStorage atau sessionStorage
-    localStorage.removeItem("userToken"); 
+    localStorage.removeItem("adminToken"); 
     
-    // 2. Arahkan pengguna kembali ke halaman login atau home
     window.location.href = "/login"; 
 }
+// DAFTARKAN KE GLOBAL
+window.logout = logout; 
 
-  async function init() {
+async function init() {
     const token = localStorage.getItem('adminToken');
     if(!token) { redirectToLogin(); return; }
     try {
