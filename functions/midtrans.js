@@ -1,23 +1,26 @@
-export async function onRequestPost(context) {
+export async function onRequestPost({ request, env }) {
   try {
-    const { request } = context;
     const origin = new URL(request.url).origin;
     const body = await request.json();
 
     const storeId = body.storeId || 'default';
     const waNumber = body.waNumber || '';
 
-    // Bangun finish URL menuju halaman sukses universal
     const successBaseUrl = 'https://vems-olshop.pages.dev/success';
     const params = new URLSearchParams();
     if (storeId) params.append('vems_store', storeId);
     if (waNumber) params.append('wa', waNumber);
     const finishUrl = params.toString() ? `${successBaseUrl}?${params.toString()}` : successBaseUrl;
 
+    const serverKey = env.SERVER_KEY;
+    if (!serverKey) {
+      throw new Error('SERVER_KEY tidak ditemukan di environment');
+    }
+
     const response = await fetch("https://app.sandbox.midtrans.com/snap/v1/transactions", {
       method: "POST",
       headers: {
-        "Authorization": "Basic " + btoa("{{site.SERVER_KEY}}" + ":"),
+        "Authorization": "Basic " + btoa(serverKey + ":"),
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
