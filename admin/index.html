@@ -7,109 +7,783 @@ permalink: /admin
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard</title>
-
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core@8/dist/ionic/ionic.esm.js"></script>
-  <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core@8/dist/ionic/ionic.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core@8/css/ionic.bundle.css" />
-  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Admin Dashboard - Manajemen Produk & Postingan</title>
+  
+  <!-- Ionic Core 8 CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core@8.5.3/css/ionic.bundle.css" />
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core@8.5.3/dist/ionic/ionic.esm.js"></script>
+  <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core@8.5.3/dist/ionic/ionic.js"></script>
+  
+  <!-- Google Fonts (opsional) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
+  
   <style>
-    .table-container { overflow-x: auto; padding: 10px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
-    .ion-hide { display: none; }
+    * {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+    
+    ion-content {
+      --background: #f9fafb;
+    }
+    
+    /* Tabel responsif */
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: 16px;
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      margin-top: 16px;
+    }
+    
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      min-width: 680px;
+    }
+    
+    .data-table th {
+      text-align: left;
+      padding: 14px 12px;
+      background-color: #f8fafc;
+      color: #1e293b;
+      font-weight: 600;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .data-table td {
+      padding: 14px 12px;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: middle;
+    }
+    
+    .data-table tr:hover {
+      background-color: #fefce8;
+    }
+    
+    /* Segment tombol koleksi */
+    .segment-buttons {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .active-segment {
+      --background: #3b82f6;
+      --color: white;
+      --box-shadow: none;
+      font-weight: 500;
+    }
+    
+    /* Spinner overlay */
+    .auth-loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      backdrop-filter: blur(2px);
+    }
+    
+    /* Card dan form styling tambahan */
+    .form-grid {
+      background: white;
+      border-radius: 20px;
+      padding: 4px 0;
+    }
+    
+    .style-card {
+      background: #f8fafc;
+      border-radius: 14px;
+      margin-bottom: 12px;
+      padding: 12px;
+      border: 1px solid #e2e8f0;
+    }
+    
+    .badge-light {
+      background: #eef2ff;
+      color: #1e40af;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+    
+    .upload-preview-area {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 12px 0;
+    }
+    
+    .url-list {
+      background: #f1f5f9;
+      border-radius: 12px;
+      padding: 10px;
+      margin-top: 12px;
+    }
+    
+    ion-modal {
+      --height: auto;
+      --border-radius: 28px;
+    }
+    
+    @media (max-width: 640px) {
+      .data-table td, .data-table th {
+        padding: 10px 8px;
+      }
+      ion-button {
+        min-height: 40px;
+      }
+    }
   </style>
 </head>
 <body>
+  <ion-app>
+    <ion-header>
+      <ion-toolbar color="white" style="--background: white; --border-color: #e9ecef;">
+        <ion-title style="font-weight: 600; color: #0f172a;">
+          <ion-icon name="grid-outline" slot="start" style="margin-right: 8px;"></ion-icon>
+          Admin Dashboard
+        </ion-title>
+        <ion-buttons slot="end">
+          <ion-button id="logoutBtn" fill="clear" color="danger">
+            <ion-icon name="log-out-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
 
-<ion-app>
-  <ion-header>
-    <ion-toolbar color="primary">
-      <ion-title>Dashboard Admin</ion-title>
-      <ion-buttons slot="end">
-        <ion-button id="logoutBtn" color="light">Logout</ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
-
-  <ion-content class="ion-padding">
-    <ion-segment value="products" id="tabSwitcher">
-      <ion-segment-button value="products" id="showProductsBtn">Produk</ion-segment-button>
-      <ion-segment-button value="posts" id="showPostsBtn">Blog Posts</ion-segment-button>
-    </ion-segment>
-
-    <div class="ion-margin-vertical">
-      <ion-button id="openCreateModal" color="success"><ion-icon slot="start" name="add-outline"></ion-icon> Tambah Baru</ion-button>
+    <!-- Overlay spinner saat pengecekan auth -->
+    <div id="authSpinnerOverlay" class="auth-loading">
+      <ion-spinner name="circles" color="primary" style="width: 48px; height: 48px;"></ion-spinner>
     </div>
 
+    <!-- Konten utama dashboard (disembunyikan sampai auth sukses) -->
+    <div id="dashboardContent" style="display: none;">
+      <ion-content class="ion-padding">
+        <!-- Tombol segment koleksi -->
+        <div class="segment-buttons">
+          <ion-button id="showProductsBtn" fill="solid" color="primary" size="default">
+            <ion-icon name="cube-outline" slot="start"></ion-icon>
+            Produk
+          </ion-button>
+          <ion-button id="showPostsBtn" fill="outline" color="dark" size="default">
+            <ion-icon name="document-text-outline" slot="start"></ion-icon>
+            Postingan
+          </ion-button>
+          <ion-button id="openCreateModal" fill="solid" color="success" style="margin-left: auto;">
+            <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+            Tambah Baru
+          </ion-button>
+        </div>
+
+        <!-- Tabel Data -->
+        <div class="table-wrapper">
+          <table class="data-table" id="dataTable">
+            <thead>
+              <tr>
+                <th>Gambar</th>
+                <th>Judul / ID</th>
+                <th id="priceHeader">Harga</th>
+                <th>Kategori & Tag</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="productTableBody">
+              <tr><td colspan="5" style="text-align: center;">Memuat data...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Komponen tersembunyi untuk form dinamis (priceGroup, modelGroup, authorGroup) -->
+        <div id="priceGroup"></div>
+        <div id="modelGroup"></div>
+        <div id="authorGroup"></div>
+      </ion-content>
+    </div>
+  </ion-app>
+
+  <!-- MODAL FORM CREATE / EDIT (Produk / Post) -->
+  <ion-modal id="productModal" trigger="openCreateModal" initial-breakpoint="0.95" breakpoints="[0, 0.95]" handle="false">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title id="modalTitle">Tambah Produk Baru</ion-title>
+        <ion-buttons slot="end">
+          <ion-button id="closeModalBtn">
+            <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <form id="productForm">
+        <input type="hidden" id="productId">
+        <input type="hidden" id="productSha">
+        
+        <!-- field umum -->
+        <ion-item>
+          <ion-label position="stacked">Judul *</ion-label>
+          <ion-input id="title" type="text" required placeholder="Nama produk / judul artikel"></ion-input>
+        </ion-item>
+        
+        <ion-item>
+          <ion-label position="stacked">Deskripsi / Body</ion-label>
+          <ion-textarea id="description" rows="4" placeholder="Deskripsi lengkap atau konten artikel"></ion-textarea>
+        </ion-item>
+
+        <ion-item id="priceGroupItem">
+          <ion-label position="stacked" id="priceLabel">Harga</ion-label>
+          <ion-input id="price" type="text" placeholder="Rp 250.000"></ion-input>
+        </ion-item>
+
+        <ion-item id="modelGroupItem">
+          <ion-label position="stacked">Model (pisahkan dengan koma)</ion-label>
+          <ion-input id="model" type="text" placeholder="Contoh: Standard, Premium"></ion-input>
+        </ion-item>
+
+        <ion-item id="authorGroupItem">
+          <ion-label position="stacked">Penulis</ion-label>
+          <ion-input id="author" type="text" placeholder="Nama penulis"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Kategori (pisahkan koma)</ion-label>
+          <ion-input id="categories" type="text" placeholder="Elektronik, Fashion"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Tag (pisahkan koma)</ion-label>
+          <ion-input id="tags" type="text" placeholder="new, sale, artikel"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Gambar Utama (URL)</ion-label>
+          <ion-input id="featured_image_path" type="url" placeholder="https://..."></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Gambar Facebook (opsional)</ion-label>
+          <ion-input id="facebook_image_path" type="url" placeholder="https://..."></ion-input>
+        </ion-item>
+
+        <!-- Bagian Styles hanya untuk produk (dynamic) -->
+        <div id="stylesSection">
+          <ion-item lines="none">
+            <ion-label><strong>Varian Warna / Styles</strong></ion-label>
+            <ion-button id="addStyleBtn" fill="clear" slot="end" size="small">
+              <ion-icon name="add-circle-outline"></ion-icon> Tambah Style
+            </ion-button>
+          </ion-item>
+          <div id="stylesContainer"></div>
+        </div>
+
+        <!-- Tombol form -->
+        <div style="display: flex; gap: 12px; margin-top: 24px; margin-bottom: 32px;">
+          <ion-button type="submit" expand="block" color="primary">
+            <ion-icon name="save-outline" slot="start"></ion-icon> Simpan
+          </ion-button>
+          <ion-button id="cancelModalBtn" fill="outline" expand="block" color="medium">
+            Batal
+          </ion-button>
+        </div>
+      </form>
+    </ion-content>
+  </ion-modal>
+
+  <!-- MODAL KONFIRMASI HAPUS -->
+  <ion-modal id="deleteModal" initial-breakpoint="0.3" breakpoints="[0, 0.3]" handle="false">
+    <ion-content class="ion-padding">
+      <div style="text-align: center; padding: 12px;">
+        <ion-icon name="warning-outline" style="font-size: 48px; color: #ef4444;"></ion-icon>
+        <h3>Hapus Data</h3>
+        <p>Yakin ingin menghapus item ini? Tindakan tidak dapat dibatalkan.</p>
+        <div style="display: flex; gap: 16px; margin-top: 24px;">
+          <ion-button id="cancelDeleteBtn" fill="outline" expand="block">Batal</ion-button>
+          <ion-button id="confirmDeleteBtn" color="danger" expand="block">Hapus</ion-button>
+        </div>
+      </div>
+    </ion-content>
+  </ion-modal>
+
+  <!-- ALERT GLOBAL -->
+  <ion-alert id="globalAlert" header="Info" message="" buttons="['OK']"></ion-alert>
+
+  <!-- SECTION UPLOAD GAMBAR (modular, bisa diakses dari manapun dengan custom trigger, tapi akan di-inject opsional) -->
+  <div style="display: none;" id="uploaderSection">
     <ion-card>
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Gambar</th>
-              <th>Judul</th>
-              <th id="priceHeader">Harga</th>
-              <th>Kategori</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="productTableBody"></tbody>
-        </table>
-      </div>
+      <ion-card-header>
+        <ion-card-title>Upload Gambar Massal</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <input type="file" id="imageUpload" multiple accept="image/*" style="margin-bottom: 10px;">
+        <div id="uploadPreview" class="upload-preview-area"></div>
+        <ion-button id="uploadImagesBtn" expand="block" fill="outline">
+          <ion-icon name="cloud-upload-outline" slot="start"></ion-icon> Upload ke Server
+        </ion-button>
+        <div id="uploadedUrls" class="url-list"></div>
+      </ion-card-content>
     </ion-card>
-  </ion-content>
-</ion-app>
+  </div>
 
-<ion-modal id="productModal" class="modal-content">
-  <ion-header><ion-toolbar><ion-title id="modalTitle">Tambah Item</ion-title></ion-toolbar></ion-header>
-  <ion-content class="ion-padding">
-    <form id="productForm">
-      <input type="hidden" id="productId">
-      <input type="hidden" id="productSha">
+  <script>
+    // -------------------- KONFIGURASI --------------------
+    const API_BASE_URL = 'https://admin-dashboard.vildaesa.workers.dev';
+    let items = [];
+    let currentCollection = 'products'; // 'products' atau 'posts'
+    let currentDeleteId = null;
+    let stylesArray = []; // untuk form styles produk
+
+    // Elemen DOM
+    let dashboardDiv, spinnerOverlay;
+
+    // Helper: ambil token
+    function getAuthHeaders() {
+      const token = localStorage.getItem('adminToken');
+      if (!token) {
+        redirectToLogin();
+        throw new Error('No token');
+      }
+      return {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      };
+    }
+
+    function redirectToLogin() {
+      localStorage.removeItem('adminToken');
+      window.location.href = '/login';
+    }
+
+    // Alert menggunakan ion-alert
+    function showAlert(message, header = "Info") {
+      const alertEl = document.getElementById('globalAlert');
+      if (alertEl) {
+        alertEl.header = header;
+        alertEl.message = message;
+        alertEl.buttons = ['OK'];
+        alertEl.present();
+      } else {
+        alert(message);
+      }
+    }
+
+    // Fungsi logout
+    function logout() {
+      localStorage.removeItem('adminToken');
+      redirectToLogin();
+    }
+
+    // -------------------- AUTHENTICATION CHECK dengan SPINNER --------------------
+    async function verifyAdminAndLoadDashboard() {
+      // Periksa token ada atau tidak
+      const token = localStorage.getItem('adminToken');
+      if (!token) {
+        redirectToLogin();
+        return false;
+      }
       
-      <ion-item><ion-label position="stacked">Judul*</ion-label><ion-input id="title" required></ion-input></ion-item>
-      <ion-item id="priceGroup"><ion-label position="stacked">Harga</ion-label><ion-input id="price"></ion-input></ion-item>
-      <ion-item><ion-label position="stacked">Deskripsi</ion-label><ion-textarea id="description"></ion-textarea></ion-item>
-      <ion-item id="modelGroup"><ion-label position="stacked">Model (pisahkan koma)</ion-label><ion-input id="model"></ion-input></ion-item>
-      <ion-item id="authorGroup" class="ion-hide"><ion-label position="stacked">Penulis</ion-label><ion-input id="author"></ion-input></ion-item>
-      <ion-item><ion-label position="stacked">Kategori</ion-label><ion-input id="categories"></ion-input></ion-item>
-      <ion-item><ion-label position="stacked">Tags</ion-label><ion-input id="tags"></ion-input></ion-item>
-      <ion-item><ion-label position="stacked">Gambar Utama (URL)</ion-label><ion-input id="featured_image_path"></ion-input></ion-item>
+      try {
+        // Lakukan request minimal untuk mengecek apakah token valid dan role admin (endpoint /api/products)
+        const testRes = await fetch(`${API_BASE_URL}/api/products?limit=1`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        if (!testRes.ok) {
+          if (testRes.status === 403 || testRes.status === 401) {
+            showAlert("Sesi tidak valid atau bukan akun admin. Silakan login ulang.", "Akses ditolak");
+            logout();
+            return false;
+          }
+          throw new Error("Gagal verifikasi akses");
+        }
+        // Jika sukses, tampilkan dashboard
+        dashboardDiv.style.display = "block";
+        spinnerOverlay.style.display = "none";
+        
+        // Inisialisasi semua fitur dashboard setelah auth lolos
+        initDashboardFeatures();
+        loadItems(); // panggil load data pertama
+        return true;
+      } catch (err) {
+        console.error("Auth check error:", err);
+        showAlert("Tidak dapat memverifikasi akun admin. Periksa koneksi atau login ulang.");
+        logout();
+        return false;
+      }
+    }
+
+    // -------------------- DASHBOARD LOGIC (CRUD, UPLOAD, STYLES) --------------------
+    async function loadItems() {
+      const tbody = document.getElementById('productTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;"><ion-spinner name="dots"></ion-spinner> Memuat data...</td></tr>';
       
-      <div class="ion-padding">
-        <input type="file" id="imageUpload" multiple accept="image/*">
-        <div id="uploadPreview" class="ion-margin-top"></div>
-        <ion-button id="uploadImagesBtn" size="small">Upload ke Repo</ion-button>
-        <div id="uploadedUrls"></div>
-      </div>
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/${currentCollection}`, {
+          headers: getAuthHeaders()
+        });
+        if (!res.ok) {
+          if (res.status === 403) throw new Error('Sesi habis, silakan login ulang');
+          throw new Error(`Gagal memuat ${currentCollection}`);
+        }
+        items = await res.json();
+        renderTable();
+      } catch (err) {
+        showAlert(err.message);
+        if (err.message.includes('login ulang')) logout();
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: red;">Gagal memuat data</td></tr>';
+      }
+    }
 
-      <div class="ion-padding" id="stylesWrapper">
-        <label>Styles</label>
-        <div id="stylesContainer"></div>
-        <ion-button id="addStyleBtn" fill="clear" size="small">+ Tambah Style</ion-button>
-      </div>
+    function renderTable() {
+      const tbody = document.getElementById('productTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      if (!items.length) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Tidak ada data</td></tr>';
+        return;
+      }
+      items.forEach(item => {
+        const row = document.createElement('tr');
+        const imgUrl = item.featured_image_path || item.img || 'https://placehold.co/50x50?text=No+Img';
+        const secondCol = `<div style="font-weight: 600; color:#0f172a;">${escapeHtml(item.title || 'No title')}</div><div style="font-size: 12px; color:#64748b;">${item.id}.md</div>`;
+        let thirdCol = '';
+        if (currentCollection === 'products') {
+          thirdCol = item.price || '-';
+        } else {
+          thirdCol = item.author || '-';
+        }
+        const categoriesStr = Array.isArray(item.categories) ? item.categories.join(', ') : (item.categories || '-');
+        const tagsStr = Array.isArray(item.tags) ? item.tags.join(', ') : (item.tags || '-');
+        const categoryTagHtml = `<div style="font-size:13px;">${escapeHtml(categoriesStr)}</div><div style="font-size:11px; color:#94a3b8;">${escapeHtml(tagsStr)}</div>`;
+        
+        row.innerHTML = `
+          <td style="width: 70px;"><img src="${escapeHtml(imgUrl)}" style="width: 50px; height: 50px; border-radius: 10px; object-fit: cover; background: #f1f5f9;"></td>
+          <td>${secondCol}</td>
+          <td>${escapeHtml(thirdCol)}</td>
+          <td>${categoryTagHtml}</td>
+          <td>
+            <ion-button fill="clear" color="primary" size="small" class="edit-btn" data-item='${JSON.stringify(item).replace(/'/g, "&apos;")}'>
+              <ion-icon name="create-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" color="danger" size="small" class="delete-btn" data-id="${item.id}">
+              <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+      
+      // Event listeners untuk tombol aksi (karena innerHTML dynamic)
+      document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const itemData = JSON.parse(btn.getAttribute('data-item'));
+          openEditModal(itemData);
+        });
+      });
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-id');
+          openDeleteModal(id);
+        });
+      });
+    }
 
-      <div class="ion-padding">
-        <ion-button expand="block" type="submit">Simpan</ion-button>
-        <ion-button expand="block" color="medium" id="cancelModalBtn">Batal</ion-button>
-      </div>
-    </form>
-  </ion-content>
-</ion-modal>
+    // Escape HTML sederhana
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+      }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+        return c;
+      });
+    }
 
-<ion-modal id="deleteModal">
-  <ion-content class="ion-padding">
-    <p>Yakin ingin menghapus ini?</p>
-    <ion-button color="danger" id="confirmDeleteBtn">Hapus</ion-button>
-    <ion-button color="medium" id="cancelDeleteBtn">Batal</ion-button>
-  </ion-content>
-</ion-modal>
+    // SWITCH COLLECTION
+    function switchCollection(collection) {
+      currentCollection = collection;
+      const productsBtn = document.getElementById('showProductsBtn');
+      const postsBtn = document.getElementById('showPostsBtn');
+      const priceHeader = document.getElementById('priceHeader');
+      const priceGroupItem = document.getElementById('priceGroupItem');
+      const modelGroupItem = document.getElementById('modelGroupItem');
+      const authorGroupItem = document.getElementById('authorGroupItem');
+      const stylesSectionDiv = document.getElementById('stylesSection');
+      
+      if (collection === 'products') {
+        productsBtn.setAttribute('fill', 'solid');
+        productsBtn.classList.add('active-segment');
+        postsBtn.setAttribute('fill', 'outline');
+        postsBtn.classList.remove('active-segment');
+        if (priceHeader) priceHeader.innerText = 'Harga';
+        if (priceGroupItem) priceGroupItem.style.display = 'flex';
+        if (modelGroupItem) modelGroupItem.style.display = 'flex';
+        if (authorGroupItem) authorGroupItem.style.display = 'none';
+        if (stylesSectionDiv) stylesSectionDiv.style.display = 'block';
+      } else {
+        postsBtn.setAttribute('fill', 'solid');
+        postsBtn.classList.add('active-segment');
+        productsBtn.setAttribute('fill', 'outline');
+        productsBtn.classList.remove('active-segment');
+        if (priceHeader) priceHeader.innerText = 'Info';
+        if (priceGroupItem) priceGroupItem.style.display = 'none';
+        if (modelGroupItem) modelGroupItem.style.display = 'none';
+        if (authorGroupItem) authorGroupItem.style.display = 'flex';
+        if (stylesSectionDiv) stylesSectionDiv.style.display = 'none';
+      }
+      loadItems();
+    }
 
-<ion-alert id="globalAlert"></ion-alert>
+    // MODAL FORM
+    const modal = document.getElementById('productModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const productForm = document.getElementById('productForm');
+    const productId = document.getElementById('productId');
+    const productSha = document.getElementById('productSha');
+    const titleInput = document.getElementById('title');
+    const priceInput = document.getElementById('price');
+    const descriptionInput = document.getElementById('description');
+    const modelInput = document.getElementById('model');
+    const authorInput = document.getElementById('author');
+    const categoriesInput = document.getElementById('categories');
+    const tagsInput = document.getElementById('tags');
+    const featuredImageInput = document.getElementById('featured_image_path');
+    const facebookImageInput = document.getElementById('facebook_image_path');
+    const stylesContainer = document.getElementById('stylesContainer');
+    const addStyleBtn = document.getElementById('addStyleBtn');
 
-<script src="{{ '/assets/js/admin.js' | relative_url }}"></script>
+    function renderStyles() {
+      if (!stylesContainer) return;
+      if (currentCollection !== 'products') return;
+      stylesContainer.innerHTML = '';
+      stylesArray.forEach((style, idx) => {
+        const div = document.createElement('div');
+        div.className = 'style-card';
+        div.innerHTML = `
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end;">
+            <div style="flex:1; min-width:100px;">
+              <label style="font-size:12px; font-weight:500;">Warna</label>
+              <ion-input value="${escapeHtml(style.color || '')}" placeholder="Navi" data-field="color" data-idx="${idx}"></ion-input>
+            </div>
+            <div style="flex:1; min-width:100px;">
+              <label style="font-size:12px;">Kode/Nama</label>
+              <ion-input value="${escapeHtml(style.name || '')}" placeholder="#4a5265" data-field="name" data-idx="${idx}"></ion-input>
+            </div>
+            <div style="flex:2; min-width:160px;">
+              <label style="font-size:12px;">URL Gambar</label>
+              <ion-input value="${escapeHtml(style.image_path || '')}" placeholder="https://" data-field="image_path" data-idx="${idx}"></ion-input>
+            </div>
+            <ion-button fill="clear" color="danger" data-remove="${idx}" size="small">
+              <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+          </div>
+        `;
+        stylesContainer.appendChild(div);
+      });
+      // attach event input
+      document.querySelectorAll('#stylesContainer ion-input').forEach(inp => {
+        inp.addEventListener('ionChange', (e) => {
+          const idx = parseInt(inp.dataset.idx);
+          const field = inp.dataset.field;
+          if (!isNaN(idx) && stylesArray[idx]) {
+            stylesArray[idx][field] = e.detail.value;
+          }
+        });
+      });
+      document.querySelectorAll('#stylesContainer [data-remove]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const idx = parseInt(btn.dataset.remove);
+          stylesArray.splice(idx, 1);
+          renderStyles();
+        });
+      });
+    }
+
+    function resetForm() {
+      productId.value = '';
+      productSha.value = '';
+      titleInput.value = '';
+      priceInput.value = '';
+      descriptionInput.value = '';
+      modelInput.value = '';
+      authorInput.value = '';
+      categoriesInput.value = '';
+      tagsInput.value = '';
+      featuredImageInput.value = '';
+      facebookImageInput.value = '';
+      stylesArray = [];
+      renderStyles();
+    }
+
+    function openCreateModal() {
+      resetForm();
+      modalTitle.innerText = `Tambah ${currentCollection === 'products' ? 'Produk' : 'Post'} Baru`;
+      modal.present();
+    }
+
+    function openEditModal(item) {
+      resetForm();
+      productId.value = item.id;
+      productSha.value = item.sha || '';
+      titleInput.value = item.title || '';
+      priceInput.value = item.price || '';
+      descriptionInput.value = item.body || item.description || '';
+      modelInput.value = Array.isArray(item.model) ? item.model.join(',') : (item.model || '');
+      authorInput.value = item.author || '';
+      categoriesInput.value = Array.isArray(item.categories) ? item.categories.join(',') : (item.categories || '');
+      tagsInput.value = Array.isArray(item.tags) ? item.tags.join(',') : (item.tags || '');
+      featuredImageInput.value = item.featured_image_path || item.img || '';
+      facebookImageInput.value = item.facebook_image_path || '';
+      stylesArray = item.styles ? [...item.styles] : [];
+      renderStyles();
+      modalTitle.innerText = `Edit ${currentCollection === 'products' ? 'Produk' : 'Post'}`;
+      modal.present();
+    }
+
+    async function saveItem(e) {
+      e.preventDefault();
+      const id = productId.value;
+      const data = {
+        title: titleInput.value.trim(),
+        body: descriptionInput.value.trim(),
+        categories: categoriesInput.value.split(',').map(s => s.trim()).filter(Boolean),
+        tags: tagsInput.value.split(',').map(s => s.trim()).filter(Boolean),
+        facebook_image_path: facebookImageInput.value.trim() || null,
+        sha: productSha.value || undefined
+      };
+      if (currentCollection === 'products') {
+        data.price = priceInput.value.trim();
+        data.model = modelInput.value.split(',').map(s => s.trim()).filter(Boolean);
+        data.featured_image_path = featuredImageInput.value.trim() || null;
+        data.styles = stylesArray;
+      } else {
+        data.author = authorInput.value.trim();
+        data.img = featuredImageInput.value.trim() || null;
+        data.excerpt_separator = '<!--more-->';
+      }
+      try {
+        const headers = getAuthHeaders();
+        let url = `${API_BASE_URL}/api/${currentCollection}`;
+        let method = 'POST';
+        if (id) {
+          url += `/${id}`;
+          method = 'PUT';
+        }
+        const res = await fetch(url, { method, headers, body: JSON.stringify(data) });
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.error || 'Gagal menyimpan');
+        }
+        showAlert('Tersimpan!', 'Sukses');
+        modal.dismiss();
+        loadItems();
+      } catch (err) {
+        showAlert(err.message);
+      }
+    }
+
+    function openDeleteModal(id) {
+      currentDeleteId = id;
+      const deleteModalEl = document.getElementById('deleteModal');
+      deleteModalEl.present();
+    }
+
+    async function confirmDelete() {
+      if (!currentDeleteId) return;
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/${currentCollection}/${currentDeleteId}`, {
+          method: 'DELETE',
+          headers: getAuthHeaders()
+        });
+        if (!res.ok) throw new Error('Gagal hapus');
+        showAlert('Terhapus', 'Sukses');
+        document.getElementById('deleteModal').dismiss();
+        loadItems();
+      } catch (err) {
+        showAlert(err.message);
+      } finally {
+        currentDeleteId = null;
+      }
+    }
+
+    // UPLOAD GAMBAR
+    async function uploadImages() {
+      const fileInput = document.getElementById('imageUpload');
+      const files = fileInput.files;
+      if (!files.length) return showAlert('Pilih file dulu');
+      const formData = new FormData();
+      for (let i = 0; i < files.length; i++) formData.append('images', files[i]);
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/upload?type=${currentCollection}`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` },
+          body: formData
+        });
+        if (!res.ok) throw new Error('Upload gagal');
+        const data = await res.json();
+        const urlsDiv = document.getElementById('uploadedUrls');
+        urlsDiv.innerHTML = data.urls.map(url => `<div style="display:flex; gap:8px; margin:6px 0;"><ion-input readonly value="${url}"></ion-input><ion-button fill="outline" size="small" onclick="navigator.clipboard.writeText('${url}');showAlert('Copied!')">Copy</ion-button></div>`).join('');
+        showAlert('Upload berhasil!', 'Sukses');
+      } catch (err) {
+        showAlert(err.message);
+      }
+    }
+
+    // Inisialisasi event listener & tombol
+    function initDashboardFeatures() {
+      document.getElementById('showProductsBtn')?.addEventListener('click', () => switchCollection('products'));
+      document.getElementById('showPostsBtn')?.addEventListener('click', () => switchCollection('posts'));
+      document.getElementById('logoutBtn')?.addEventListener('click', logout);
+      document.getElementById('openCreateModal')?.addEventListener('click', openCreateModal);
+      document.getElementById('closeModalBtn')?.addEventListener('click', () => modal.dismiss());
+      document.getElementById('cancelModalBtn')?.addEventListener('click', () => modal.dismiss());
+      document.getElementById('confirmDeleteBtn')?.addEventListener('click', confirmDelete);
+      document.getElementById('cancelDeleteBtn')?.addEventListener('click', () => {
+        document.getElementById('deleteModal').dismiss();
+        currentDeleteId = null;
+      });
+      if (productForm) productForm.addEventListener('submit', saveItem);
+      addStyleBtn?.addEventListener('click', () => {
+        stylesArray.push({ color: '', name: '', image_path: '' });
+        renderStyles();
+      });
+      // upload elements
+      const uploadBtn = document.getElementById('uploadImagesBtn');
+      if (uploadBtn) uploadBtn.addEventListener('click', uploadImages);
+      const imageUploadInput = document.getElementById('imageUpload');
+      const previewDiv = document.getElementById('uploadPreview');
+      if (imageUploadInput) {
+        imageUploadInput.addEventListener('change', () => {
+          previewDiv.innerHTML = '';
+          Array.from(imageUploadInput.files).forEach(file => {
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.style.cssText = 'width: 56px; height:56px; object-fit:cover; border-radius:8px; margin-right:8px;';
+            previewDiv.appendChild(img);
+          });
+        });
+      }
+      // setting tampilan awal
+      switchCollection('products');
+    }
+
+    // DOM ready start auth flow
+    window.addEventListener('DOMContentLoaded', () => {
+      dashboardDiv = document.getElementById('dashboardContent');
+      spinnerOverlay = document.getElementById('authSpinnerOverlay');
+      if (!dashboardDiv || !spinnerOverlay) return;
+      verifyAdminAndLoadDashboard();
+    });
+  </script>
 </body>
 </html>
