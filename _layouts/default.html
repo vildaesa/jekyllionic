@@ -7,13 +7,12 @@
 <script type="module">
   const firebaseConfig = {
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  apiKey: "AIzaSyB86QS4Odynfe1QDBXQgkkgO9JDFQylbBw",
-  authDomain: "vems-shop.firebaseapp.com",
-  projectId: "vems-shop",
-  storageBucket: "vems-shop.firebasestorage.app",
-  messagingSenderId: "949843856547",
-  appId: "1:949843856547:web:cdd41e46b2c9e2d3500316",
-  measurementId: "G-QJL8KV95KB"
+  apiKey: "{{ site.env.API_KEY }}",
+  authDomain: "{{ site.env.AUTH_DOMAIN }}",
+  projectId: "{{ site.env.PROJECT_ID }}",
+  storageBucket: "{{ site.env.STORAGE_BUCKET }}",
+  messagingSenderId: "{{ site.env.SENDER_ID }}",
+  appId: "{{ site.env.APP_ID }}","
   };
   firebase.initializeApp(firebaseConfig);
 </script>
