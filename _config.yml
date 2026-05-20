@@ -60,4 +60,13 @@ jekyll-archives:
     tags: '/tag/:name/'
 
 WA_KEY: 6281111191209
-CLIENT_KEY: SB-Mid-client-i2KW02MfN9duiyJ9
+CLIENT_KEY: "<%= ENV['measure_id'] %>"SB-Mid-client-i2KW02MfN9duiyJ9
+# Firebase
+api_key: "<%= ENV['api_key'] %>"
+auth_domain: "<%= ENV['auth_domain'] %>"
+project_id: "<%= ENV['project_id'] %>"
+database_url: "<%= ENV['database_url'] %>"
+storage_bucket: "<%= ENV['storage_bucket'] %>"
+sender_id: "<%= ENV['sender_id'] %>"
+app_id: "<%= ENV['app_id'] %>"
+measure_id: "<%= ENV['measure_id'] %>"
