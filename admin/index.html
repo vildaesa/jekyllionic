@@ -9,151 +9,111 @@ permalink: /admin
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Ionic Framework -->
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core@8/dist/ionic/ionic.esm.js"></script>
+  <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core@8/dist/ionic/ionic.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core@8/css/ionic.bundle.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link rel="icon" href="{{ site.favicon | default: '/favicon.ico' | relative_url }}" type="image/x-icon"><link rel="icon" type="image/png" href="{{ '/assets/images/fav/favicon-96x96.png' | relative_url }}" sizes="96x96" />
-  <link rel="icon" type="image/svg+xml" href="{{ '/assets/images/fav/favicon.svg' | relative_url }}" />
-  <link rel="shortcut icon" href="{{ '/assets/images/fav/favicon.ico' | relative_url }}" />
-  <link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/images/fav/apple-touch-icon.png' | relative_url }}" />
-  <meta name="apple-mobile-web-app-title" content="jekyllionic" />
-  <link rel="manifest" href="{{ '/assets/images/fav/site.webmanifest' | relative_url }}" />
+
+  <style>
+    /* Styling untuk tabel dan tata letak agar rapi tanpa Tailwind */
+    .table-container { overflow-x: auto; padding: 10px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
+    .modal-content { --max-width: 800px; }
+  </style>
 </head>
-<body class="bg-gray-100">
-  <nav class="bg-white shadow-md p-4 flex justify-between items-center">
-    <h1 class="text-xl font-bold">Dashboard Produk</h1>
-    <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">Logout</button>
-  </nav>
+<body>
 
-  <div class="container mx-auto p-6">
+<ion-app>
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>Dashboard Produk</ion-title>
+      <ion-buttons slot="end">
+        <ion-button id="logoutBtn" color="light">Logout</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="ion-padding">
     <!-- Tab Switcher -->
-    <div class="flex border-b mb-6 bg-white rounded-t-lg px-4">
-      <button id="showProductsBtn" class="px-6 py-3 border-b-2 border-blue-600 font-bold text-blue-600">Produk</button>
-      <button id="showPostsBtn" class="px-6 py-3 border-b-2 border-transparent hover:border-gray-300 text-gray-500">Blog Posts</button>
+    <ion-segment value="products" id="tabSwitcher">
+      <ion-segment-button value="products" id="showProductsBtn">
+        <ion-label>Produk</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="posts" id="showPostsBtn">
+        <ion-label>Blog Posts</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <div class="ion-margin-vertical">
+      <ion-button id="openCreateModal" color="success">
+        <ion-icon slot="start" name="add-outline"></ion-icon> Tambah Baru
+      </ion-button>
     </div>
 
-    <!-- Tombol Tambah Produk -->
-    <div class="mb-6">
-      <button id="openCreateModal" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow">
-        <i class="fas fa-plus mr-2"></i> Tambah Baru
-      </button>
-    </div>
-
-    <!-- Tabel Produk -->
-    <div class="bg-white rounded-lg shadow overflow-x-auto">
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
-          <tr>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gambar</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Judul</th>
-            <th id="priceHeader" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Harga</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori/Tags</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
-          </tr>
-        </thead>
-        <tbody id="productTableBody" class="divide-y divide-gray-200"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Modal Create/Edit Produk -->
-  <div id="productModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
-    <div class="relative top-10 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-lg bg-white">
-      <div class="flex justify-between items-center mb-4">
-        <h3 id="modalTitle" class="text-lg font-bold">Tambah Item Baru</h3>
-        <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+    <!-- Tabel -->
+    <ion-card>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Gambar</th>
+              <th>Judul</th>
+              <th>Harga</th>
+              <th>Kategori</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="productTableBody"></tbody>
+        </table>
       </div>
-      <form id="productForm">
-        <input type="hidden" id="productId">
-        <input type="hidden" id="productSha">
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Judul*</label>
-            <input type="text" id="title" required class="w-full border rounded p-2 focus:ring-blue-500 focus:border-blue-500">
-          </div>
-          <div id="priceGroup">
-            <label class="block text-sm font-medium text-gray-700">Harga* (contoh: "5.000")</label>
-            <input type="text" id="price" class="w-full border rounded p-2 focus:ring-blue-500 focus:border-blue-500">
-          </div>
-          <div class="md:col-span-2">
-            <label class="block text-sm font-medium text-gray-700">Konten / Deskripsi*</label>
-            <textarea id="description" rows="5" required class="w-full border rounded p-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
-          </div>
-          <div id="modelGroup">
-            <label class="block text-sm font-medium text-gray-700">Model (pisah koma) : HeadLoop, EarLoop, Tali Ikat</label>
-            <input type="text" id="model" placeholder="HeadLoop,EarLoop" class="w-full border rounded p-2 focus:ring-blue-500 focus:border-blue-500">
-          </div>
-          <div id="authorGroup" class="hidden">
-            <label class="block text-sm font-medium text-gray-700">Penulis</label>
-            <input type="text" id="author" class="w-full border rounded p-2 focus:ring-blue-500 focus:border-blue-500">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Kategori (pisah koma)</label>
-            <input type="text" id="categories" placeholder="t-shirt,aksesoris" class="w-full border rounded p-2 focus:ring-blue-500 focus:border-blue-500">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Tags (pisah koma)</label>
-            <input type="text" id="tags" placeholder="tshirt,premium" class="w-full border rounded p-2 focus:ring-blue-500 focus:border-blue-500">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Gambar Utama (URL)</label>
-            <input type="url" id="featured_image_path" class="w-full border rounded p-2 focus:ring-blue-500 focus:border-blue-500" placeholder="https://...">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Gambar Facebook (URL optional)</label>
-            <input type="url" id="facebook_image_path" class="w-full border rounded p-2 focus:ring-blue-500 focus:border-blue-500">
-          </div>
-        </div>
+    </ion-card>
+  </ion-content>
+</ion-app>
 
-        <!-- Upload gambar multiple -->
-        <div class="mt-4">
-          <label class="block text-sm font-medium">Upload Gambar (max 5, max 1MB each)</label>
-          <input type="file" id="imageUpload" accept="image/*" multiple class="w-full border rounded p-2">
-          <div id="uploadPreview" class="flex flex-wrap gap-2 mt-2"></div>
-          <button type="button" id="uploadImagesBtn" class="bg-blue-500 text-white px-3 py-1 rounded mt-2">Upload ke Repo</button>
-          <p class="text-xs text-gray-500 mt-1">URL gambar hasil upload akan muncul di bawah, copy ke field "Gambar Unggulan" atau "Style".</p>
-          <div id="uploadedUrls" class="text-sm text-green-600 mt-2"></div>
-        </div>
+<!-- Modal Create/Edit -->
+<ion-modal id="productModal" trigger="openCreateModal" class="modal-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title id="modalTitle">Tambah Item Baru</ion-title>
+      <ion-buttons slot="end">
+        <ion-button id="closeModalBtn">Tutup</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <form id="productForm">
+      <ion-item>
+        <ion-label position="stacked">Judul*</ion-label>
+        <ion-input id="title" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Harga*</ion-label>
+        <ion-input id="price"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Deskripsi*</ion-label>
+        <ion-textarea id="description" rows="5"></ion-textarea>
+      </ion-item>
+      <!-- Tambahkan item input lainnya sesuai kebutuhan -->
+      <ion-button expand="block" type="submit" class="ion-margin-top">Simpan Produk</ion-button>
+    </form>
+  </ion-content>
+</ion-modal>
 
-        <!-- Dinamis list styles -->
-        <div class="mt-4">
-          <label class="block text-sm font-medium mb-2">Styles (warna, name, image_path)</label>
-          <div id="stylesContainer"></div>
-          <button type="button" id="addStyleBtn" class="bg-gray-500 text-white px-3 py-1 rounded mt-2">+ Tambah Style</button>
-        </div>
+<ion-alert id="globalAlert"></ion-alert>
 
-        <div class="flex justify-end gap-2 mt-6">
-          <button type="button" id="cancelModalBtn" class="bg-gray-300 px-4 py-2 rounded">Batal</button>
-          <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Simpan Produk</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal Hapus Konfirmasi -->
-  <div id="deleteModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
-      <h3 class="text-lg font-bold mb-4">Konfirmasi Hapus</h3>
-      <p>Yakin ingin menghapus produk ini?</p>
-      <div class="flex justify-end gap-2 mt-6">
-        <button id="cancelDeleteBtn" class="bg-gray-300 px-4 py-2 rounded">Batal</button>
-        <button id="confirmDeleteBtn" class="bg-red-600 text-white px-4 py-2 rounded">Hapus</button>
-      </div>
-    </div>
-  </div>
-
-  <script src="{{ '/assets/js/admin.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/admin.js' | relative_url }}"></script>
 <script>
-function showAlert(message, header = "Info") {
-  const alert = document.getElementById('globalAlert');
-  if (alert) {
+  function showAlert(message, header = "Info") {
+    const alert = document.getElementById('globalAlert');
     alert.header = header;
     alert.message = message;
     alert.buttons = ['OK'];
     alert.present();
   }
-}
-
 </script>
 </body>
 </html>
