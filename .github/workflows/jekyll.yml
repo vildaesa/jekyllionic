@@ -22,6 +22,8 @@ jobs:
       WA_KEY: ${{ secrets.WA_KEY }}
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       SENDER_ID: ${{ secrets.SENDER_ID }}
+      CLIENT_KEY: ${{ secrets.CLIENT_KEY }}
+      SERVER_KEY: ${{ secrets.SERVER_KEY }}
 
     steps:
       - name: Checkout Repository
