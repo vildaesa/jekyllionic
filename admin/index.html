@@ -282,7 +282,7 @@ function logout() {
       document.getElementById('addStyleBtn')?.addEventListener('click', () => { stylesArray.push({ color:'', name:'', image_path:'' }); renderStyles(); });
     } catch(err) {
       console.error(err);
-      content.innerHTML = `<div class="error-panel"><ion-icon name="alert-circle-outline" style="font-size:48px"></ion-icon><h2>Akses Ditolak</h2><p>${err.message}</p><ion-button expand="block" herf="/login">Keluar</ion-button></div>`;
+      content.innerHTML = `<div class="error-panel"><ion-icon name="alert-circle-outline" style="font-size:48px"></ion-icon><h2>Akses Ditolak</h2><p>${err.message}</p><ion-buttons><ion-button color="danger" expand="block" herf="/login">Keluar</ion-button></ion-buttons></div>`;
     }
   }
   init();
