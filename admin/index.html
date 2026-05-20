@@ -9,9 +9,12 @@ permalink: /admin
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Admin Dashboard</title>
+  
+  <!-- Ionic Core 8 CDN (versi major, tanpa patch) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core@8/css/ionic.bundle.css" />
   <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core@8/dist/ionic/ionic.esm.js"></script>
   <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core@8/dist/ionic/ionic.js"></script>
+
   <style>
     ion-content { --background: #f9fafb; }
     .error-panel { background: #fee2e2; color: #991b1b; padding: 20px; margin: 20px; border-radius: 16px; text-align: center; }
@@ -41,7 +44,7 @@ permalink: /admin
   </ion-content>
 </ion-app>
 
-<!-- Modal, Alert, dll disederhanakan agar tidak membingungkan, tetap fungsional -->
+<!-- Modal, Alert, dll -->
 <ion-modal id="productModal" initial-breakpoint="0.95" breakpoints="[0,0.95]">
   <ion-header><ion-toolbar><ion-title id="modalTitle">Tambah Produk</ion-title><ion-buttons slot="end"><ion-button id="closeModalBtn"><ion-icon name="close"></ion-icon></ion-button></ion-buttons></ion-toolbar></ion-header>
   <ion-content class="ion-padding">
@@ -176,7 +179,6 @@ permalink: /admin
     loadItems();
   }
 
-  // Styles & Modal functions (ringkas)
   function renderStyles(){
     const container=document.getElementById('stylesContainer'); if(!container) return;
     if(currentCollection!=='products'){ container.innerHTML=''; return; }
@@ -256,7 +258,6 @@ permalink: /admin
     finally{ currentDeleteId=null; }
   }
 
-  // Inisialisasi + auth check dengan visual error
   async function init() {
     const token = localStorage.getItem('adminToken');
     if(!token) { redirectToLogin(); return; }
@@ -267,7 +268,6 @@ permalink: /admin
         throw new Error(`Gagal verifikasi (${test.status})`);
       }
       renderDashboardUI();
-      // Pasang event listener modal & form setelah konten siap
       document.getElementById('productForm')?.addEventListener('submit', saveItem);
       document.getElementById('closeModalBtn')?.addEventListener('click', () => document.getElementById('productModal').dismiss());
       document.getElementById('cancelModalBtn')?.addEventListener('click', () => document.getElementById('productModal').dismiss());
