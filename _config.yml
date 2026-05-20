@@ -5,6 +5,7 @@
 # For technical reasons, this file is *NOT* reloaded automatically when you use
 # 'jekyll serve'. If you change this file, please restart the server process.
 dev: nDang
+wa_admin: 6281111191209
 
 # Site settings
 title: jekyllionic
@@ -59,7 +60,6 @@ jekyll-archives:
     categories: '/category/:name/'
     tags: '/tag/:name/'
 
-WA_KEY: "<%= ENV['WA_KEY'] %>"
 CLIENT_KEY: "<%= ENV['CLIENT_KEY'] %>"
 # Firebase
 API_KEY: "<%= ENV['API_KEY'] %>"
