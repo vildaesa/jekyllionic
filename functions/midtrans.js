@@ -17,7 +17,7 @@ export async function onRequestPost(context) {
     const response = await fetch("https://app.sandbox.midtrans.com/snap/v1/transactions", {
       method: "POST",
       headers: {
-        "Authorization": "Basic " + btoa("{{site.env.SERVER_KEY}}" + ":"),
+        "Authorization": "Basic " + btoa("{{site.SERVER_KEY}}" + ":"),
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
