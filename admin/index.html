@@ -381,43 +381,36 @@ permalink: /admin
     }
 
     // -------------------- AUTHENTICATION CHECK dengan SPINNER --------------------
-    async function verifyAdminAndLoadDashboard() {
-      // Periksa token ada atau tidak
-      const token = localStorage.getItem('adminToken');
-      if (!token) {
-        redirectToLogin();
-        return false;
-      }
-      
-      try {
-        // Lakukan request minimal untuk mengecek apakah token valid dan role admin (endpoint /api/products)
-        const testRes = await fetch(`${API_BASE_URL}/api/products?limit=1`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        
-        if (!testRes.ok) {
-          if (testRes.status === 403 || testRes.status === 401) {
-            showAlert("Sesi tidak valid atau bukan akun admin. Silakan login ulang.", "Akses ditolak");
-            logout();
-            return false;
-          }
-          throw new Error("Gagal verifikasi akses");
-        }
-        // Jika sukses, tampilkan dashboard
-        dashboardDiv.style.display = "block";
-        spinnerOverlay.style.display = "none";
-        
-        // Inisialisasi semua fitur dashboard setelah auth lolos
-        initDashboardFeatures();
-        loadItems(); // panggil load data pertama
-        return true;
-      } catch (err) {
-        console.error("Auth check error:", err);
-        showAlert("Tidak dapat memverifikasi akun admin. Periksa koneksi atau login ulang.");
+ async function verifyAdminAndLoadDashboard() {
+  const token = localStorage.getItem('adminToken');
+  if (!token) {
+    redirectToLogin();
+    return;
+  }
+  try {
+    const testRes = await fetch(`${API_BASE_URL}/api/products?limit=1`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!testRes.ok) {
+      if (testRes.status === 403 || testRes.status === 401) {
+        showAlert("Sesi tidak valid. Silakan login ulang.", "Akses ditolak");
         logout();
-        return false;
+        return;
       }
+      throw new Error("Gagal verifikasi akses");
     }
+    // Tampilkan dashboard dan sembunyikan spinner
+    dashboardDiv.style.display = "block";
+    spinnerOverlay.style.display = "none";
+    initDashboardFeatures();
+    loadItems();
+  } catch (err) {
+    console.error("Auth error:", err);
+    showAlert("Tidak dapat memverifikasi akun admin. Periksa koneksi.", "Error");
+    spinnerOverlay.style.display = "none"; // penting: sembunyikan spinner
+    dashboardDiv.style.display = "block"; // opsional: tetap tampilkan (dengan error state)
+  }
+}
 
     // -------------------- DASHBOARD LOGIC (CRUD, UPLOAD, STYLES) --------------------
     async function loadItems() {
