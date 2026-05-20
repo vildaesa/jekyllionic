@@ -8,565 +8,376 @@ permalink: /admin
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Admin Dashboard - Manajemen Produk & Postingan</title>
-  
-  <!-- Ionic Core 8 CDN -->
+  <title>Admin Dashboard</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core@8.5.3/css/ionic.bundle.css" />
   <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core@8.5.3/dist/ionic/ionic.esm.js"></script>
   <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core@8.5.3/dist/ionic/ionic.js"></script>
-  
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
-  
   <style>
-    * {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    }
-    html, body, ion-app {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-    ion-content {
-      --background: #f9fafb;
-    }
-    .table-wrapper {
-      overflow-x: auto;
-      border-radius: 16px;
-      background: white;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-      margin-top: 16px;
-    }
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-      min-width: 680px;
-    }
-    .data-table th {
-      text-align: left;
-      padding: 14px 12px;
-      background-color: #f8fafc;
-      color: #1e293b;
-      font-weight: 600;
-      border-bottom: 1px solid #e2e8f0;
-    }
-    .data-table td {
-      padding: 14px 12px;
-      border-bottom: 1px solid #f1f5f9;
-      vertical-align: middle;
-    }
-    .data-table tr:hover {
-      background-color: #fefce8;
-    }
-    .segment-buttons {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-    .active-segment {
-      --background: #3b82f6;
-      --color: white;
-      --box-shadow: none;
-      font-weight: 500;
-    }
-    .auth-loading {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(255,255,255,0.95);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      backdrop-filter: blur(2px);
-    }
-    .style-card {
-      background: #f8fafc;
-      border-radius: 14px;
-      margin-bottom: 12px;
-      padding: 12px;
-      border: 1px solid #e2e8f0;
-    }
-    .upload-preview-area {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin: 12px 0;
-    }
-    .url-list {
-      background: #f1f5f9;
-      border-radius: 12px;
-      padding: 10px;
-      margin-top: 12px;
-    }
-    ion-modal {
-      --height: auto;
-      --border-radius: 28px;
-    }
-    @media (max-width: 640px) {
-      .data-table td, .data-table th {
-        padding: 10px 8px;
-      }
-      ion-button {
-        min-height: 40px;
-      }
-    }
+    * { font-family: system-ui, -apple-system, 'Inter', sans-serif; }
+    ion-content { --background: #f9fafb; }
+    .table-wrapper { overflow-x: auto; border-radius: 16px; background: white; margin-top: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .data-table { width: 100%; border-collapse: collapse; min-width: 680px; }
+    .data-table th, .data-table td { padding: 12px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+    .segment-buttons { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+    .active-segment { --background: #3b82f6; --color: white; font-weight: 500; }
+    .auth-loading { position: fixed; top:0; left:0; width:100%; height:100%; background:white; display: flex; align-items: center; justify-content: center; z-index: 10000; }
+    .style-card { background: #f8fafc; border-radius: 14px; padding: 12px; margin-bottom: 12px; border: 1px solid #e2e8f0; }
+    .error-box { background: #fee2e2; color: #b91c1c; padding: 16px; border-radius: 12px; margin: 16px; text-align: center; }
   </style>
 </head>
 <body>
   <ion-app>
     <ion-header>
-      <ion-toolbar color="white" style="--background: white; --border-color: #e9ecef;">
-        <ion-title style="font-weight: 600; color: #0f172a;">
-          <ion-icon name="grid-outline" slot="start" style="margin-right: 8px;"></ion-icon>
-          Admin Dashboard
-        </ion-title>
-        <ion-buttons slot="end">
-          <ion-button id="logoutBtn" fill="clear" color="danger">
-            <ion-icon name="log-out-outline" slot="icon-only"></ion-icon>
-          </ion-button>
-        </ion-buttons>
+      <ion-toolbar>
+        <ion-title>Admin Dashboard</ion-title>
+        <ion-buttons slot="end"><ion-button id="logoutBtn" fill="clear" color="danger"><ion-icon name="log-out-outline"></ion-icon></ion-button></ion-buttons>
       </ion-toolbar>
     </ion-header>
 
-    <!-- Overlay spinner auth -->
-    <div id="authSpinnerOverlay" class="auth-loading">
-      <ion-spinner name="circles" color="primary" style="width: 48px; height: 48px;"></ion-spinner>
+    <!-- Spinner auth -->
+    <div id="authSpinner" class="auth-loading">
+      <ion-spinner name="circles" color="primary" style="width:48px;height:48px;"></ion-spinner>
     </div>
 
-    <!-- Konten dashboard (disembunyikan sampai auth sukses) -->
-    <div id="dashboardContent" style="display: none;">
+    <!-- Konten utama (disembunyikan sampai auth sukses) -->
+    <div id="mainContent" style="display: none;">
       <ion-content class="ion-padding">
         <div class="segment-buttons">
-          <ion-button id="showProductsBtn" fill="solid" color="primary" size="default">
-            <ion-icon name="cube-outline" slot="start"></ion-icon> Produk
-          </ion-button>
-          <ion-button id="showPostsBtn" fill="outline" color="dark" size="default">
-            <ion-icon name="document-text-outline" slot="start"></ion-icon> Postingan
-          </ion-button>
-          <ion-button id="openCreateModal" fill="solid" color="success" style="margin-left: auto;">
-            <ion-icon name="add-circle-outline" slot="start"></ion-icon> Tambah Baru
-          </ion-button>
+          <ion-button id="btnProducts" fill="solid" color="primary"><ion-icon name="cube-outline" slot="start"></ion-icon> Produk</ion-button>
+          <ion-button id="btnPosts" fill="outline" color="dark"><ion-icon name="document-text-outline" slot="start"></ion-icon> Postingan</ion-button>
+          <ion-button id="btnCreate" fill="solid" color="success" style="margin-left: auto;"><ion-icon name="add-circle-outline" slot="start"></ion-icon> Tambah</ion-button>
         </div>
         <div class="table-wrapper">
-          <table class="data-table" id="dataTable">
-            <thead>
-              <tr><th>Gambar</th><th>Judul / ID</th><th id="priceHeader">Harga</th><th>Kategori & Tag</th><th>Aksi</th></tr>
-            </thead>
-            <tbody id="productTableBody"><tr><td colspan="5" style="text-align: center;">Memuat data...</td></tr></tbody>
+          <table class="data-table">
+            <thead><tr><th>Gambar</th><th>Judul / ID</th><th id="priceHeader">Harga</th><th>Kategori & Tag</th><th>Aksi</th></tr></thead>
+            <tbody id="tableBody"><tr><td colspan="5" style="text-align:center;">Memuat data...</td></tr></tbody>
           </table>
         </div>
-        <!-- hidden groups untuk dinamis -->
+        <!-- hidden -->
         <div id="priceGroup"></div><div id="modelGroup"></div><div id="authorGroup"></div>
       </ion-content>
     </div>
   </ion-app>
 
-  <!-- MODAL FORM -->
-  <ion-modal id="productModal" initial-breakpoint="0.95" breakpoints="[0, 0.95]" handle="false">
-    <ion-header>
-      <ion-toolbar>
-        <ion-title id="modalTitle">Tambah Produk Baru</ion-title>
-        <ion-buttons slot="end"><ion-button id="closeModalBtn"><ion-icon name="close-outline"></ion-icon></ion-button></ion-buttons>
-      </ion-toolbar>
-    </ion-header>
+  <!-- Modal Form -->
+  <ion-modal id="productModal" initial-breakpoint="0.95" breakpoints="[0,0.95]">
+    <ion-header><ion-toolbar><ion-title id="modalTitle">Tambah Produk</ion-title><ion-buttons slot="end"><ion-button id="closeModalBtn"><ion-icon name="close"></ion-icon></ion-button></ion-buttons></ion-toolbar></ion-header>
     <ion-content class="ion-padding">
       <form id="productForm">
         <input type="hidden" id="productId"><input type="hidden" id="productSha">
-        <ion-item><ion-label position="stacked">Judul *</ion-label><ion-input id="title" type="text" required></ion-input></ion-item>
-        <ion-item><ion-label position="stacked">Deskripsi / Body</ion-label><ion-textarea id="description" rows="4"></ion-textarea></ion-item>
-        <ion-item id="priceGroupItem"><ion-label position="stacked" id="priceLabel">Harga</ion-label><ion-input id="price" type="text"></ion-input></ion-item>
-        <ion-item id="modelGroupItem"><ion-label position="stacked">Model (pisahkan koma)</ion-label><ion-input id="model" type="text"></ion-input></ion-item>
-        <ion-item id="authorGroupItem"><ion-label position="stacked">Penulis</ion-label><ion-input id="author" type="text"></ion-input></ion-item>
-        <ion-item><ion-label position="stacked">Kategori (pisahkan koma)</ion-label><ion-input id="categories" type="text"></ion-input></ion-item>
-        <ion-item><ion-label position="stacked">Tag (pisahkan koma)</ion-label><ion-input id="tags" type="text"></ion-input></ion-item>
-        <ion-item><ion-label position="stacked">Gambar Utama (URL)</ion-label><ion-input id="featured_image_path" type="url"></ion-input></ion-item>
-        <ion-item><ion-label position="stacked">Gambar Facebook (opsional)</ion-label><ion-input id="facebook_image_path" type="url"></ion-input></ion-item>
+        <ion-item><ion-label position="stacked">Judul *</ion-label><ion-input id="title" required></ion-input></ion-item>
+        <ion-item><ion-label position="stacked">Deskripsi</ion-label><ion-textarea id="description" rows="4"></ion-textarea></ion-item>
+        <ion-item id="priceItem"><ion-label position="stacked">Harga</ion-label><ion-input id="price"></ion-input></ion-item>
+        <ion-item id="modelItem"><ion-label position="stacked">Model (koma)</ion-label><ion-input id="model"></ion-input></ion-item>
+        <ion-item id="authorItem"><ion-label position="stacked">Penulis</ion-label><ion-input id="author"></ion-input></ion-item>
+        <ion-item><ion-label position="stacked">Kategori</ion-label><ion-input id="categories"></ion-input></ion-item>
+        <ion-item><ion-label position="stacked">Tag</ion-label><ion-input id="tags"></ion-input></ion-item>
+        <ion-item><ion-label position="stacked">Gambar Utama</ion-label><ion-input id="featured_image"></ion-input></ion-item>
+        <ion-item><ion-label position="stacked">Gambar FB</ion-label><ion-input id="facebook_image"></ion-input></ion-item>
         <div id="stylesSection">
-          <ion-item lines="none"><ion-label><strong>Varian Warna / Styles</strong></ion-label><ion-button id="addStyleBtn" fill="clear" slot="end" size="small"><ion-icon name="add-circle-outline"></ion-icon> Tambah Style</ion-button></ion-item>
+          <ion-item lines="none"><ion-label><strong>Varian Warna</strong></ion-label><ion-button id="addStyleBtn" fill="clear" slot="end">+ Tambah Style</ion-button></ion-item>
           <div id="stylesContainer"></div>
         </div>
-        <div style="display: flex; gap: 12px; margin: 24px 0 32px;">
-          <ion-button type="submit" expand="block" color="primary"><ion-icon name="save-outline" slot="start"></ion-icon> Simpan</ion-button>
-          <ion-button id="cancelModalBtn" fill="outline" expand="block" color="medium">Batal</ion-button>
-        </div>
+        <ion-button type="submit" expand="block" color="primary">Simpan</ion-button>
+        <ion-button id="cancelModalBtn" fill="outline" expand="block" color="medium">Batal</ion-button>
       </form>
     </ion-content>
   </ion-modal>
 
-  <!-- MODAL HAPUS -->
-  <ion-modal id="deleteModal" initial-breakpoint="0.3" breakpoints="[0, 0.3]" handle="false">
+  <ion-modal id="deleteModal" initial-breakpoint="0.3" breakpoints="[0,0.3]">
     <ion-content class="ion-padding">
-      <div style="text-align: center; padding: 12px;">
-        <ion-icon name="warning-outline" style="font-size: 48px; color: #ef4444;"></ion-icon>
-        <h3>Hapus Data</h3>
-        <p>Yakin ingin menghapus item ini? Tindakan tidak dapat dibatalkan.</p>
-        <div style="display: flex; gap: 16px; margin-top: 24px;">
-          <ion-button id="cancelDeleteBtn" fill="outline" expand="block">Batal</ion-button>
-          <ion-button id="confirmDeleteBtn" color="danger" expand="block">Hapus</ion-button>
-        </div>
-      </div>
+      <div style="text-align:center"><ion-icon name="warning-outline" style="font-size:48px;color:#ef4444"></ion-icon><h3>Hapus Data?</h3><p>Yakin ingin menghapus?</p>
+      <div style="display:flex;gap:16px;margin-top:20px"><ion-button id="cancelDeleteBtn" fill="outline">Batal</ion-button><ion-button id="confirmDeleteBtn" color="danger">Hapus</ion-button></div></div>
     </ion-content>
   </ion-modal>
 
-  <!-- ALERT GLOBAL -->
   <ion-alert id="globalAlert" header="Info" message="" buttons="['OK']"></ion-alert>
 
-  <!-- Uploader section (disembunyikan) -->
-  <div style="display: none;">
-    <input type="file" id="imageUpload" multiple accept="image/*">
-    <div id="uploadPreview"></div>
-    <ion-button id="uploadImagesBtn">Upload</ion-button>
-    <div id="uploadedUrls"></div>
-  </div>
+  <div style="display:none"><input type="file" id="imageUpload" multiple><div id="uploadPreview"></div><ion-button id="uploadImagesBtn">Upload</ion-button><div id="uploadedUrls"></div></div>
 
   <script>
     (function(){
-      // -------------------- KONFIGURASI --------------------
-      const API_BASE_URL = 'https://admin-dashboard.vildaesa.workers.dev';
-      let items = [];
-      let currentCollection = 'products';
-      let currentDeleteId = null;
-      let stylesArray = [];
-
-      // Elemen DOM
-      const dashboardDiv = document.getElementById('dashboardContent');
-      const spinnerOverlay = document.getElementById('authSpinnerOverlay');
+      const API = 'https://admin-dashboard.vildaesa.workers.dev';
+      let items = [], currentCollection = 'products', currentDeleteId = null, stylesArray = [];
+      // DOM elements
+      const mainDiv = document.getElementById('mainContent');
+      const spinnerDiv = document.getElementById('authSpinner');
+      const tableBody = document.getElementById('tableBody');
       const modal = document.getElementById('productModal');
       const deleteModal = document.getElementById('deleteModal');
       const productForm = document.getElementById('productForm');
-      const productId = document.getElementById('productId');
-      const productSha = document.getElementById('productSha');
-      const titleInput = document.getElementById('title');
-      const priceInput = document.getElementById('price');
-      const descriptionInput = document.getElementById('description');
-      const modelInput = document.getElementById('model');
-      const authorInput = document.getElementById('author');
-      const categoriesInput = document.getElementById('categories');
-      const tagsInput = document.getElementById('tags');
-      const featuredImageInput = document.getElementById('featured_image_path');
-      const facebookImageInput = document.getElementById('facebook_image_path');
-      const stylesContainer = document.getElementById('stylesContainer');
-      const addStyleBtn = document.getElementById('addStyleBtn');
-
-      // Helper functions
-      function getAuthHeaders() {
-        const token = localStorage.getItem('adminToken');
-        if (!token) {
-          redirectToLogin();
-          throw new Error('No token');
-        }
+      // Helper
+      function getToken() { return localStorage.getItem('adminToken'); }
+      function getHeaders() {
+        const token = getToken();
+        if (!token) throw new Error('No token');
         return { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
       }
-      function redirectToLogin() {
-        localStorage.removeItem('adminToken');
-        window.location.href = '/login';
-      }
-      function showAlert(message, header = "Info") {
-        const alert = document.getElementById('globalAlert');
-        if (alert) {
-          alert.header = header;
-          alert.message = message;
-          alert.buttons = ['OK'];
-          alert.present();
-        } else { alert(message); }
-      }
-      function logout() {
-        localStorage.removeItem('adminToken');
-        redirectToLogin();
-      }
-      function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-          if (m === '&') return '&amp;';
-          if (m === '<') return '&lt;';
-          if (m === '>') return '&gt;';
-          return m;
-        });
-      }
+      function redirectLogin() { localStorage.removeItem('adminToken'); window.location.href = '/login'; }
+      function showAlert(msg, header='Info') { const a = document.getElementById('globalAlert'); if(a){ a.header=header; a.message=msg; a.present(); } else alert(msg); }
+      function logout() { redirectLogin(); }
+      function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m=>({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
 
-      // Render tabel
+      // Render table
       function renderTable() {
-        const tbody = document.getElementById('productTableBody');
-        if (!tbody) return;
-        tbody.innerHTML = '';
-        if (!items.length) {
-          tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Tidak ada data</td></tr>';
-          return;
-        }
+        if(!tableBody) return;
+        tableBody.innerHTML = '';
+        if(!items.length) { tableBody.innerHTML = '<tr><td colspan="5">Tidak ada data</td></tr>'; return; }
         items.forEach(item => {
+          const img = item.featured_image_path || item.img || 'https://placehold.co/50';
+          const titleHtml = `<div><strong>${escapeHtml(item.title||'No title')}</strong><div style="font-size:12px;color:#64748b">${item.id}.md</div></div>`;
+          let thirdCol = currentCollection==='products' ? (item.price||'-') : (item.author||'-');
+          const cats = Array.isArray(item.categories) ? item.categories.join(', ') : (item.categories||'-');
+          const tags = Array.isArray(item.tags) ? item.tags.join(', ') : (item.tags||'-');
           const row = document.createElement('tr');
-          const imgUrl = item.featured_image_path || item.img || 'https://placehold.co/50x50?text=No+Img';
-          const secondCol = `<div style="font-weight: 600; color:#0f172a;">${escapeHtml(item.title || 'No title')}</div><div style="font-size: 12px; color:#64748b;">${item.id}.md</div>`;
-          let thirdCol = (currentCollection === 'products') ? (item.price || '-') : (item.author || '-');
-          const categoriesStr = Array.isArray(item.categories) ? item.categories.join(', ') : (item.categories || '-');
-          const tagsStr = Array.isArray(item.tags) ? item.tags.join(', ') : (item.tags || '-');
-          const categoryTagHtml = `<div style="font-size:13px;">${escapeHtml(categoriesStr)}</div><div style="font-size:11px; color:#94a3b8;">${escapeHtml(tagsStr)}</div>`;
           row.innerHTML = `
-            <td style="width:70px;"><img src="${escapeHtml(imgUrl)}" style="width:50px;height:50px;border-radius:10px;object-fit:cover;background:#f1f5f9;"></td>
-            <td>${secondCol}</td>
+            <td><img src="${escapeHtml(img)}" style="width:50px;height:50px;object-fit:cover;border-radius:8px"></td>
+            <td>${titleHtml}</td>
             <td>${escapeHtml(thirdCol)}</td>
-            <td>${categoryTagHtml}</td>
+            <td><div>${escapeHtml(cats)}</div><div style="font-size:11px;color:#94a3b8">${escapeHtml(tags)}</div></td>
             <td>
-              <ion-button fill="clear" color="primary" size="small" class="edit-btn" data-item='${JSON.stringify(item).replace(/'/g, "&apos;")}'><ion-icon name="create-outline" slot="icon-only"></ion-icon></ion-button>
-              <ion-button fill="clear" color="danger" size="small" class="delete-btn" data-id="${item.id}"><ion-icon name="trash-outline" slot="icon-only"></ion-icon></ion-button>
+              <ion-button fill="clear" color="primary" size="small" class="edit-item" data-id="${item.id}" data-item='${JSON.stringify(item).replace(/'/g,"&apos;")}'><ion-icon name="create-outline"></ion-icon></ion-button>
+              <ion-button fill="clear" color="danger" size="small" class="delete-item" data-id="${item.id}"><ion-icon name="trash-outline"></ion-icon></ion-button>
             </td>
           `;
-          tbody.appendChild(row);
+          tableBody.appendChild(row);
         });
-        document.querySelectorAll('.edit-btn').forEach(btn => {
-          btn.addEventListener('click', () => openEditModal(JSON.parse(btn.getAttribute('data-item'))));
-        });
-        document.querySelectorAll('.delete-btn').forEach(btn => {
-          btn.addEventListener('click', () => openDeleteModal(btn.getAttribute('data-id')));
-        });
+        document.querySelectorAll('.edit-item').forEach(btn => btn.addEventListener('click', e => openEditModal(JSON.parse(btn.getAttribute('data-item')))));
+        document.querySelectorAll('.delete-item').forEach(btn => btn.addEventListener('click', e => openDeleteModal(btn.getAttribute('data-id'))));
       }
 
-      // Load items dari API
+      // Load data
       async function loadItems() {
-        const tbody = document.getElementById('productTableBody');
-        if (tbody) tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;"><ion-spinner name="dots"></ion-spinner> Memuat data...</td></tr>';
+        if(tableBody) tableBody.innerHTML = '<tr><td colspan="5"><ion-spinner name="dots"></ion-spinner> Loading...</td></tr>';
         try {
-          const res = await fetch(`${API_BASE_URL}/api/${currentCollection}`, { headers: getAuthHeaders() });
-          if (!res.ok) {
-            if (res.status === 403) throw new Error('Sesi habis, silakan login ulang');
-            throw new Error(`Gagal memuat ${currentCollection}`);
-          }
+          const res = await fetch(`${API}/api/${currentCollection}`, { headers: getHeaders() });
+          if(!res.ok) { if(res.status===403) throw new Error('Sesi habis, login ulang'); throw new Error('Gagal load'); }
           items = await res.json();
           renderTable();
-        } catch (err) {
-          showAlert(err.message);
-          if (err.message.includes('login ulang')) logout();
-          if (tbody) tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: red;">Gagal memuat data</td></tr>';
+        } catch(err) { 
+          showAlert(err.message); 
+          if(err.message.includes('login ulang')) logout();
+          if(tableBody) tableBody.innerHTML = '<tr><td colspan="5">Gagal memuat data</td></tr>';
         }
       }
 
       // Switch collection
       function switchCollection(collection) {
         currentCollection = collection;
-        const productsBtn = document.getElementById('showProductsBtn');
-        const postsBtn = document.getElementById('showPostsBtn');
+        const btnProd = document.getElementById('btnProducts'), btnPost = document.getElementById('btnPosts');
         const priceHeader = document.getElementById('priceHeader');
-        const priceGroupItem = document.getElementById('priceGroupItem');
-        const modelGroupItem = document.getElementById('modelGroupItem');
-        const authorGroupItem = document.getElementById('authorGroupItem');
-        const stylesSectionDiv = document.getElementById('stylesSection');
-        if (collection === 'products') {
-          productsBtn.setAttribute('fill', 'solid'); productsBtn.classList.add('active-segment');
-          postsBtn.setAttribute('fill', 'outline'); postsBtn.classList.remove('active-segment');
+        const priceItem = document.getElementById('priceItem'), modelItem = document.getElementById('modelItem'), authorItem = document.getElementById('authorItem');
+        const stylesSec = document.getElementById('stylesSection');
+        if(collection==='products') {
+          btnProd.setAttribute('fill','solid'); btnProd.classList.add('active-segment');
+          btnPost.setAttribute('fill','outline'); btnPost.classList.remove('active-segment');
           if(priceHeader) priceHeader.innerText = 'Harga';
-          if(priceGroupItem) priceGroupItem.style.display = 'flex';
-          if(modelGroupItem) modelGroupItem.style.display = 'flex';
-          if(authorGroupItem) authorGroupItem.style.display = 'none';
-          if(stylesSectionDiv) stylesSectionDiv.style.display = 'block';
+          if(priceItem) priceItem.style.display = 'flex';
+          if(modelItem) modelItem.style.display = 'flex';
+          if(authorItem) authorItem.style.display = 'none';
+          if(stylesSec) stylesSec.style.display = 'block';
         } else {
-          postsBtn.setAttribute('fill', 'solid'); postsBtn.classList.add('active-segment');
-          productsBtn.setAttribute('fill', 'outline'); productsBtn.classList.remove('active-segment');
+          btnPost.setAttribute('fill','solid'); btnPost.classList.add('active-segment');
+          btnProd.setAttribute('fill','outline'); btnProd.classList.remove('active-segment');
           if(priceHeader) priceHeader.innerText = 'Info';
-          if(priceGroupItem) priceGroupItem.style.display = 'none';
-          if(modelGroupItem) modelGroupItem.style.display = 'none';
-          if(authorGroupItem) authorGroupItem.style.display = 'flex';
-          if(stylesSectionDiv) stylesSectionDiv.style.display = 'none';
+          if(priceItem) priceItem.style.display = 'none';
+          if(modelItem) modelItem.style.display = 'none';
+          if(authorItem) authorItem.style.display = 'flex';
+          if(stylesSec) stylesSec.style.display = 'none';
         }
         loadItems();
       }
 
-      // Styles render
+      // Styles
       function renderStyles() {
-        if (!stylesContainer) return;
-        if (currentCollection !== 'products') { stylesContainer.innerHTML = ''; return; }
-        stylesContainer.innerHTML = '';
+        const container = document.getElementById('stylesContainer');
+        if(!container) return;
+        if(currentCollection !== 'products') { container.innerHTML = ''; return; }
+        container.innerHTML = '';
         stylesArray.forEach((style, idx) => {
-          const div = document.createElement('div');
-          div.className = 'style-card';
+          const div = document.createElement('div'); div.className = 'style-card';
           div.innerHTML = `
-            <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end;">
-              <div style="flex:1; min-width:100px;"><label style="font-size:12px; font-weight:500;">Warna</label><ion-input value="${escapeHtml(style.color || '')}" placeholder="Navi" data-field="color" data-idx="${idx}"></ion-input></div>
-              <div style="flex:1; min-width:100px;"><label style="font-size:12px;">Kode/Nama</label><ion-input value="${escapeHtml(style.name || '')}" placeholder="#4a5265" data-field="name" data-idx="${idx}"></ion-input></div>
-              <div style="flex:2; min-width:160px;"><label style="font-size:12px;">URL Gambar</label><ion-input value="${escapeHtml(style.image_path || '')}" placeholder="https://" data-field="image_path" data-idx="${idx}"></ion-input></div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <input placeholder="Warna" value="${escapeHtml(style.color||'')}" data-field="color" data-idx="${idx}" style="flex:1;padding:8px;border-radius:8px;border:1px solid #ccc;">
+              <input placeholder="Kode" value="${escapeHtml(style.name||'')}" data-field="name" data-idx="${idx}" style="flex:1;padding:8px;border-radius:8px;border:1px solid #ccc;">
+              <input placeholder="URL Gambar" value="${escapeHtml(style.image_path||'')}" data-field="image_path" data-idx="${idx}" style="flex:2;padding:8px;border-radius:8px;border:1px solid #ccc;">
               <ion-button fill="clear" color="danger" data-remove="${idx}" size="small"><ion-icon name="trash-outline"></ion-icon></ion-button>
             </div>
           `;
-          stylesContainer.appendChild(div);
+          container.appendChild(div);
         });
-        document.querySelectorAll('#stylesContainer ion-input').forEach(inp => {
-          inp.addEventListener('ionChange', (e) => {
+        // attach events
+        container.querySelectorAll('input').forEach(inp => {
+          inp.addEventListener('input', e => {
             const idx = parseInt(inp.dataset.idx);
             const field = inp.dataset.field;
-            if (!isNaN(idx) && stylesArray[idx]) stylesArray[idx][field] = e.detail.value;
+            if(!isNaN(idx) && stylesArray[idx]) stylesArray[idx][field] = inp.value;
           });
         });
-        document.querySelectorAll('#stylesContainer [data-remove]').forEach(btn => {
+        container.querySelectorAll('[data-remove]').forEach(btn => {
           btn.addEventListener('click', () => {
             const idx = parseInt(btn.dataset.remove);
-            stylesArray.splice(idx, 1);
+            stylesArray.splice(idx,1);
             renderStyles();
           });
         });
       }
 
       function resetForm() {
-        productId.value = ''; productSha.value = ''; titleInput.value = ''; priceInput.value = '';
-        descriptionInput.value = ''; modelInput.value = ''; authorInput.value = ''; categoriesInput.value = '';
-        tagsInput.value = ''; featuredImageInput.value = ''; facebookImageInput.value = '';
-        stylesArray = []; renderStyles();
-        document.getElementById('uploadedUrls').innerHTML = ''; document.getElementById('uploadPreview').innerHTML = '';
+        document.getElementById('productId').value = '';
+        document.getElementById('productSha').value = '';
+        document.getElementById('title').value = '';
+        document.getElementById('price').value = '';
+        document.getElementById('description').value = '';
+        document.getElementById('model').value = '';
+        document.getElementById('author').value = '';
+        document.getElementById('categories').value = '';
+        document.getElementById('tags').value = '';
+        document.getElementById('featured_image').value = '';
+        document.getElementById('facebook_image').value = '';
+        stylesArray = [];
+        renderStyles();
       }
 
       function openCreateModal() {
         resetForm();
-        document.getElementById('modalTitle').innerText = `Tambah ${currentCollection === 'products' ? 'Produk' : 'Post'} Baru`;
+        document.getElementById('modalTitle').innerText = `Tambah ${currentCollection==='products'?'Produk':'Post'} Baru`;
         modal.present();
       }
+
       function openEditModal(item) {
         resetForm();
-        productId.value = item.id; productSha.value = item.sha || '';
-        titleInput.value = item.title || ''; priceInput.value = item.price || '';
-        descriptionInput.value = item.body || item.description || '';
-        modelInput.value = Array.isArray(item.model) ? item.model.join(',') : (item.model || '');
-        authorInput.value = item.author || '';
-        categoriesInput.value = Array.isArray(item.categories) ? item.categories.join(',') : (item.categories || '');
-        tagsInput.value = Array.isArray(item.tags) ? item.tags.join(',') : (item.tags || '');
-        featuredImageInput.value = item.featured_image_path || item.img || '';
-        facebookImageInput.value = item.facebook_image_path || '';
+        document.getElementById('productId').value = item.id;
+        document.getElementById('productSha').value = item.sha||'';
+        document.getElementById('title').value = item.title||'';
+        document.getElementById('price').value = item.price||'';
+        document.getElementById('description').value = item.body||item.description||'';
+        document.getElementById('model').value = Array.isArray(item.model)?item.model.join(','):(item.model||'');
+        document.getElementById('author').value = item.author||'';
+        document.getElementById('categories').value = Array.isArray(item.categories)?item.categories.join(','):(item.categories||'');
+        document.getElementById('tags').value = Array.isArray(item.tags)?item.tags.join(','):(item.tags||'');
+        document.getElementById('featured_image').value = item.featured_image_path||item.img||'';
+        document.getElementById('facebook_image').value = item.facebook_image_path||'';
         stylesArray = item.styles ? [...item.styles] : [];
         renderStyles();
-        document.getElementById('modalTitle').innerText = `Edit ${currentCollection === 'products' ? 'Produk' : 'Post'}`;
+        document.getElementById('modalTitle').innerText = `Edit ${currentCollection==='products'?'Produk':'Post'}`;
         modal.present();
       }
+
       async function saveItem(e) {
         e.preventDefault();
-        const id = productId.value;
+        const id = document.getElementById('productId').value;
         const data = {
-          title: titleInput.value.trim(),
-          body: descriptionInput.value.trim(),
-          categories: categoriesInput.value.split(',').map(s=>s.trim()).filter(Boolean),
-          tags: tagsInput.value.split(',').map(s=>s.trim()).filter(Boolean),
-          facebook_image_path: facebookImageInput.value.trim() || null,
-          sha: productSha.value || undefined
+          title: document.getElementById('title').value.trim(),
+          body: document.getElementById('description').value.trim(),
+          categories: document.getElementById('categories').value.split(',').map(s=>s.trim()).filter(Boolean),
+          tags: document.getElementById('tags').value.split(',').map(s=>s.trim()).filter(Boolean),
+          facebook_image_path: document.getElementById('facebook_image').value.trim()||null,
+          sha: document.getElementById('productSha').value||undefined
         };
-        if (currentCollection === 'products') {
-          data.price = priceInput.value.trim();
-          data.model = modelInput.value.split(',').map(s=>s.trim()).filter(Boolean);
-          data.featured_image_path = featuredImageInput.value.trim() || null;
+        if(currentCollection==='products') {
+          data.price = document.getElementById('price').value.trim();
+          data.model = document.getElementById('model').value.split(',').map(s=>s.trim()).filter(Boolean);
+          data.featured_image_path = document.getElementById('featured_image').value.trim()||null;
           data.styles = stylesArray;
         } else {
-          data.author = authorInput.value.trim();
-          data.img = featuredImageInput.value.trim() || null;
+          data.author = document.getElementById('author').value.trim();
+          data.img = document.getElementById('featured_image').value.trim()||null;
           data.excerpt_separator = '<!--more-->';
         }
         try {
-          const headers = getAuthHeaders();
-          let url = `${API_BASE_URL}/api/${currentCollection}`;
+          const headers = getHeaders();
+          let url = `${API}/api/${currentCollection}`;
           let method = 'POST';
-          if (id) { url += `/${id}`; method = 'PUT'; }
+          if(id) { url += `/${id}`; method = 'PUT'; }
           const res = await fetch(url, { method, headers, body: JSON.stringify(data) });
-          if (!res.ok) { const err = await res.json(); throw new Error(err.error || 'Gagal menyimpan'); }
-          showAlert('Tersimpan!', 'Sukses');
+          if(!res.ok) { const err = await res.json(); throw new Error(err.error||'Gagal simpan'); }
+          showAlert('Tersimpan!','Sukses');
           modal.dismiss();
           loadItems();
-        } catch (err) { showAlert(err.message); }
+        } catch(err) { showAlert(err.message); }
       }
+
       function openDeleteModal(id) { currentDeleteId = id; deleteModal.present(); }
       async function confirmDelete() {
-        if (!currentDeleteId) return;
+        if(!currentDeleteId) return;
         try {
-          const res = await fetch(`${API_BASE_URL}/api/${currentCollection}/${currentDeleteId}`, { method: 'DELETE', headers: getAuthHeaders() });
-          if (!res.ok) throw new Error('Gagal hapus');
-          showAlert('Terhapus', 'Sukses');
+          const res = await fetch(`${API}/api/${currentCollection}/${currentDeleteId}`, { method: 'DELETE', headers: getHeaders() });
+          if(!res.ok) throw new Error('Gagal hapus');
+          showAlert('Terhapus','Sukses');
           deleteModal.dismiss();
           loadItems();
-        } catch (err) { showAlert(err.message); }
+        } catch(err) { showAlert(err.message); }
         finally { currentDeleteId = null; }
       }
 
-      // Upload gambar
-      async function uploadImages() {
-        const fileInput = document.getElementById('imageUpload');
-        const files = fileInput.files;
-        if (!files.length) return showAlert('Pilih file dulu');
-        const formData = new FormData();
-        for (let i=0; i<files.length; i++) formData.append('images', files[i]);
-        try {
-          const res = await fetch(`${API_BASE_URL}/api/upload?type=${currentCollection}`, {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` },
-            body: formData
-          });
-          if (!res.ok) throw new Error('Upload gagal');
-          const data = await res.json();
-          const urlsDiv = document.getElementById('uploadedUrls');
-          urlsDiv.innerHTML = data.urls.map(url => `<div style="display:flex; gap:8px; margin:6px 0;"><ion-input readonly value="${url}"></ion-input><ion-button fill="outline" size="small" onclick="navigator.clipboard.writeText('${url}');showAlert('Copied!')">Copy</ion-button></div>`).join('');
-          showAlert('Upload berhasil!', 'Sukses');
-        } catch (err) { showAlert(err.message); }
-      }
-
-      // Auth check dengan spinner
-      async function verifyAdminAndLoadDashboard() {
+      // AUTH CHECK (dengan penanganan error)
+      async function checkAuthAndInit() {
         const token = localStorage.getItem('adminToken');
-        if (!token) { redirectToLogin(); return; }
+        if(!token) { redirectLogin(); return; }
         try {
-          const testRes = await fetch(`${API_BASE_URL}/api/products?limit=1`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-          });
-          if (!testRes.ok) {
-            if (testRes.status === 403 || testRes.status === 401) {
-              showAlert("Sesi tidak valid atau bukan akun admin. Silakan login ulang.", "Akses ditolak");
-              logout();
-              return;
-            }
-            throw new Error("Gagal verifikasi akses");
+          // Coba hit API untuk verifikasi
+          const test = await fetch(`${API}/api/products?limit=1`, { headers: { 'Authorization': `Bearer ${token}` } });
+          if(!test.ok) {
+            if(test.status===401 || test.status===403) throw new Error('Token invalid');
+            throw new Error('Server error');
           }
-          // Sukses, tampilkan dashboard
-          dashboardDiv.style.display = "block";
-          spinnerOverlay.style.display = "none";
-          // Inisialisasi event listener dan load data
-          initEventListeners();
-          loadItems();
-        } catch (err) {
-          console.error(err);
-          showAlert("Tidak dapat memverifikasi akun admin. Periksa koneksi atau login ulang.");
-          logout();
-        }
-      }
-
-      function initEventListeners() {
-        document.getElementById('showProductsBtn')?.addEventListener('click', () => switchCollection('products'));
-        document.getElementById('showPostsBtn')?.addEventListener('click', () => switchCollection('posts'));
-        document.getElementById('logoutBtn')?.addEventListener('click', logout);
-        document.getElementById('openCreateModal')?.addEventListener('click', openCreateModal);
-        document.getElementById('closeModalBtn')?.addEventListener('click', () => modal.dismiss());
-        document.getElementById('cancelModalBtn')?.addEventListener('click', () => modal.dismiss());
-        document.getElementById('confirmDeleteBtn')?.addEventListener('click', confirmDelete);
-        document.getElementById('cancelDeleteBtn')?.addEventListener('click', () => { deleteModal.dismiss(); currentDeleteId = null; });
-        productForm?.addEventListener('submit', saveItem);
-        addStyleBtn?.addEventListener('click', () => { stylesArray.push({ color: '', name: '', image_path: '' }); renderStyles(); });
-        const uploadBtn = document.getElementById('uploadImagesBtn');
-        if (uploadBtn) uploadBtn.addEventListener('click', uploadImages);
-        const imageUploadInput = document.getElementById('imageUpload');
-        const previewDiv = document.getElementById('uploadPreview');
-        if (imageUploadInput) {
-          imageUploadInput.addEventListener('change', () => {
-            previewDiv.innerHTML = '';
-            Array.from(imageUploadInput.files).forEach(file => {
-              const img = document.createElement('img');
-              img.src = URL.createObjectURL(file);
-              img.style.cssText = 'width: 56px; height:56px; object-fit:cover; border-radius:8px; margin-right:8px;';
-              previewDiv.appendChild(img);
-            });
+          // Sukses: tampilkan konten
+          mainDiv.style.display = 'block';
+          spinnerDiv.style.display = 'none';
+          // Setup event listeners
+          document.getElementById('btnProducts').addEventListener('click', () => switchCollection('products'));
+          document.getElementById('btnPosts').addEventListener('click', () => switchCollection('posts'));
+          document.getElementById('logoutBtn').addEventListener('click', logout);
+          document.getElementById('btnCreate').addEventListener('click', openCreateModal);
+          document.getElementById('closeModalBtn').addEventListener('click', () => modal.dismiss());
+          document.getElementById('cancelModalBtn').addEventListener('click', () => modal.dismiss());
+          document.getElementById('confirmDeleteBtn').addEventListener('click', confirmDelete);
+          document.getElementById('cancelDeleteBtn').addEventListener('click', () => deleteModal.dismiss());
+          productForm.addEventListener('submit', saveItem);
+          document.getElementById('addStyleBtn')?.addEventListener('click', () => { stylesArray.push({ color: '', name: '', image_path: '' }); renderStyles(); });
+          // Upload (opsional)
+          const upBtn = document.getElementById('uploadImagesBtn');
+          if(upBtn) upBtn.addEventListener('click', async () => {
+            const files = document.getElementById('imageUpload').files;
+            if(!files.length) return showAlert('Pilih file');
+            const fd = new FormData();
+            for(let f of files) fd.append('images', f);
+            try {
+              const res = await fetch(`${API}/api/upload?type=${currentCollection}`, { method:'POST', headers:{'Authorization':`Bearer ${token}`}, body:fd });
+              if(!res.ok) throw new Error('Upload gagal');
+              const data = await res.json();
+              document.getElementById('uploadedUrls').innerHTML = data.urls.map(u=>`<div><ion-input readonly value="${u}"></ion-input><ion-button onclick="navigator.clipboard.writeText('${u}');showAlert('Copied!')">Copy</ion-button></div>`).join('');
+              showAlert('Upload ok');
+            } catch(e) { showAlert(e.message); }
           });
+          const fileInput = document.getElementById('imageUpload');
+          if(fileInput) fileInput.addEventListener('change', () => {
+            const preview = document.getElementById('uploadPreview');
+            preview.innerHTML = '';
+            for(let f of fileInput.files) {
+              const img = document.createElement('img');
+              img.src = URL.createObjectURL(f);
+              img.style.cssText = 'width:56px;height:56px;object-fit:cover;margin-right:8px;border-radius:8px';
+              preview.appendChild(img);
+            }
+          });
+          // Load awal
+          switchCollection('products');
+        } catch(err) {
+          console.error('Auth error:', err);
+          showAlert('Gagal verifikasi akun admin. Silakan login ulang.', 'Error');
+          spinnerDiv.style.display = 'none';
+          // Tampilkan pesan error di main content
+          mainDiv.style.display = 'block';
+          document.querySelector('ion-content').innerHTML = `<div class="error-box"><ion-icon name="alert-circle-outline" style="font-size:32px"></ion-icon><h2>Akses Ditolak</h2><p>${err.message}</p><ion-button expand="block" onclick="logout()">Login Ulang</ion-button></div>`;
         }
-        // set initial UI
-        switchCollection('products');
       }
 
-      // Start
-      window.addEventListener('DOMContentLoaded', () => {
-        verifyAdminAndLoadDashboard();
-      });
+      window.checkAuthAndInit = checkAuthAndInit;
+      window.logout = logout; // for inline onclick
+      window.showAlert = showAlert;
+      window.addEventListener('DOMContentLoaded', checkAuthAndInit);
     })();
   </script>
 </body>
