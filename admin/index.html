@@ -85,18 +85,11 @@ permalink: /admin
   }
 
   function redirectToLogin() {
-    content.innerHTML = `<div class="error-panel"><ion-icon name="log-in-outline" style="font-size:48px"></ion-icon><h2>Belum Login</h2><p>Mengarahkan ke halaman login...</p></div>`;
-    setTimeout(() => { localStorage.removeItem('adminToken'); window.location.href = '/login'; }, 1500);
+    content.innerHTML = `<div class="error-panel"><ion-icon name="log-in-outline" style="font-size:48px"></ion-icon><h2>Anda Bukan Admin</h2><p>Mengarah keluar...</p></div>`;
+    setTimeout(() => { localStorage.removeItem('adminToken'); window.location.href = '/'; }, 1500);
   }
 
-window.logout = function() {
-    localStorage.removeItem('userToken'); 
-    sessionStorage.clear();
-    
-        showAlert('Anda bukan admin!');
-
-    window.location.href = '/login'; 
-};
+  function logout() { localStorage.removeItem('adminToken'); redirectToLogin(); }
 
   function getAuthHeaders() {
     const token = localStorage.getItem('adminToken');
