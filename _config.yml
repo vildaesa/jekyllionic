@@ -60,7 +60,7 @@ jekyll-archives:
     tags: '/tag/:name/'
 
 WA_KEY: 6281111191209
-CLIENT_KEY: "<%= ENV['measure_id'] %>"SB-Mid-client-i2KW02MfN9duiyJ9
+CLIENT_KEY: "<%= ENV['CLIENT_KEY'] %>"
 # Firebase
 api_key: "<%= ENV['api_key'] %>"
 auth_domain: "<%= ENV['auth_domain'] %>"
