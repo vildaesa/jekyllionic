@@ -69,5 +69,17 @@ permalink: /login
       }
     });
   </script>
+<script>
+function showAlert(message, header = "Info") {
+  const alert = document.getElementById('globalAlert');
+  if (alert) {
+    alert.header = header;
+    alert.message = message;
+    alert.buttons = ['OK'];
+    alert.present();
+  }
+}
+
+</script>
 </body>
 </html>
