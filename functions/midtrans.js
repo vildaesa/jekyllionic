@@ -8,9 +8,9 @@ export async function onRequestPost(context) {
     const waNumber = body.waNumber || '';
 
     // Bangun finish URL menuju halaman sukses universal
-    const successBaseUrl = 'https://vems-olshop.pages.dev';
+    const successBaseUrl = 'https://vems-olshop.pages.dev/success';
     const params = new URLSearchParams();
-    if (storeId) params.append('store', storeId);
+    if (storeId) params.append('vems_store', storeId);
     if (waNumber) params.append('wa', waNumber);
     const finishUrl = params.toString() ? `${successBaseUrl}?${params.toString()}` : successBaseUrl;
 
