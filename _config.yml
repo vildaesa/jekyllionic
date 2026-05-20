@@ -59,7 +59,7 @@ jekyll-archives:
     categories: '/category/:name/'
     tags: '/tag/:name/'
 
-WA_KEY: 6281111191209
+WA_KEY: "<%= ENV['WA_KEY'] %>"
 CLIENT_KEY: "<%= ENV['CLIENT_KEY'] %>"
 # Firebase
 API_KEY: "<%= ENV['API_KEY'] %>"
