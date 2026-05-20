@@ -9,45 +9,67 @@ permalink: /login
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login Admin</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="icon" href="{{ site.favicon | default: '/favicon.ico' | relative_url }}" type="image/x-icon"><link rel="icon" type="image/png" href="{{ '/assets/images/fav/favicon-96x96.png' | relative_url }}" sizes="96x96" />
-  <link rel="icon" type="image/svg+xml" href="{{ '/assets/images/fav/favicon.svg' | relative_url }}" />
-  <link rel="shortcut icon" href="{{ '/assets/images/fav/favicon.ico' | relative_url }}" />
-  <link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/images/fav/apple-touch-icon.png' | relative_url }}" />
-  <meta name="apple-mobile-web-app-title" content="jekyllionic" />
-  <link rel="manifest" href="{{ '/assets/images/fav/site.webmanifest' | relative_url }}" />
+
+  <!-- Ionic Framework CDN -->
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core@8/dist/ionic/ionic.esm.js"></script>
+  <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core@8/dist/ionic/ionic.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core@8/css/ionic.bundle.css" />
+  
+  <style>
+    /* CSS kustom untuk memastikan container berada di tengah */
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 400px;
+      padding: 20px;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-    <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">Admin Login</h1>
-    <form id="loginForm">
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email</label>
-        <input type="email" id="email" name="email" required 
-               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+<body>
+
+  <ion-app>
+    <ion-content>
+      <div class="login-container">
+        <div class="login-card">
+          <h1 class="ion-text-center">Admin Login</h1>
+          
+          <form id="loginForm">
+            <ion-item>
+              <ion-label position="stacked">Email</ion-label>
+              <ion-input id="email" type="email" placeholder="email@example.com" required></ion-input>
+            </ion-item>
+
+            <ion-item class="ion-margin-bottom">
+              <ion-label position="stacked">Password</ion-label>
+              <ion-input id="password" type="password" placeholder="********" required></ion-input>
+            </ion-item>
+
+            <ion-button expand="block" type="submit">
+              Login
+            </ion-button>
+          </form>
+
+          <div id="errorMsg" class="ion-padding-top ion-text-center" style="color: var(--ion-color-danger); display: none;"></div>
+        </div>
       </div>
-      <div class="mb-6">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
-        <input type="password" id="password" name="password" required 
-               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-      </div>
-      <button type="submit" 
-              class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
-        Login
-      </button>
-    </form>
-    <div id="errorMsg" class="mt-4 text-red-600 text-sm text-center hidden"></div>
-  </div>
+    </ion-content>
+  </ion-app>
+
+  <ion-alert id="globalAlert"></ion-alert>
 
   <script>
-    // Ganti dengan URL API Worker Anda
     const API_BASE_URL = 'https://admin-dashboard.vildaesa.workers.dev';
-
     const loginForm = document.getElementById('loginForm');
     const errorMsgDiv = document.getElementById('errorMsg');
 
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
 
@@ -57,29 +79,26 @@ permalink: /login
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password })
         });
+        
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Login gagal');
-        // Simpan token ke localStorage
+        
         localStorage.setItem('adminToken', data.token);
-        // Redirect ke dashboard
         window.location.href = '{{ "/admin" | relative_url }}';
       } catch (err) {
+        showAlert(err.message, "Gagal Login");
         errorMsgDiv.textContent = err.message;
-        errorMsgDiv.classList.remove('hidden');
+        errorMsgDiv.style.display = 'block';
       }
     });
-  </script>
-<script>
-function showAlert(message, header = "Info") {
-  const alert = document.getElementById('globalAlert');
-  if (alert) {
-    alert.header = header;
-    alert.message = message;
-    alert.buttons = ['OK'];
-    alert.present();
-  }
-}
 
-</script>
+    async function showAlert(message, header = "Info") {
+      const alert = document.getElementById('globalAlert');
+      alert.header = header;
+      alert.message = message;
+      alert.buttons = ['OK'];
+      await alert.present();
+    }
+  </script>
 </body>
 </html>
