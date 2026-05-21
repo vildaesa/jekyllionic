@@ -1,20 +1,43 @@
 ---
 layout: default
-title: Tentang blog
+title: Tentang Repo
 permalink: /about
 ---
 
-<div class="content">
-<div id="readme-content"></div>
-</div>
+<!-- Import Ionic Core 8 via CDN -->
+<script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core@8/dist/ionic/ionic.esm.js"></script>
+<script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core@8/dist/ionic/ionic.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core@8/css/ionic.bundle.css" />
+
+<!-- Struktur Struktur UI Ionic -->
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Tentang Repo</ion-card-title>
+    </ion-card-header>
+    
+    <ion-card-content>
+      <!-- Tempat menampung hasil render README.md -->
+      <div id="readme-content">Memuat konten...</div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     fetch('{{site.baseurl}}/assets/README.md')
         .then(response => response.text())
         .then(markdown => {
-            document.getElementById('readme-content').innerHTML = marked.parse(markdown);
+            // Memastikan library marked sudah siap sebelum parsing
+            if (typeof marked !== 'undefined') {
+                document.getElementById('readme-content').innerHTML = marked.parse(markdown);
+            } else {
+                document.getElementById('readme-content').innerHTML = "Gagal memuat parser Markdown.";
+            }
         })
-        .catch(error => console.error('Error loading README.md:', error));
+        .catch(error => {
+            console.error('Error loading README.md:', error);
+            document.getElementById('readme-content').innerHTML = "Gagal memuat konten.";
+        });
 });
 </script>
-<script src="{{ '/assets/js/marked.min.js' | relative_url }}"></script>
