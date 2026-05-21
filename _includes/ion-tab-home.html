@@ -5,6 +5,11 @@ title: Home
     <ion-header>
       <ion-toolbar>
         <ion-title>{{ page.title }}</ion-title>
+    <ion-buttons>
+      <ion-button href="{{ '/about' | relative_url }}">
+        <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding" fullscreen="true">
