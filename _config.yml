@@ -46,7 +46,7 @@ exclude:
 # Plugin settings
 plugins:
   - jekyll-feed
-  - jekyl-seo-tag
+  - jekyll-seo-tag
   - jekyll-sitemap
   - jekyll-archives
   - jekyll-paginate
