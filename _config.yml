@@ -11,7 +11,7 @@ wa_admin: 6281111191209
 title: jekyllionic
 description: Deskripsi singkat tentang website Anda
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site
+url: "https://vems-olshop.pages.dev" # the base hostname & protocol for your site
 author: vildaesa
 license: "aHR0cHM6Ly92aWxkYWVzYS5naXRodWIuaW8="
 image: /assets/images/logo-og.jpg   # default OG image
