@@ -284,6 +284,11 @@ async function init() {
       document.getElementById('addStyleBtn')?.addEventListener('click', () => { stylesArray.push({ color:'', name:'', image_path:'' }); renderStyles(); });
     } catch(err) {
       console.error(err);
+const header = document.querySelector('ion-header');
+  if (header) {
+    header.style.display = 'none';
+  }
+
       content.innerHTML = `<style>ion-header:display:none;visibility:hidden;</style><div class="error-panel"><ion-icon name="alert-circle-outline" style="font-size:48px"></ion-icon><h2>Akses Ditolak</h2><p>${err.message}</p><ion-buttons slot="end"><ion-button color="danger" expand="block" onClick='logout()'>Keluar</ion-button></ion-buttons></div>`;
     }
   }
