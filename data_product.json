@@ -14,7 +14,7 @@ permalink: /data_product.json
         "sku": {{ item.sku | default: "" | jsonify }},
         "price": {{ item.price | jsonify }},
         "discount": {{ item.discount | jsonify }},
-        "stok": {{ item.stok | default: 0 |jsonify }},
+        "stok": {{ item.stok |jsonify }},
         "description": {{ item.description | strip_html | strip_newlines | jsonify }},
         "image": {{ item.featured_image_path | jsonify }},
         "styles": [
