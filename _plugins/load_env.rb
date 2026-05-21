@@ -14,7 +14,8 @@ Jekyll::Hooks.register :site, :after_init do |site|
     'SERVER_KEY',
     'STORAGE_BUCKET',
     'DATABASE_URL',
-    'SENDER_ID'
+    'SENDER_ID',
+    'TEMPLATE_LICENSE'
   ].each do |var|
     value = ENV[var]
     site.config[var] = value
