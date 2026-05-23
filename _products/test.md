@@ -2,6 +2,7 @@
 title: Test the Post
 description: Post t-post
 price: '5.000'
+sku: 0003
 model:
   - HeadLoop
   - EarLoop
