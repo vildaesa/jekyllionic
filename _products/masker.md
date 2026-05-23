@@ -2,7 +2,8 @@
 title: Masker Bordir Semaya
 description: 
 price: '40.000'
-sku: 0001
+discount: 
+sku: '0001'
 model:
   - HeadLoop
   - EarLoop
