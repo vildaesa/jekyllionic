@@ -171,6 +171,7 @@ title: Account
     const info = document.getElementById("user-info");
     const dashboard = document.getElementById("dashboard");
     const loginBtn = document.getElementById("loginBtn");
+    const adminBtn = document.getElementById('btnAdmin');
     const userEmailSpan = document.getElementById("user-email");
     const userNameHeader = document.getElementById("user-display-name");
     const avatarContainer = document.getElementById("user-avatar-container");
@@ -179,6 +180,7 @@ title: Account
       if (info) info.innerHTML = `🔐 Logged in as: <strong>${user.email}</strong>`;
       if (dashboard) dashboard.style.display = "block";
       if (loginBtn) loginBtn.style.display = "none";
+      if (adminBtn) adminBtn.style.display = "none";
       if (userEmailSpan) userEmailSpan.innerText = user.email;
 
       // Update Name
