@@ -1,6 +1,7 @@
 ---
 title: Test Upload
 sku: '0002'
+discount: 
 categories:
   - Accesoris
 tags:
