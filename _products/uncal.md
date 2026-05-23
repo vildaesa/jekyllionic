@@ -2,7 +2,7 @@
 title: Masker Bordir Ilalang
 description: 
 price: '4.000'
-sku: 0005
+sku: '0005'
 model:
   - HeadLoop
   - EarLoop
