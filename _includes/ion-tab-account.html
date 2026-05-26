@@ -114,7 +114,7 @@ title: Account
         }
 
         userCredential.user.sendEmailVerification()
-          .then(() => showAlert("Verifikasi email dikirim! periksa inbox dan folder spam kamu.", "Info"));
+          .then(() => showAlert("Email verifikasi sudah dikirim! periksa inbox dan folder spam kamu.", "Info"));
 
         // Simpan ke Firestore
         firebase.firestore().collection("users").doc(userCredential.user.uid).set({
