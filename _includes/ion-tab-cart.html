@@ -21,7 +21,7 @@ title: Cart
     const user = firebase.auth().currentUser;
 
     if (!user || !user.emailVerified) {
-      showAlert("Harap login dan verifikasi email sebelum checkout.");
+      showAlert("Silahkan login sebelum melakukan checkout.");
       return;
     }
 
